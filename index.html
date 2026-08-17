@@ -534,17 +534,7 @@
       SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtamhtY3ppZHJ6ZXFodWJ1anl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTUwNTgsImV4cCI6MjEwMjI5MTA1OH0.DUU2cPg_Rue_zY0HtQB-9R8YDBeJkuEchJfX9OR4jqo',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwQTuwza8gemJakpOHIUgJMf12cSTT7aHi9nxaqY6PUuEHo_5ni2-drwP2KhK_A3YPl/exec',
       ADMIN_WHATSAPP: '628131310110',
-      QRIS_STATIC_PAYLOAD: '00020101021126570011ID.DANA.WWW011893600915333496229502093349622950303UMI51440014ID.CO.QRIS.WWW0215ID10222175326650303UMI5204729853033605802ID5911Suryatokoku6012Kab. Cirebon61054518863043F0D',
-      PETUGAS_ACCOUNTS: {
-        'petugas1': 'suryajaya1',
-        'petugas2': 'suryajaya2',
-        'misu': 'misu123',
-        'panitia': 'panitia2026'
-      },
-      STAFF_ACCOUNTS: {
-        'admin': 'admin123',
-        'staff1': 'staffcirebon'
-      }
+      QRIS_STATIC_PAYLOAD: '00020101021126570011ID.DANA.WWW011893600915333496229502093349622950303UMI51440014ID.CO.QRIS.WWW0215ID10222175326650303UMI5204729853033605802ID5911Suryatokoku6012Kab. Cirebon61054518863043F0D'
     };
 
     // Initialize Supabase Client
@@ -569,8 +559,7 @@
       if (!token) return false;
       try {
         const decoded = atob(token);
-        const [u, p] = decoded.split(':');
-        return APP_CONFIG.PETUGAS_ACCOUNTS[u] === p;
+        return decoded.includes(':') && decoded.split(':')[0].length > 0;
       } catch (e) {
         return false;
       }
@@ -580,8 +569,7 @@
       if (!token) return false;
       try {
         const decoded = atob(token);
-        const [u, p] = decoded.split(':');
-        return APP_CONFIG.STAFF_ACCOUNTS[u] === p;
+        return decoded.includes(':') && decoded.split(':')[0].length > 0;
       } catch (e) {
         return false;
       }
@@ -1922,14 +1910,31 @@
         const pass = document.getElementById('officer-pass').value.trim();
         if (!user || !pass) return showToast("Semua kolom login harus diisi!", "error");
 
-        if (!APP_CONFIG.PETUGAS_ACCOUNTS[user] || APP_CONFIG.PETUGAS_ACCOUNTS[user] !== pass) {
-          return showToast("Username atau Password Petugas salah!", "error");
+        toggleLoader(true, "Memverifikasi akun Petugas...");
+        try {
+          const response = await fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'login',
+              data: { role: 'petugas', username: user, password: pass }
+            })
+          });
+          
+          const res = await response.json();
+          if (res && res.success) {
+            officerAuthToken = res.token || btoa(`${user}:${pass}`);
+            localStorage.setItem('petugas_token', officerAuthToken);
+            showToast("Login Petugas berhasil!", "success");
+            await loadOfficerDashboard();
+          } else {
+            showToast(res.error || "Username atau Password Petugas salah!", "error");
+          }
+        } catch (err) {
+          showToast("Gagal terhubung ke server login: " + err.message, "error");
+        } finally {
+          toggleLoader(false);
         }
-
-        officerAuthToken = btoa(`${user}:${pass}`);
-        localStorage.setItem('petugas_token', officerAuthToken);
-        showToast("Login Petugas berhasil!", "success");
-        await loadOfficerDashboard();
       });
     }
 
@@ -2478,14 +2483,31 @@
         const pass = document.getElementById('staff-pass').value.trim();
         if (!user || !pass) return showToast("Semua kolom login harus diisi!", "error");
 
-        if (!APP_CONFIG.STAFF_ACCOUNTS[user] || APP_CONFIG.STAFF_ACCOUNTS[user] !== pass) {
-          return showToast("Username atau Password Staff salah!", "error");
+        toggleLoader(true, "Memverifikasi akun Staff...");
+        try {
+          const response = await fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'login',
+              data: { role: 'staff', username: user, password: pass }
+            })
+          });
+          
+          const res = await response.json();
+          if (res && res.success) {
+            staffAuthToken = res.token || btoa(`${user}:${pass}`);
+            localStorage.setItem('staff_token', staffAuthToken);
+            showToast("Login Staff berhasil!", "success");
+            await loadStaffDashboard();
+          } else {
+            showToast(res.error || "Username atau Password Staff salah!", "error");
+          }
+        } catch (err) {
+          showToast("Gagal terhubung ke server login: " + err.message, "error");
+        } finally {
+          toggleLoader(false);
         }
-
-        staffAuthToken = btoa(`${user}:${pass}`);
-        localStorage.setItem('staff_token', staffAuthToken);
-        showToast("Login Staff berhasil!", "success");
-        await loadStaffDashboard();
       });
     }
 
