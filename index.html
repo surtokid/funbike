@@ -458,6 +458,24 @@
       </div>
     </div>
 
+    <!-- PROOF VIEWER MODAL -->
+    <div id="modal-proof-viewer" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 hidden p-4">
+      <div class="bg-white w-full max-w-sm rounded-2xl p-4 space-y-3 shadow-2xl relative animate-fade-in">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          <h3 class="font-extrabold text-merdekaNavy text-sm">Foto Bukti Transfer</h3>
+          <button id="btn-close-proof-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
+        </div>
+        <div class="max-h-[60vh] overflow-y-auto flex items-center justify-center bg-gray-100 rounded-xl p-2 border border-gray-200">
+          <img id="proof-modal-img" src="" class="max-w-full h-auto rounded-lg object-contain shadow-xs" alt="Bukti Transfer">
+        </div>
+        <div class="pt-1">
+          <a id="proof-modal-open-link" href="#" target="_blank" class="w-full bg-merdekaNavy hover:bg-slate-800 text-white font-extrabold py-2.5 px-3 rounded-xl text-xs text-center block transition">
+            🔗 Buka Tautan Google Drive / Asli
+          </a>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- LOADING OVERLAY -->
@@ -1732,7 +1750,7 @@
         }
 
         const viewProofBtn = tx.buktiUrl 
-          ? `<a href="${tx.buktiUrl}" target="_blank" class="text-xs font-extrabold text-blue-500 hover:underline flex items-center gap-1">👁️ Lihat Bukti Transfer</a>`
+          ? `<button class="btn-view-proof text-[11px] font-extrabold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg flex items-center gap-1 border border-blue-200 transition active:scale-95" data-proofurl="${tx.buktiUrl}">👁️ Lihat Bukti Transfer</button>`
           : `<span class="text-gray-400">Bukti Belum Diupload</span>`;
 
         let actionButtons = '';
@@ -1776,6 +1794,29 @@
         `;
         
         container.appendChild(card);
+      });
+
+      document.querySelectorAll('.btn-view-proof').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const proofUrl = this.dataset.proofurl;
+          const modal = document.getElementById('modal-proof-viewer');
+          const img = document.getElementById('proof-modal-img');
+          const openLink = document.getElementById('proof-modal-open-link');
+
+          img.src = proofUrl;
+          if (proofUrl.startsWith('data:')) {
+            openLink.classList.add('hidden');
+          } else {
+            openLink.classList.remove('hidden');
+            openLink.href = proofUrl;
+          }
+
+          modal.classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('btn-close-proof-modal').addEventListener('click', () => {
+        document.getElementById('modal-proof-viewer').classList.add('hidden');
       });
 
       document.querySelectorAll('.btn-action-lunas').forEach(btn => {
