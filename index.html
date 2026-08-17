@@ -534,7 +534,17 @@
       SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtamhtY3ppZHJ6ZXFodWJ1anl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTUwNTgsImV4cCI6MjEwMjI5MTA1OH0.DUU2cPg_Rue_zY0HtQB-9R8YDBeJkuEchJfX9OR4jqo',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwQTuwza8gemJakpOHIUgJMf12cSTT7aHi9nxaqY6PUuEHo_5ni2-drwP2KhK_A3YPl/exec',
       ADMIN_WHATSAPP: '628131310110',
-      QRIS_STATIC_PAYLOAD: '00020101021126570011ID.DANA.WWW011893600915333496229502093349622950303UMI51440014ID.CO.QRIS.WWW0215ID10222175326650303UMI5204729853033605802ID5911Suryatokoku6012Kab. Cirebon61054518863043F0D'
+      QRIS_STATIC_PAYLOAD: '00020101021126570011ID.DANA.WWW011893600915333496229502093349622950303UMI51440014ID.CO.QRIS.WWW0215ID10222175326650303UMI5204729853033605802ID5911Suryatokoku6012Kab. Cirebon61054518863043F0D',
+      PETUGAS_ACCOUNTS: {
+        'petugas1': 'suryajaya1',
+        'petugas2': 'suryajaya2',
+        'misu': 'misu123',
+        'panitia': 'panitia2026'
+      },
+      STAFF_ACCOUNTS: {
+        'admin': 'admin123',
+        'staff1': 'staffcirebon'
+      }
     };
 
     // Initialize Supabase Client
@@ -555,8 +565,30 @@
     let html5QrScanner = null; 
     let pendingWhatsAppUrl = null;
 
+    function isValidOfficerToken(token) {
+      if (!token) return false;
+      try {
+        const decoded = atob(token);
+        const [u, p] = decoded.split(':');
+        return APP_CONFIG.PETUGAS_ACCOUNTS[u] === p;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function isValidStaffToken(token) {
+      if (!token) return false;
+      try {
+        const decoded = atob(token);
+        const [u, p] = decoded.split(':');
+        return APP_CONFIG.STAFF_ACCOUNTS[u] === p;
+      } catch (e) {
+        return false;
+      }
+    }
+
     function getLoggedInOfficerName() {
-      if (!officerAuthToken) return "Petugas";
+      if (!officerAuthToken || !isValidOfficerToken(officerAuthToken)) return "Petugas";
       try {
         const decoded = atob(officerAuthToken);
         return decoded.split(':')[0];
@@ -1863,7 +1895,9 @@
 
     async function renderPetugasScreen() {
       document.getElementById('screen-petugas').classList.remove('hidden');
-      if (!officerAuthToken) {
+      if (!isValidOfficerToken(officerAuthToken)) {
+        officerAuthToken = null;
+        localStorage.removeItem('petugas_token');
         renderOfficerLogin();
       } else {
         await loadOfficerDashboard();
@@ -1876,8 +1910,8 @@
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
           <h3 class="font-extrabold text-merdekaNavy text-base text-center">Login Petugas</h3>
           <div class="space-y-3">
-            <input type="text" id="officer-user" placeholder="Username" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none">
-            <input type="password" id="officer-pass" placeholder="Password" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none">
+            <input type="text" id="officer-user" placeholder="Username Petugas" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none font-medium">
+            <input type="password" id="officer-pass" placeholder="Password Petugas" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none font-medium">
             <button id="btn-login-officer" class="w-full bg-merdekaNavy hover:bg-navy-800 text-white font-extrabold py-3 rounded-xl transition active:scale-95 text-xs uppercase tracking-wider">Masuk</button>
           </div>
         </div>
@@ -1888,9 +1922,13 @@
         const pass = document.getElementById('officer-pass').value.trim();
         if (!user || !pass) return showToast("Semua kolom login harus diisi!", "error");
 
+        if (!APP_CONFIG.PETUGAS_ACCOUNTS[user] || APP_CONFIG.PETUGAS_ACCOUNTS[user] !== pass) {
+          return showToast("Username atau Password Petugas salah!", "error");
+        }
+
         officerAuthToken = btoa(`${user}:${pass}`);
         localStorage.setItem('petugas_token', officerAuthToken);
-        showToast("Login berhasil!", "success");
+        showToast("Login Petugas berhasil!", "success");
         await loadOfficerDashboard();
       });
     }
@@ -2413,7 +2451,9 @@
 
     async function renderStaffScreen() {
       document.getElementById('screen-staff').classList.remove('hidden');
-      if (!staffAuthToken) {
+      if (!isValidStaffToken(staffAuthToken)) {
+        staffAuthToken = null;
+        localStorage.removeItem('staff_token');
         renderStaffLogin();
       } else {
         await loadStaffDashboard();
@@ -2426,8 +2466,8 @@
         <div class="col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
           <h3 class="font-extrabold text-merdekaNavy text-base text-center">Login Staff</h3>
           <div class="space-y-3">
-            <input type="text" id="staff-user" value="admin" placeholder="Username" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none">
-            <input type="password" id="staff-pass" value="admin123" placeholder="Password" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none">
+            <input type="text" id="staff-user" placeholder="Username Staff" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none font-medium">
+            <input type="password" id="staff-pass" placeholder="Password Staff" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none font-medium">
             <button id="btn-login-staff" class="w-full bg-merdekaNavy hover:bg-navy-800 text-white font-extrabold py-3 rounded-xl transition active:scale-95 text-xs uppercase tracking-wider">Masuk</button>
           </div>
         </div>
@@ -2438,9 +2478,13 @@
         const pass = document.getElementById('staff-pass').value.trim();
         if (!user || !pass) return showToast("Semua kolom login harus diisi!", "error");
 
+        if (!APP_CONFIG.STAFF_ACCOUNTS[user] || APP_CONFIG.STAFF_ACCOUNTS[user] !== pass) {
+          return showToast("Username atau Password Staff salah!", "error");
+        }
+
         staffAuthToken = btoa(`${user}:${pass}`);
         localStorage.setItem('staff_token', staffAuthToken);
-        showToast("Login berhasil!", "success");
+        showToast("Login Staff berhasil!", "success");
         await loadStaffDashboard();
       });
     }
