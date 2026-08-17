@@ -530,6 +530,16 @@
       }
     }
 
+    function normalizeDriveUrl(url) {
+      if (!url) return '';
+      if (url.startsWith('data:')) return url;
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+      return url;
+    }
+
     window.onload = async function() {
       await fetchGlobalStatus();
       setupWhatsAppConfirmListeners();
@@ -829,11 +839,6 @@
       if (!token && hash.startsWith('payment=')) {
         token = hash.split('payment=')[1];
       } else if (!token && hash === 'payment') {
-        token = 'd739b175b86f49ed';
-      }
-
-      // Fallback default demo token if no specific route provided
-      if (!token && !hash) {
         token = 'd739b175b86f49ed';
       }
 
@@ -1267,7 +1272,7 @@
             let pend = [];
 
             if (txErr || !tx) {
-              // Jika token demo diakses tetapi belum ada di Supabase, tampilkan Data Mock Demo Fallback
+              // Demo mock fallback data
               if (token === 'd739b175b86f49ed') {
                 tx = {
                   id: 'TX-DEMO-999',
@@ -1551,13 +1556,11 @@
       toggleLoader(true, "Mengompresi & mengunggah bukti pembayaran...");
 
       try {
-        // Kompresi foto secara otomatis sebelum diunggah
         const compressedBase64 = await compressImage(selectedFileObject, 1200, 1200, 0.7);
         const fileName = (selectedFileName || "bukti").replace(/\.[^/.]+$/, "") + ".jpg";
 
         let gdriveUrl = null;
 
-        // 1. Upload Bukti ke Google Drive via Apps Script
         try {
           const response = await fetch(APP_CONFIG.GAS_WEB_APP_URL, {
             method: 'POST',
@@ -1581,7 +1584,6 @@
           console.warn("GAS Upload Warning (Fallback to Supabase):", fetchErr);
         }
 
-        // 2. Update Status & URL Bukti ke Supabase Database
         if (supabaseClient) {
           const { error: updateErr } = await supabaseClient.from('transaksi').update({
             status: 'BUKTI_DIUPLOAD',
@@ -1798,7 +1800,8 @@
 
       document.querySelectorAll('.btn-view-proof').forEach(btn => {
         btn.addEventListener('click', function() {
-          const proofUrl = this.dataset.proofurl;
+          const rawProofUrl = this.dataset.proofurl;
+          const proofUrl = normalizeDriveUrl(rawProofUrl);
           const modal = document.getElementById('modal-proof-viewer');
           const img = document.getElementById('proof-modal-img');
           const openLink = document.getElementById('proof-modal-open-link');
@@ -1808,7 +1811,7 @@
             openLink.classList.add('hidden');
           } else {
             openLink.classList.remove('hidden');
-            openLink.href = proofUrl;
+            openLink.href = rawProofUrl;
           }
 
           modal.classList.remove('hidden');
