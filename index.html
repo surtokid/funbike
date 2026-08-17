@@ -29,9 +29,22 @@
     }
   </script>
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    #qr-reader video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      border-radius: 1.5rem;
+    }
   </style>
 </head>
 <body class="bg-merdekaNavy min-h-screen flex justify-center items-stretch antialiased">
@@ -69,14 +82,17 @@
         <!-- Tier Info Card -->
         <div class="bg-gradient-to-br from-red-50 to-amber-50 border-2 border-red-200 rounded-2xl p-4 shadow-md space-y-3 relative overflow-hidden">
           <div class="absolute -right-8 -top-8 w-20 h-20 bg-red-500 opacity-10 rounded-full blur-lg"></div>
+          
           <div class="flex items-center justify-between">
             <span class="text-[9px] bg-red-600 text-white font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wide">Slot Terbatas!</span>
           </div>
+
           <div class="text-center bg-white rounded-xl p-3 border border-red-100 shadow-xs relative">
             <p class="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest">HTM Normal</p>
             <p class="text-xl font-black text-gray-400 line-through">Rp 45.000</p>
             <p class="text-[11px] text-merdekaNavy font-extrabold mt-1">Dapatkan harga promo lebih hemat jika daftar lebih awal!</p>
           </div>
+
           <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-extrabold">
             <div class="p-2 bg-gradient-to-b from-emerald-50 to-emerald-100 text-emerald-800 rounded-xl border border-emerald-200 shadow-2xs flex flex-col justify-between relative overflow-hidden">
               <div class="absolute top-0 right-0 left-0 h-1 bg-emerald-500"></div>
@@ -84,22 +100,31 @@
                 <p class="text-[8px] text-emerald-600 uppercase font-black">100 Pertama</p>
                 <p class="text-sm font-black text-emerald-900 mt-1">Rp35k</p>
               </div>
+              <p class="text-[8px] text-emerald-600 mt-1 leading-tight font-medium">Urutan 1-100</p>
             </div>
+            
             <div class="p-2 bg-gradient-to-b from-amber-50 to-amber-100 text-amber-800 rounded-xl border border-amber-200 shadow-2xs flex flex-col justify-between relative overflow-hidden">
               <div class="absolute top-0 right-0 left-0 h-1 bg-amber-500"></div>
               <div>
                 <p class="text-[8px] text-amber-600 uppercase font-black">300 Berikutnya</p>
                 <p class="text-sm font-black text-amber-900 mt-1">Rp40k</p>
               </div>
+              <p class="text-[8px] text-amber-600 mt-1 leading-tight font-medium">Urutan 101-400</p>
             </div>
+
             <div class="p-2 bg-gradient-to-b from-red-50 to-red-100 text-red-800 rounded-xl border border-red-200 shadow-2xs flex flex-col justify-between relative overflow-hidden">
               <div class="absolute top-0 right-0 left-0 h-1 bg-red-500"></div>
               <div>
                 <p class="text-[8px] text-red-600 uppercase font-black">Harga Normal</p>
                 <p class="text-sm font-black text-red-900 mt-1">Rp45k</p>
               </div>
+              <p class="text-[8px] text-red-600 mt-1 leading-tight font-medium">Urutan 401+</p>
             </div>
           </div>
+          
+          <p class="text-[9px] text-gray-500 leading-tight text-center font-medium">
+            *) Harga dihitung per individu berdasarkan urutan pendaftaran Anda secara real-time di sistem database.
+          </p>
         </div>
 
         <!-- Participants Counter -->
@@ -115,17 +140,21 @@
           </div>
         </div>
 
+        <!-- Dynamic Cards Container -->
         <div id="participants-container" class="space-y-6"></div>
       </div>
 
       <!-- SCREEN 2: HALAMAN PEMBAYARAN & E-TICKET -->
       <div id="screen-payment" class="hidden space-y-6">
         <div class="text-center space-y-2">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full text-3xl animate-bounce">🎉</div>
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full text-3xl animate-bounce">
+            🎉
+          </div>
           <h1 class="text-2xl font-extrabold text-merdekaNavy">Pendaftaran Berhasil!</h1>
           <p class="text-xs text-gray-500 font-medium">Silakan selesaikan pembayaran agar nomor peserta terverifikasi otomatis.</p>
         </div>
 
+        <!-- Realtime Live Stats Counter -->
         <div id="payment-live-stats" class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center justify-between shadow-xs">
           <div>
             <p class="text-[9px] text-blue-600 font-extrabold uppercase tracking-widest font-mono">Kuota Terisi Terkini</p>
@@ -134,24 +163,35 @@
           <span class="text-[9px] bg-blue-100 text-blue-800 font-black px-2.5 py-1 rounded-full uppercase tracking-wider animate-pulse">REAL-TIME</span>
         </div>
 
+        <!-- Warning Information Card -->
         <div id="payment-warning-container" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2 text-amber-900 text-[11px] leading-relaxed font-semibold">
           <div class="flex items-start gap-1.5 text-amber-700 font-bold">
             <span class="flex-shrink-0">🔥</span>
             <p><strong>Segera selesaikan pembayaran dengan nominal yang tertera sebelum harga berubah!</strong></p>
           </div>
+          <p class="text-justify text-gray-700">Harga dapat otomatis menyesuaikan mengikuti ketersediaan slot saat pembayaran dilakukan.</p>
+          
+          <div class="border-t border-amber-200/50 my-1"></div>
+          
+          <p class="text-[9.5px] text-gray-500 font-bold bg-white bg-opacity-70 border border-amber-100 rounded-lg p-2 leading-normal italic">
+            *) Dengan melanjutkan pembayaran, saya memahami dan menyetujui bahwa harga dapat berubah mengikuti ketersediaan slot pembayaran secara real-time.
+          </p>
         </div>
 
+        <!-- Transaction Details Card -->
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
           <h3 class="font-extrabold text-sm text-merdekaNavy border-b border-gray-100 pb-2">Rincian Tiket Peserta</h3>
           <div id="payment-participants-list" class="space-y-3"></div>
         </div>
 
+        <!-- Nominal Pembayaran Card -->
         <div id="payment-nominal-card" class="bg-merdekaNavy text-white rounded-2xl p-5 shadow-md text-center space-y-3 relative overflow-hidden">
           <div class="absolute -right-6 -bottom-6 text-white opacity-5 text-9xl font-bold">Rp</div>
           <p class="text-xs text-gray-300 font-medium tracking-wide uppercase">Pastikan bayar sesuai nominal dibawah</p>
           <div class="text-3xl font-black text-yellow-300 tracking-tight" id="pay-total">Rp0</div>
         </div>
 
+        <!-- QRIS Container -->
         <div id="payment-qris-card" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center space-y-4">
           <div>
             <h3 class="font-extrabold text-sm text-merdekaNavy">Scan QRIS Untuk Membayar</h3>
@@ -161,30 +201,54 @@
             <img id="qris-img" src="" class="w-full h-auto aspect-square rounded-xl" alt="QRIS Code">
           </div>
           <p class="text-sm font-extrabold text-merdekaNavy tracking-wide">Silakan melakukan pembayaran</p>
-          <p class="text-[10px] text-red-500 font-extrabold leading-tight">⚠️ Jangan membulatkan nominal pembayaran!</p>
+          <p class="text-[10px] text-red-500 font-extrabold leading-tight">⚠️ Jangan membulatkan nominal pembayaran! Pastikan jumlah transfer sama persis hingga digit terakhir.</p>
         </div>
 
+        <!-- E-Ticket Success Container (Appears when status is LUNAS / DIAMBIL) -->
         <div id="payment-success-card" class="hidden bg-white rounded-2xl p-6 shadow-md border-2 border-emerald-500 text-center space-y-5 relative overflow-hidden">
           <div class="absolute -top-1 left-0 right-0 h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+          
           <div class="space-y-1">
             <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider">E-Ticket Resmi Terverifikasi Lunas 🏆</span>
             <h3 class="font-extrabold text-base text-merdekaNavy mt-2">Selamat, Pembayaran Terverifikasi!</h3>
-            <p class="text-[11px] text-gray-500">Tunjukkan barcode di bawah ini kepada petugas di lokasi untuk mengambil kelengkapan gowes Anda.</p>
+            <p class="text-[11px] text-gray-500">Tunjukkan barcode / QR Code di bawah ini kepada petugas di lokasi untuk mengambil kelengkapan gowes Anda.</p>
           </div>
+
+          <!-- Ticket QR Code -->
           <div class="flex flex-col items-center justify-center space-y-2 py-2">
             <div class="p-3 bg-white rounded-2xl border-2 border-dashed border-emerald-200 inline-block shadow-sm">
               <img id="ticket-qr-code" src="" class="w-[160px] h-[160px] aspect-square rounded-lg" alt="QR Code Transaksi">
             </div>
             <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pindai QR ini saat di meja kelengkapan</p>
           </div>
+
+          <div class="border-t-2 border-dashed border-gray-200 my-2 relative">
+            <div class="absolute -left-9 -top-2.5 w-5 h-5 bg-merdekaCream rounded-full border-r border-gray-100"></div>
+            <div class="absolute -right-9 -top-2.5 w-5 h-5 bg-merdekaCream rounded-full border-l border-gray-100"></div>
+          </div>
+
+          <!-- Participant Colored Cards Below QR Code -->
           <div id="ticket-participants-numbers" class="space-y-3"></div>
+
           <div class="pt-3 pb-1 flex flex-col items-center justify-center space-y-1 bg-gray-50 rounded-xl p-3 border border-gray-100">
-             <p class="text-[10px] text-gray-500 font-mono tracking-widest" id="ticket-tx-id">TX-XXXXXXXXX</p>
+            <div class="flex items-center gap-[2px] h-8 opacity-75">
+              <span class="w-[3px] h-full bg-gray-800"></span>
+              <span class="w-[1px] h-full bg-gray-800"></span>
+              <span class="w-[4px] h-full bg-gray-800"></span>
+              <span class="w-[2px] h-full bg-gray-800"></span>
+              <span class="w-[1px] h-full bg-gray-800"></span>
+              <span class="w-[3px] h-full bg-gray-800"></span>
+              <span class="w-[1.5px] h-full bg-gray-800"></span>
+              <span class="w-[4px] h-full bg-gray-800"></span>
+              <span class="w-[2px] h-full bg-gray-800"></span>
+            </div>
+            <p class="text-[10px] text-gray-500 font-mono tracking-widest" id="ticket-tx-id">TX-XXXXXXXXX</p>
           </div>
         </div>
 
         <button id="btn-open-confirm-modal" class="w-full bg-merdekaRed hover:bg-red-700 text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition duration-300 transform active:scale-95 flex items-center justify-center gap-2">
-          <span>Upload Bukti Pembayaran</span>
+          <span>Upload Bukti Pembayaran ke WhatsApp Admin</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
         </button>
       </div>
 
@@ -195,26 +259,25 @@
           <button id="btn-petugas-logout" class="bg-red-100 hover:bg-red-200 text-merdekaRed font-bold text-xs px-3 py-2 rounded-xl transition">Keluar</button>
         </div>
 
-        <button id="btn-goto-pengambilan" class="w-full bg-gradient-to-r from-emerald-50 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-4 px-5 rounded-2xl shadow-md transition active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-          <span>📦 Mode Pengambilan Race Pack</span>
+        <button id="btn-goto-pengambilan" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-4 px-5 rounded-2xl shadow-md transition active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <span>📦 Mode Penyerahan Race Pack</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
         </button>
 
         <div class="space-y-3">
           <input type="text" id="petugas-search" placeholder="Cari nama, WA, atau nomor peserta..." class="w-full border-2 border-gray-200 focus:border-merdekaNavy rounded-xl px-4 py-3 outline-none transition text-sm">
+          
           <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
             <button class="btn-filter-status bg-merdekaNavy text-white px-3 py-2 rounded-xl whitespace-nowrap active" data-status="ALL">Semua</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="MENUNGGU_PEMBAYARAN">Menunggu</button>
             <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="BUKTI_DIUPLOAD">Butuh Verifikasi</button>
             <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="LUNAS">Lunas</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="DITOLAK">Ditolak</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="DIAMBIL">Sudah Diambil</button>
           </div>
         </div>
 
         <div id="petugas-list" class="space-y-4"></div>
-      </div>
-
-      <!-- SCREEN 4: HALAMAN STAFF -->
-      <div id="screen-staff" class="hidden space-y-6">
-          <h1 class="text-xl font-extrabold text-merdekaNavy">Dashboard Staff</h1>
-          <div id="staff-metrics-container" class="grid grid-cols-2 gap-3"></div>
       </div>
 
       <!-- SCREEN 5: HALAMAN PENGAMBILAN RACE PACK -->
@@ -227,16 +290,18 @@
           <button id="btn-pengambilan-back" class="bg-gray-100 hover:bg-gray-200 text-merdekaNavy font-extrabold text-xs px-3.5 py-2.5 rounded-xl transition">Kembali</button>
         </div>
 
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-4">
-          <div class="text-center space-y-1">
-            <h3 class="font-extrabold text-sm text-merdekaNavy">Pindai Barcode / QR Tiket</h3>
-            <p class="text-[10px] text-gray-400 font-medium">Klik tombol di bawah untuk membuka pemindai QR Code kamera</p>
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-5">
+          <div class="text-center space-y-1.5">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-xs">
+              📦
+            </div>
+            <h3 class="font-extrabold text-sm text-merdekaNavy">Pindai / Input Tiket Peserta</h3>
+            <p class="text-xs text-gray-400 font-medium leading-relaxed">Klik tombol scan untuk melepaskan kamera full-screen atau ketik nomor peserta secara manual.</p>
           </div>
 
-          <div class="flex justify-center gap-2">
-            <button id="btn-start-scanner" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs px-5 py-3.5 rounded-xl flex items-center justify-center gap-2 transition active:scale-95 shadow-md">
-              <span class="text-base">📷</span>
-              <span>Scan QR Code</span>
+          <div class="pt-2">
+            <button id="btn-start-scanner" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm py-4 px-5 rounded-2xl flex items-center justify-center gap-2 transition active:scale-95 shadow-md">
+              <span>📷 Scan QR Code</span>
             </button>
           </div>
 
@@ -247,112 +312,232 @@
           </div>
 
           <div class="flex gap-2">
-            <input type="text" id="input-manual-peserta" placeholder="Ketik Nomor (Contoh: 01001)" class="flex-grow border-2 border-gray-200 focus:border-merdekaNavy rounded-xl px-4 py-3 outline-none transition text-xs font-mono font-bold">
+            <input type="text" id="input-manual-peserta" placeholder="Ketik Nomor Peserta (Contoh: 01001)" class="flex-grow border-2 border-gray-200 focus:border-merdekaNavy rounded-xl px-4 py-3 outline-none transition text-xs font-mono font-bold">
             <button id="btn-search-peserta" class="bg-merdekaNavy hover:bg-slate-800 text-white font-extrabold text-xs px-5 py-3 rounded-xl transition active:scale-95 shadow-sm">Verifikasi</button>
           </div>
         </div>
       </div>
-    </div> <!-- END APP CONTENT -->
 
-    <!-- STICKY BOTTOM ACTION BAR (FOR REGISTRATION) -->
-    <div id="sticky-action-bar" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-200 px-5 py-4 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] hidden">
-      <div class="flex justify-between items-center mb-3">
-        <div>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Estimasi <span id="sticky-count" class="text-merdekaNavy font-black">1</span> Peserta</p>
-          <p class="text-lg font-black text-merdekaNavy leading-none mt-0.5" id="sticky-price-estimate">Rp45.000</p>
+      <!-- SCREEN 4: HALAMAN STAFF -->
+      <div id="screen-staff" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <h1 class="text-xl font-extrabold text-merdekaNavy">Dashboard Staff</h1>
+          <button id="btn-staff-logout" class="bg-red-100 hover:bg-red-200 text-merdekaRed font-bold text-xs px-3 py-2 rounded-xl transition">Keluar</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3" id="staff-metrics-container"></div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="font-extrabold text-sm text-merdekaNavy">Pemanfaatan Slot Harga</h3>
+          
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span class="text-gray-500">Tier Rp35.000 (Urutan 1-100)</span>
+              <span id="staff-progress-35-text" class="text-merdekaNavy">0/100</span>
+            </div>
+            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+              <div id="staff-progress-35-bar" class="bg-emerald-500 h-full rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span class="text-gray-500">Tier Rp40.000 (Urutan 101-400)</span>
+              <span id="staff-progress-40-text" class="text-merdekaNavy">0/300</span>
+            </div>
+            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+              <div id="staff-progress-40-bar" class="bg-amber-500 h-full rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-red-50 border border-red-100 rounded-xl flex justify-between items-center">
+            <span class="text-xs font-bold text-red-700">Tier Rp45.000 (Urutan 401+)</span>
+            <span id="staff-tier-45-count" class="text-sm font-extrabold text-red-700">0 Peserta</span>
+          </div>
+        </div>
+
+        <div id="staff-revenue-container"></div>
+      </div>
+
+      <!-- SCREEN 6: KONEKSI BERMASALAH -->
+      <div id="screen-error" class="hidden space-y-6 text-center py-8">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-5 flex flex-col items-center">
+          <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-3xl animate-bounce">
+            ⚠️
+          </div>
+          <div class="space-y-1.5">
+            <h2 class="text-base font-extrabold text-merdekaNavy">Koneksi Gagal Terhubung</h2>
+            <p class="text-[11px] text-gray-400 font-medium leading-relaxed max-w-xs mx-auto text-center">Sistem gagal mengambil data pembayaran Anda dari server database Supabase. Silakan coba muat ulang halaman atau periksa koneksi internet Anda.</p>
+          </div>
+          <button id="btn-retry-payment" onclick="window.location.reload()" class="w-full bg-merdekaRed hover:bg-red-700 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-md transition duration-300 transform active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-1.5">
+            <span>Muat Ulang Halaman</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17"></path></svg>
+          </button>
         </div>
       </div>
-      <button id="btn-submit-registration" class="w-full bg-merdekaRed hover:bg-red-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg transition active:scale-95 flex justify-center items-center gap-2 text-sm">
-        DAFTAR SEKARANG
+
+    </div>
+
+    <!-- STICKY ACTION BAR -->
+    <div id="sticky-action-bar" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-100 p-4 shadow-2xl rounded-t-2xl flex items-center justify-between z-10 hidden">
+      <div>
+        <p class="text-xs text-gray-400 font-bold">Estimasi Tiket (<span id="sticky-count">1</span> Peserta)</p>
+        <p class="text-lg font-extrabold text-merdekaRed" id="sticky-price-estimate">Rp 35.000</p>
+      </div>
+      <button id="btn-submit-registration" class="bg-merdekaRed hover:bg-red-700 text-white font-extrabold px-6 py-3.5 rounded-xl transition duration-300 transform active:scale-95 shadow-md flex items-center gap-2 text-sm">
+        <span>Daftar Sekarang</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
       </button>
     </div>
 
-    <!-- MODAL POPUP HASIL SCAN & FORM PENGAMBILAN RACE PACK -->
-    <div id="modal-scanned-result" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4 hidden">
-      <div class="bg-white w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl relative animate-fade-in max-h-[90vh] overflow-y-auto">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="font-extrabold text-merdekaNavy text-sm">Verifikasi Penyerahan Race Pack</h3>
-          <button id="btn-close-result-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
+    <!-- MODAL CONFIRMATION (UPLOAD BUKTI) -->
+    <div id="modal-upload" class="fixed inset-0 z-40 flex items-end justify-center bg-black bg-opacity-50 hidden p-4">
+      <div class="bg-white w-full max-w-sm rounded-t-3xl rounded-b-xl p-6 space-y-5 animate-slide-up shadow-2xl">
+        <div class="flex justify-between items-center">
+          <h3 class="font-extrabold text-lg text-merdekaNavy">Kirim Bukti Pembayaran</h3>
+          <button id="btn-close-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
         </div>
+        
+        <div class="space-y-4">
+          <div class="border-2 border-dashed border-gray-200 hover:border-merdekaRed rounded-2xl p-4 text-center cursor-pointer relative" id="drop-zone">
+            <input type="file" id="proof-file" accept="image/png, image/jpeg, image/jpg, image/webp" class="hidden">
+            <div id="file-placeholder" class="space-y-2">
+              <span class="text-4xl text-gray-300">📸</span>
+              <p class="text-xs font-bold text-gray-500">Pilih Foto Bukti Transfer</p>
+              <p class="text-[10px] text-gray-400">Format: JPG, JPEG, PNG, WEBP (Maks. 5 MB)</p>
+            </div>
+            <div id="file-preview-container" class="hidden space-y-2">
+              <img id="file-preview" src="" class="max-h-40 mx-auto rounded-xl object-contain">
+              <p id="file-name-text" class="text-xs font-bold text-merdekaNavy truncate px-4"></p>
+              <button id="btn-change-file" class="text-[11px] font-bold text-red-500 underline">Ganti Foto</button>
+            </div>
+          </div>
+          
+          <button id="btn-confirm-upload" class="w-full bg-merdekaNavy hover:bg-navy-800 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition active:scale-95 text-sm flex items-center justify-center gap-2">
+            <span>Kirim & Konfirmasi</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REJECTION REASON MODAL -->
+    <div id="modal-reject" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 hidden p-4">
+      <div class="bg-white w-full max-w-sm rounded-2xl p-5 space-y-4 shadow-2xl">
+        <h3 class="font-extrabold text-merdekaNavy text-base">Alasan Penolakan</h3>
+        <textarea id="reject-reason" rows="3" placeholder="Contoh: Nominal transfer kurang, bukti buram..." class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl p-3 outline-none transition text-sm"></textarea>
+        <div class="flex gap-2 justify-end">
+          <button id="btn-cancel-reject" class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold text-xs px-4 py-2.5 rounded-xl transition">Batal</button>
+          <button id="btn-submit-reject" class="bg-merdekaRed hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition">Tolak Transaksi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOM POPUP REDIRECT WHATSAPP -->
+    <div id="modal-wa-confirm" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden p-4">
+      <div class="bg-white w-full max-w-xs rounded-2xl p-6 space-y-5 shadow-2xl border border-gray-100 animate-fade-in text-center">
+        <div class="space-y-3">
+          <div class="inline-flex items-center justify-center w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full text-2xl animate-bounce">
+            💬
+          </div>
+          <h3 class="font-extrabold text-merdekaNavy text-sm" id="wa-modal-title">Konfirmasi Pembayaran</h3>
+          <p class="text-xs text-gray-500 leading-relaxed font-semibold" id="wa-modal-desc">
+            Kamu akan diarahkan ke WhatsApp admin Suryatokoku untuk konfirmasi pembayaran. Klik <strong class="text-emerald-600 uppercase font-black">OK</strong> untuk melanjutkan.
+          </p>
+        </div>
+        <div class="flex gap-2 pt-2 text-xs font-extrabold">
+          <button id="btn-wa-cancel" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-600 py-3 rounded-xl transition active:scale-95">
+            Batal
+          </button>
+          <button id="btn-wa-confirm" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-1">
+            <span>OK</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROOF VIEWER MODAL -->
+    <div id="modal-proof-viewer" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 hidden p-4">
+      <div class="bg-white w-full max-w-sm rounded-2xl p-4 space-y-3 shadow-2xl relative animate-fade-in">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          <h3 class="font-extrabold text-merdekaNavy text-sm">Foto Bukti Transfer</h3>
+          <button id="btn-close-proof-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
+        </div>
+        <div class="max-h-[60vh] overflow-y-auto flex items-center justify-center bg-gray-100 rounded-xl p-2 border border-gray-200">
+          <img id="proof-modal-img" src="" class="max-w-full h-auto rounded-lg object-contain shadow-xs" alt="Bukti Transfer">
+        </div>
+        <div class="pt-1">
+          <a id="proof-modal-open-link" href="#" target="_blank" class="w-full bg-merdekaNavy hover:bg-slate-800 text-white font-extrabold py-2.5 px-3 rounded-xl text-xs text-center block transition">
+            🔗 Buka Tautan Google Drive / Asli
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FULLSCREEN QR SCANNER MODAL -->
+    <div id="modal-scanner" class="fixed inset-0 z-50 bg-slate-950 flex flex-col justify-between hidden">
+      <div class="p-4 flex justify-between items-center text-white bg-slate-900/90 backdrop-blur z-20 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📷</span>
+          <span class="font-extrabold text-sm tracking-wide">Pindai QR Code Tiket</span>
+        </div>
+        <button id="btn-close-scanner" class="bg-white/10 hover:bg-white/20 text-white p-2 rounded-full w-9 h-9 flex items-center justify-center font-bold text-lg transition">✕</button>
+      </div>
+      
+      <div class="flex-grow relative flex items-center justify-center overflow-hidden bg-black p-4">
+        <div id="qr-reader" class="w-full h-full max-w-md"></div>
+        <div class="absolute inset-12 border-2 border-dashed border-emerald-400/60 rounded-3xl pointer-events-none flex items-center justify-center animate-pulse">
+          <div class="w-full h-0.5 bg-emerald-400/80 shadow-[0_0_15px_#10b981]"></div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-900/90 text-center text-xs text-slate-300 font-semibold border-t border-white/10 z-20">
+        Arahkan kamera ke QR Code E-Ticket peserta untuk pemindaian otomatis
+      </div>
+    </div>
+
+    <!-- SCANNED / VERIFIED RESULT POPUP MODAL -->
+    <div id="modal-scanned-result" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden p-4">
+      <div class="bg-white w-full max-w-md rounded-3xl p-6 space-y-4 shadow-2xl relative max-h-[90vh] overflow-y-auto animate-fade-in">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+          <h3 class="font-extrabold text-merdekaNavy text-base flex items-center gap-2">
+            <span>📦</span> Detail Penyerahan Race Pack
+          </h3>
+          <button id="btn-close-scanned-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
+        </div>
+
         <div id="scanned-modal-content" class="space-y-4"></div>
       </div>
     </div>
 
-    <!-- MODAL FULLSCREEN QR SCANNER -->
-    <div id="modal-qr-scanner" class="fixed inset-0 z-50 bg-black bg-opacity-95 flex flex-col items-center p-4 hidden">
-      <div class="w-full max-w-md flex justify-between items-center text-white pt-2 mb-10">
-        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pemindai Tiket QR</span>
-        <button id="btn-close-scanner-modal" class="bg-white/20 hover:bg-white/30 text-white text-xs px-3.5 py-2 rounded-xl font-bold transition">✕ Tutup</button>
-      </div>
-      <div class="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl bg-black border-2 border-emerald-500">
-        <div id="qr-reader" class="w-full h-full"></div>
-      </div>
-      <p class="text-center text-xs text-gray-300 font-medium mt-6">Arahkan kamera ke QR Code E-Ticket peserta</p>
-    </div>
+  </div>
 
-    <!-- MODAL PROOF VIEWER -->
-    <div id="modal-proof-viewer" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4 hidden">
-      <div class="bg-white w-full max-w-md rounded-2xl p-4 space-y-4 shadow-2xl relative">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="font-extrabold text-merdekaNavy text-sm">Bukti Transfer</h3>
-          <button id="btn-close-proof-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
-        </div>
-        <div class="flex justify-center bg-gray-50 rounded-xl overflow-hidden">
-          <img id="proof-viewer-img" src="" class="max-w-full max-h-[60vh] object-contain rounded-lg border border-gray-200">
-        </div>
-        <div class="flex gap-2">
-          <a id="btn-open-drive-link" href="#" target="_blank" class="w-full block text-center bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 rounded-xl text-xs transition">Buka di Tab Baru</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL UPLOAD BUKTI -->
-    <div id="modal-upload" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 p-4 hidden">
-      <div class="bg-white w-full max-w-md rounded-3xl p-6 space-y-5 shadow-2xl">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-          <h3 class="font-extrabold text-merdekaNavy text-base">Upload Bukti Transfer</h3>
-          <button id="btn-close-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl leading-none">✕</button>
-        </div>
-        <div class="space-y-4">
-          <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center cursor-pointer hover:bg-gray-50 transition relative group">
-            <input type="file" id="proof-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-            <div id="file-placeholder" class="space-y-2 pointer-events-none">
-              <div class="w-12 h-12 bg-red-100 text-merdekaRed rounded-full flex items-center justify-center mx-auto text-xl group-hover:scale-110 transition">📤</div>
-              <p class="text-xs font-bold text-gray-700">Pilih / Jepret Foto Bukti</p>
-              <p class="text-[10px] text-gray-400 font-medium">Maksimal 5MB (JPG/PNG)</p>
-            </div>
-            <div id="file-preview-container" class="hidden space-y-3 z-20 relative">
-              <img id="file-preview" class="max-h-40 mx-auto rounded-xl shadow-sm border border-gray-200 object-contain">
-              <p id="file-name-text" class="text-[10px] text-gray-500 font-medium truncate px-2"></p>
-              <button id="btn-change-file" type="button" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-[10px] font-bold px-3 py-1.5 rounded-lg border border-gray-200 transition active:scale-95 relative z-30">Ganti Foto</button>
-            </div>
-          </div>
-        </div>
-        <button id="btn-confirm-upload" class="w-full bg-merdekaNavy hover:bg-slate-800 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-md transition active:scale-95 text-sm flex items-center justify-center gap-2">
-          <span>Kirim Bukti Pembayaran</span>
-        </button>
-      </div>
-    </div>
-  </div> <!-- END MAIN CONTAINER -->
-
-  <!-- LOADING OVERLAY & TOASTS -->
+  <!-- LOADING OVERLAY -->
   <div id="loading-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-merdekaNavy bg-opacity-95 text-white hidden">
     <div class="relative w-24 h-24 mb-4">
       <div class="absolute inset-0 rounded-full border-4 border-t-merdekaRed border-r-transparent border-b-white border-l-transparent animate-spin"></div>
-      <div class="absolute inset-2 bg-merdekaCream rounded-full flex items-center justify-center shadow-inner"><span class="text-3xl">🚴</span></div>
+      <div class="absolute inset-2 bg-merdekaCream rounded-full flex items-center justify-center shadow-inner">
+        <span class="text-3xl">🚴</span>
+      </div>
     </div>
     <p class="text-sm font-bold tracking-wider animate-pulse text-merdekaCream text-center px-6" id="loading-text">Sedang memproses...</p>
   </div>
+
+  <!-- TOAST CONTAINER -->
   <div id="toast-container" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 space-y-2 w-full max-w-xs px-4"></div>
 
+  <!-- JS APP CONFIGURATION & LOGIC -->
   <script>
     const APP_CONFIG = {
       SUPABASE_URL: 'https://umjhmczidrzeqhubujyt.supabase.co',
       SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtamhtY3ppZHJ6ZXFodWJ1anl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTUwNTgsImV4cCI6MjEwMjI5MTA1OH0.DUU2cPg_Rue_zY0HtQB-9R8YDBeJkuEchJfX9OR4jqo',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwQTuwza8gemJakpOHIUgJMf12cSTT7aHi9nxaqY6PUuEHo_5ni2-drwP2KhK_A3YPl/exec',
+      ADMIN_WHATSAPP: '628131310110',
       QRIS_STATIC_PAYLOAD: '00020101021126570011ID.DANA.WWW011893600915333496229502093349622950303UMI51440014ID.CO.QRIS.WWW0215ID10222175326650303UMI5204729853033605802ID5911Suryatokoku6012Kab. Cirebon61054518863043F0D'
     };
 
+    // Initialize Supabase Client
     let supabaseClient = null;
     if (window.supabase && APP_CONFIG.SUPABASE_URL.startsWith('https://')) {
       supabaseClient = window.supabase.createClient(APP_CONFIG.SUPABASE_URL, APP_CONFIG.SUPABASE_ANON_KEY);
@@ -361,36 +546,23 @@
     let participantsCount = 1;
     let currentGlobalCount = 0; 
     let currentPaymentDetails = null;
+    let globalProvinces = null;
     let selectedFileBase64 = null;
     let selectedFileObject = null;
+    let selectedFileName = null;
+    let selectedFileMime = null;
+    let activeRejectTxId = null;
     let html5QrScanner = null; 
-    let rawTransactions = [];
-    let officerAuthToken = localStorage.getItem('petugas_token') || null;
-
-    window.onload = async function() {
-      setupFileUploadHandlers();
-      await fetchGlobalStatus();
-      await initAppRouter();
-      window.addEventListener('hashchange', initAppRouter);
-    };
+    let pendingWhatsAppUrl = null;
 
     function getLoggedInOfficerName() {
       if (!officerAuthToken) return "Petugas";
       try {
-        return atob(officerAuthToken).split(':')[0];
+        const decoded = atob(officerAuthToken);
+        return decoded.split(':')[0];
       } catch (e) {
         return "Petugas";
       }
-    }
-
-    function getFormattedNowDateTime() {
-      const d = new Date();
-      const day = String(d.getDate()).padStart(2, '0');
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const year = d.getFullYear();
-      const hours = String(d.getHours()).padStart(2, '0');
-      const mins = String(d.getMinutes()).padStart(2, '0');
-      return `${day}/${month}/${year} ${hours}.${mins}`;
     }
 
     function normalizeDriveUrl(url) {
@@ -403,153 +575,1090 @@
       return url;
     }
 
+    window.onload = async function() {
+      await fetchGlobalStatus();
+      setupWhatsAppConfirmListeners();
+      await initAppRouter();
+      window.addEventListener('hashchange', initAppRouter);
+      setupFileUploadHandlers();
+    };
+
+    async function fetchGlobalStatus() {
+      if (!supabaseClient) return;
+      try {
+        const { count, error } = await supabaseClient
+          .from('pendaftaran')
+          .select('*', { count: 'exact', head: true })
+          .in('status_pembayaran', ['LUNAS', 'DIAMBIL']);
+          
+        if (!error && count !== null) {
+          currentGlobalCount = count;
+          updateCountDisplays();
+        }
+      } catch (e) {
+        console.error("Gagal mengambil urutan global Supabase:", e);
+      }
+    }
+
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      toast.className = `flex items-center w-full p-4 text-gray-800 bg-white rounded-xl shadow-xl border-l-4 ${type === 'success' ? 'border-emerald-500' : 'border-red-500'} transform transition-all duration-300 translate-y-2 opacity-0 mb-2`;
-      toast.innerHTML = `<div class="text-xs font-extrabold">${message}</div>`;
+      toast.className = `flex items-center w-full p-4 text-gray-800 bg-white rounded-xl shadow-xl border-l-4 ${type === 'success' ? 'border-emerald-500' : 'border-red-500'} transform transition-all duration-300 translate-y-2 opacity-0`;
+      
+      const icon = type === 'success' 
+        ? `<div class="inline-flex items-center justify-center flex-shrink-0 w-7 h-7 text-emerald-500 bg-emerald-50 rounded-lg"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>`
+        : `<div class="inline-flex items-center justify-center flex-shrink-0 w-7 h-7 text-red-500 bg-red-50 rounded-lg"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></div>`;
+      
+      toast.innerHTML = `${icon}<div class="ml-3 text-xs font-extrabold">${message}</div>`;
       container.appendChild(toast);
-      setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+      }, 10);
+      
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+        setTimeout(() => { toast.remove(); }, 300);
+      }, 4000);
     }
 
     function toggleLoader(show, text = "Sedang memproses...") {
       const overlay = document.getElementById('loading-overlay');
-      document.getElementById('loading-text').textContent = text;
-      show ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+      const loadingText = document.getElementById('loading-text');
+      if (show) {
+        loadingText.textContent = text;
+        overlay.classList.remove('hidden');
+      } else {
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function buildWhatsAppMessage(data, isPaymentConfirmed = false) {
+      const statusAction = isPaymentConfirmed ? "pembayaran" : "pendaftaran";
+      let message = `Halo misu 😊 Saya sudah melakukan ${statusAction} Funbike Suryatokoku ya.\n\n`;
+      
+      message += `*Detail Kontak Utama:*\n`;
+      message += `Nama : ${data.namaKontak}\n`;
+      message += `No. WA : ${data.waKontak}\n\n`;
+
+      message += `*Daftar Peserta (${data.participants.length} Orang):*\n`;
+      data.participants.forEach((p, idx) => {
+        message += `${idx + 1}. ${p.nama} (${p.gender}, ${p.usia} Thn)\n`;
+      });
+      message += `\n`;
+      message += `klik link dibawah ini untuk melihat status pembayaran:\n${data.paymentUrl}`;
+      
+      return message;
+    }
+
+    function safeRedirectToWhatsApp(message, title = "Konfirmasi Pembayaran", desc = "Kamu akan diarahkan ke WhatsApp admin Suryatokoku untuk konfirmasi pembayaran. Klik <strong class=\"text-emerald-600 uppercase font-black\">OK</strong> untuk melanjutkan.") {
+      const modal = document.getElementById('modal-wa-confirm');
+      const titleEl = document.getElementById('wa-modal-title');
+      const descEl = document.getElementById('wa-modal-desc');
+
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.innerHTML = desc;
+
+      pendingWhatsAppUrl = `https://api.whatsapp.com/send?phone=${APP_CONFIG.ADMIN_WHATSAPP}&text=${encodeURIComponent(message)}`;
+      
+      if (modal) {
+        modal.classList.remove('hidden');
+      } else {
+        window.location.href = pendingWhatsAppUrl;
+      }
+    }
+
+    function setupWhatsAppConfirmListeners() {
+      const btnCancel = document.getElementById('btn-wa-cancel');
+      const btnConfirm = document.getElementById('btn-wa-confirm');
+      const modal = document.getElementById('modal-wa-confirm');
+
+      if (btnCancel) {
+        btnCancel.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          pendingWhatsAppUrl = null;
+        });
+      }
+
+      if (btnConfirm) {
+        btnConfirm.addEventListener('click', () => {
+          if (pendingWhatsAppUrl) {
+            window.location.href = pendingWhatsAppUrl;
+          }
+          modal.classList.add('hidden');
+          pendingWhatsAppUrl = null;
+        });
+      }
+    }
+
+    function parseTLV(payload) {
+      const tlv = {};
+      let i = 0;
+      while (i < payload.length) {
+        if (i + 4 > payload.length) break;
+        const tag = payload.substring(i, i + 2);
+        const len = parseInt(payload.substring(i + 2, i + 4), 10);
+        const val = payload.substring(i + 4, i + 4 + len);
+        tlv[tag] = val;
+        i += 4 + len;
+      }
+      return tlv;
+    }
+
+    function encodeTLV(tag, val) {
+      const len = val.length.toString().padStart(2, '0');
+      return tag + len + val;
+    }
+
+    function crc16CCITTFalse(str) {
+      let crc = 0xFFFF;
+      for (let c = 0; c < str.length; c++) {
+        const code = str.charCodeAt(c);
+        crc ^= (code << 8);
+        for (let i = 0; i < 8; i++) {
+          if ((crc & 0x8000) !== 0) {
+            crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+          } else {
+            crc = (crc << 1) & 0xFFFF;
+          }
+        }
+      }
+      return crc;
+    }
+
+    function generateDynamicQrisPayload(staticPayload, amount) {
+      const tlv = parseTLV(staticPayload);
+      tlv['01'] = '12'; 
+      tlv['54'] = amount.toFixed(0); 
+
+      const keys = Object.keys(tlv).filter(k => k !== '63').sort();
+      let payloadWithoutCrc = "";
+      for (let i = 0; i < keys.length; i++) {
+        const k = keys[i];
+        payloadWithoutCrc += encodeTLV(k, tlv[k]);
+      }
+      payloadWithoutCrc += "6304";
+      const crc = crc16CCITTFalse(payloadWithoutCrc);
+      return payloadWithoutCrc + crc.toString(16).toUpperCase().padStart(4, '0');
+    }
+
+    async function initRegionCascade(index) {
+      const provSelect = document.getElementById(`p-prov-${index}`);
+      const kabSelect = document.getElementById(`p-kab-${index}`);
+      const kecSelect = document.getElementById(`p-kec-${index}`);
+      const desaSelect = document.getElementById(`p-desa-${index}`);
+      if (!provSelect) return;
+      
+      try {
+        provSelect.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+        kabSelect.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+        kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+        desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+        
+        if (!globalProvinces) {
+          const res = await fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+          if (!res.ok) throw new Error();
+          globalProvinces = await res.json();
+        }
+        
+        globalProvinces.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = p.name;
+          opt.dataset.name = p.name;
+          provSelect.appendChild(opt);
+        });
+        
+        provSelect.addEventListener('change', async () => {
+          const provId = provSelect.value;
+          kabSelect.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+          kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+          desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+          if (!provId) return;
+          
+          try {
+            kabSelect.innerHTML = '<option value="">Memuat...</option>';
+            const res = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provId}.json`);
+            if (!res.ok) throw new Error();
+            const regencies = await res.json();
+            kabSelect.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+            regencies.forEach(r => {
+              const opt = document.createElement('option');
+              opt.value = r.id;
+              opt.textContent = r.name;
+              opt.dataset.name = r.name;
+              kabSelect.appendChild(opt);
+            });
+          } catch (e) {
+            fallbackToManualAddress(index);
+          }
+        });
+
+        kabSelect.addEventListener('change', async () => {
+          const kabId = kabSelect.value;
+          kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+          desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+          if (!kabId) return;
+          
+          try {
+            kecSelect.innerHTML = '<option value="">Memuat...</option>';
+            const res = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${kabId}.json`);
+            if (!res.ok) throw new Error();
+            const districts = await res.json();
+            kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+            districts.forEach(d => {
+              const opt = document.createElement('option');
+              opt.value = d.id;
+              opt.textContent = d.name;
+              opt.dataset.name = d.name;
+              kecSelect.appendChild(opt);
+            });
+          } catch (e) {
+            fallbackToManualAddress(index);
+          }
+        });
+        
+        kecSelect.addEventListener('change', async () => {
+          const kecId = kecSelect.value;
+          desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+          if (!kecId) return;
+          
+          try {
+            desaSelect.innerHTML = '<option value="">Memuat...</option>';
+            const res = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${kecId}.json`);
+            if (!res.ok) throw new Error();
+            const villages = await res.json();
+            desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+            villages.forEach(v => {
+              const opt = document.createElement('option');
+              opt.value = v.id;
+              opt.textContent = v.name;
+              opt.dataset.name = v.name;
+              desaSelect.appendChild(opt);
+            });
+          } catch (e) {
+            fallbackToManualAddress(index);
+          }
+        });
+      } catch (err) {
+        fallbackToManualAddress(index);
+      }
+    }
+
+    function fallbackToManualAddress(index) {
+      showToast("Gagal memuat alamat otomatis. Mengaktifkan input manual.", "error");
+      const stages = ['prov', 'kab', 'kec', 'desa'];
+      stages.forEach(st => {
+        const el = document.getElementById(`p-${st}-${index}`);
+        if (el && el.tagName === 'SELECT') {
+          const parent = el.parentElement;
+          const currentTextVal = el.options[el.selectedIndex]?.dataset.name || '';
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.id = `p-${st}-${index}`;
+          input.dataset.manual = "true";
+          input.value = currentTextVal;
+          input.className = "w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-xs text-gray-800 placeholder-gray-400 bg-white";
+          input.placeholder = `Ketik nama ${st === 'prov' ? 'provinsi' : st === 'kab' ? 'kab/kota' : st === 'kec' ? 'kecamatan' : 'desa/kelurahan'}`;
+          parent.replaceChild(input, el);
+        }
+      });
     }
 
     async function initAppRouter() {
       const urlParams = new URLSearchParams(window.location.search);
       let hash = window.location.hash.replace('#', '');
+      
       let token = urlParams.get('payment');
-      if (!token && hash.startsWith('payment=')) token = hash.split('payment=')[1];
+      if (!token && hash.startsWith('payment=')) {
+        token = hash.split('payment=')[1];
+      } else if (!token && hash === 'payment') {
+        token = 'd739b175b86f49ed';
+      }
 
       document.getElementById('screen-form').classList.add('hidden');
       document.getElementById('screen-payment').classList.add('hidden');
       document.getElementById('screen-petugas').classList.add('hidden');
       document.getElementById('screen-staff').classList.add('hidden');
       document.getElementById('screen-pengambilan').classList.add('hidden');
+      document.getElementById('screen-error').classList.add('hidden');
       document.getElementById('sticky-action-bar').classList.add('hidden');
 
-      if (hash === 'petugas') renderPetugasScreen();
-      else if (hash === 'staff') document.getElementById('screen-staff').classList.remove('hidden'); // Staff not fully implemented in demo
-      else if (hash === 'pengambilan') renderPengambilanScreen();
-      else if (token) await loadPaymentScreen(token);
-      else {
-        document.getElementById('screen-form').classList.remove('hidden');
-        document.getElementById('sticky-action-bar').classList.remove('hidden');
+      if (hash === 'petugas') {
+        renderPetugasScreen();
+      } else if (hash === 'staff') {
+        renderStaffScreen();
+      } else if (hash === 'pengambilan') {
+        renderPengambilanScreen();
+      } else if (hash === 'form') {
+        renderFormScreen();
+      } else if (token) {
+        await loadPaymentScreen(token);
+      } else {
+        renderFormScreen();
       }
     }
 
-    async function fetchGlobalStatus() {
-      if (!supabaseClient) return;
-      try {
-        const { count } = await supabaseClient.from('pendaftaran').select('*', { count: 'exact', head: true }).in('status_pembayaran', ['LUNAS', 'DIAMBIL']);
-        if (count !== null) {
-          currentGlobalCount = count;
-          if(document.getElementById('payment-global-paid-count')) {
-              document.getElementById('payment-global-paid-count').textContent = currentGlobalCount;
-          }
+    function renderFormScreen() {
+      document.getElementById('screen-form').classList.remove('hidden');
+      document.getElementById('sticky-action-bar').classList.remove('hidden');
+      
+      const container = document.getElementById('participants-container');
+      container.innerHTML = '';
+      
+      updateCountDisplays();
+      
+      for (let i = 1; i <= participantsCount; i++) {
+        appendParticipantCard(i);
+      }
+    }
+
+    function appendParticipantCard(index) {
+      const container = document.getElementById('participants-container');
+      const card = document.createElement('div');
+      card.id = `card-participant-${index}`;
+      card.className = "bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4 relative animate-fade-in";
+      
+      const badge = index === 1 
+        ? `<span class="bg-merdekaNavy text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">Kontak Utama</span>`
+        : `<span class="bg-gray-100 text-gray-500 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">Peserta #${index}</span>`;
+      
+      card.innerHTML = `
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          ${badge}
+        </div>
+        <div class="space-y-4 text-xs">
+          <div class="space-y-1">
+            <label class="font-extrabold text-gray-500">Nama Lengkap *</label>
+            <input type="text" id="p-nama-${index}" required placeholder="Sesuai KTP" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+          
+          <div class="space-y-1">
+            ${index > 1 ? `
+            <div class="mb-1.5">
+              <label class="flex items-center gap-2 bg-gradient-to-r from-red-50 to-amber-50 p-2 rounded-xl border border-red-100 cursor-pointer text-[10px] font-extrabold text-merdekaNavy select-none">
+                <input type="checkbox" id="p-same-wa-${index}" class="w-3.5 h-3.5 rounded text-merdekaRed focus:ring-merdekaRed accent-merdekaRed cursor-pointer">
+                <span>WhatsApp Sama dengan Kontak Utama</span>
+              </label>
+            </div>
+            ` : ''}
+            <label class="font-extrabold text-gray-500">Nomor WhatsApp *</label>
+            <input type="tel" id="p-wa-${index}" required placeholder="Contoh: 08123456789" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+
+          <div class="space-y-1">
+            ${index > 1 ? `
+            <div class="mb-1.5">
+              <label class="flex items-center gap-2 bg-gradient-to-r from-red-50 to-amber-50 p-2 rounded-xl border border-red-100 cursor-pointer text-[10px] font-extrabold text-merdekaNavy select-none">
+                <input type="checkbox" id="p-same-club-${index}" class="w-3.5 h-3.5 rounded text-merdekaRed focus:ring-merdekaRed accent-merdekaRed cursor-pointer">
+                <span>Komunitas/Club Sama dengan Kontak Utama</span>
+              </label>
+            </div>
+            ` : ''}
+            <label class="font-extrabold text-gray-500">Komunitas / Club Gowes (Opsional)</label>
+            <input type="text" id="p-club-${index}" placeholder="Boleh dikosongkan ya 😊" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+
+          <div class="space-y-1">
+            <label class="font-extrabold text-gray-500">Tanggal Lahir *</label>
+            <input type="text" id="p-birth-${index}" required placeholder="Format: DD/MM/YYYY (Contoh: 17/08/1945)" maxlength="10" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+
+          <div class="space-y-1">
+            <label class="font-extrabold text-gray-500">Jenis Kelamin *</label>
+            <select id="p-gender-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 bg-white">
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+
+          <div class="bg-gray-50 rounded-xl p-3 flex justify-between items-center border border-gray-100">
+            <span class="font-bold text-gray-400">Usia Terhitung:</span>
+            <span id="p-age-text-${index}" class="font-extrabold text-merdekaNavy text-sm">-- Tahun</span>
+          </div>
+
+          <div class="space-y-4 pt-2 border-t border-gray-100">
+            ${index > 1 ? `
+            <div class="mb-1.5">
+              <label class="flex items-center gap-2 bg-gradient-to-r from-red-50 to-amber-50 p-2 rounded-xl border border-red-100 cursor-pointer text-[10px] font-extrabold text-merdekaNavy select-none">
+                <input type="checkbox" id="p-same-addr-${index}" class="w-3.5 h-3.5 rounded text-merdekaRed focus:ring-merdekaRed accent-merdekaRed cursor-pointer">
+                <span>Alamat Sama dengan Kontak Utama</span>
+              </label>
+            </div>
+            ` : ''}
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Provinsi *</label>
+              <select id="p-prov-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">Memuat...</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Kabupaten *</label>
+              <select id="p-kab-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Kecamatan *</label>
+              <select id="p-kec-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Desa/Kelurahan *</label>
+              <select id="p-desa-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(card);
+      
+      const birthInput = document.getElementById(`p-birth-${index}`);
+      birthInput.addEventListener('input', function(e) {
+        formatBirthdateInput(e);
+        const val = this.value;
+        if (val.length === 10) {
+          const age = calculateAgeFromIndonesianFormat(val);
+          document.getElementById(`p-age-text-${index}`).textContent = `${age} Tahun`;
+        } else {
+          document.getElementById(`p-age-text-${index}`).textContent = `-- Tahun`;
         }
-      } catch (e) { console.warn("Supabase fetch global err", e); }
+      });
+      
+      initRegionCascade(index);
+    }
+
+    function removeLastParticipantCard(index) {
+      const card = document.getElementById(`card-participant-${index}`);
+      if (card) card.remove();
+    }
+
+    function updateCountDisplays() {
+      document.getElementById('display-count').textContent = participantsCount;
+      document.getElementById('sticky-count').textContent = participantsCount;
+      
+      let totalEstimate = 0;
+      const baseGlobalCount = parseInt(currentGlobalCount, 10) || 0;
+      for (let i = 1; i <= participantsCount; i++) {
+        let seq = baseGlobalCount + i;
+        let price = 45000;
+        if (seq <= 100) {
+          price = 35000;
+        } else if (seq <= 400) {
+          price = 40000;
+        }
+        totalEstimate += price;
+      }
+      
+      document.getElementById('sticky-price-estimate').textContent = `Rp${totalEstimate.toLocaleString('id-ID')}`;
+    }
+
+    function formatBirthdateInput(e) {
+      let val = e.target.value.replace(/\D/g, ''); 
+      if (val.length > 8) val = val.substring(0, 8);
+      
+      let formatted = '';
+      if (val.length > 0) formatted += val.substring(0, 2);
+      if (val.length > 2) formatted += '/' + val.substring(2, 4);
+      if (val.length > 4) formatted += '/' + val.substring(4, 8);
+      e.target.value = formatted;
+    }
+
+    function calculateAgeFromIndonesianFormat(dateStr) {
+      if (!dateStr) return 0;
+      const parts = dateStr.split('/');
+      if (parts.length !== 3) return 0;
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const year = parseInt(parts[2], 10);
+      if (isNaN(day) || isNaN(month) || isNaN(year)) return 0;
+      const birth = new Date(year, month, day);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age >= 0 ? age : 0;
+    }
+
+    document.getElementById('btn-inc-count').addEventListener('click', () => {
+      participantsCount++;
+      appendParticipantCard(participantsCount);
+      updateCountDisplays();
+    });
+
+    document.getElementById('btn-dec-count').addEventListener('click', () => {
+      if (participantsCount > 1) {
+        removeLastParticipantCard(participantsCount);
+        participantsCount--;
+        updateCountDisplays();
+      } else {
+        showToast("Minimal pendaftaran adalah 1 peserta.", "error");
+      }
+    });
+
+    document.getElementById('btn-submit-registration').addEventListener('click', async () => {
+      validateAndCompileForm();
+    });
+
+    function validateAndCompileForm() {
+      const listData = [];
+      for (let i = 1; i <= participantsCount; i++) {
+        const nama = document.getElementById(`p-nama-${i}`).value.trim();
+        const wa = document.getElementById(`p-wa-${i}`).value.trim();
+        const club = document.getElementById(`p-club-${i}`).value.trim();
+        const birthdate = document.getElementById(`p-birth-${i}`).value;
+        const gender = document.getElementById(`p-gender-${i}`).value;
+        
+        const provEl = document.getElementById(`p-prov-${i}`);
+        const kabEl = document.getElementById(`p-kab-${i}`);
+        const kecEl = document.getElementById(`p-kec-${i}`);
+        const desaEl = document.getElementById(`p-desa-${i}`);
+        
+        if (!nama || !wa || !birthdate || !gender) {
+          showToast(`Lengkapi kolom wajib (*) pada peserta #${i}`, "error");
+          return false;
+        }
+
+        const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+        if (!birthdate.match(dateRegex)) {
+          showToast(`Format tanggal lahir peserta #${i} harus DD/MM/YYYY`, "error");
+          return false;
+        }
+
+        const parts = birthdate.split('/');
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const year = parseInt(parts[2], 10);
+
+        const calculatedAge = calculateAgeFromIndonesianFormat(birthdate);
+        const formattedBackendDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+        let prov = '', kab = '', kec = '', desa = '';
+        if (provEl.dataset.manual === "true") {
+          prov = provEl.value.trim();
+          kab = kabEl.value.trim();
+          kec = kecEl.value.trim();
+          desa = desaEl.value.trim();
+        } else {
+          prov = provEl.options[provEl.selectedIndex]?.dataset.name || '';
+          kab = kabEl.options[kabEl.selectedIndex]?.dataset.name || '';
+          kec = kecEl.options[kecEl.selectedIndex]?.dataset.name || '';
+          desa = desaEl.options[desaEl.selectedIndex]?.dataset.name || '';
+        }
+
+        if (!prov || !kab || !kec || !desa) {
+          showToast(`Lengkapi pilihan wilayah alamat peserta #${i}`, "error");
+          return false;
+        }
+
+        listData.push({ nama, wa, club, birthdate: formattedBackendDate, gender, prov, kab, kec, desa, usia: calculatedAge });
+      }
+
+      submitRegistration(listData);
+      return true;
+    }
+
+    async function submitRegistration(payload) {
+      toggleLoader(true, "Mendaftarkan ke Supabase & Google Sheets...");
+      try {
+        const txId = "TX" + Date.now() + Math.floor(Math.random() * 100);
+        const regId = "REG" + Date.now() + Math.floor(Math.random() * 100);
+        const paymentToken = Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2, '0')).join('');
+        const uniqueCode = Math.floor(Math.random() * 999) + 1;
+        const originUrl = window.location.origin + window.location.pathname;
+        const paymentUrl = `${originUrl}?payment=${paymentToken}`;
+
+        let subtotal = 0;
+        const baseGlobalCount = parseInt(currentGlobalCount, 10) || 0;
+
+        const pendaftaranRecords = [];
+        const participantDetails = [];
+
+        payload.forEach((p, idx) => {
+          const nextPaidSeq = baseGlobalCount + idx + 1;
+          let htm = 45000;
+          if (nextPaidSeq <= 100) htm = 35000;
+          else if (nextPaidSeq <= 400) htm = 40000;
+          
+          subtotal += htm;
+
+          participantDetails.push({
+            nama: p.nama,
+            wa: p.wa,
+            nomorPeserta: "",
+            usia: p.usia,
+            harga: htm,
+            gender: p.gender
+          });
+
+          pendaftaranRecords.push({
+            registration_id: regId,
+            transaction_id: txId,
+            nama_lengkap: p.nama,
+            nomor_wa: p.wa,
+            asal_club: p.club || "",
+            tanggal_lahir: p.birthdate,
+            usia: p.usia,
+            jenis_kelamin: p.gender,
+            provinsi: p.prov,
+            kabupaten: p.kab,
+            kecamatan: p.kec,
+            desa: p.desa,
+            harga_htm: htm,
+            status_pembayaran: "MENUNGGU_PEMBAYARAN",
+            kode_unik: uniqueCode,
+            nominal_pembayaran: 0,
+            payment_token: paymentToken,
+            payment_url: paymentUrl
+          });
+        });
+
+        const finalAmount = subtotal + uniqueCode;
+        pendaftaranRecords.forEach(r => r.nominal_pembayaran = finalAmount);
+
+        // 1. Simpan Langsung ke Supabase Database
+        if (supabaseClient) {
+          const { error: txErr } = await supabaseClient.from('transaksi').insert([{
+            id: txId,
+            registration_id: regId,
+            jumlah_peserta: payload.length,
+            subtotal: subtotal,
+            kode_unik: uniqueCode,
+            nominal_pembayaran: finalAmount,
+            status: "MENUNGGU_PEMBAYARAN",
+            payment_token: paymentToken,
+            payment_url: paymentUrl,
+            nama_kontak: payload[0].nama,
+            wa_kontak: payload[0].wa
+          }]);
+          if (txErr) throw txErr;
+
+          const { error: pendErr } = await supabaseClient.from('pendaftaran').insert(pendaftaranRecords);
+          if (pendErr) throw pendErr;
+        }
+
+        // 2. Background Sync ke Google Sheets (via Apps Script)
+        fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'registerSync',
+            data: {
+              transactionId: txId,
+              registrationId: regId,
+              paymentToken: paymentToken,
+              paymentUrl: paymentUrl,
+              subtotal: subtotal,
+              uniqueCode: uniqueCode,
+              finalAmount: finalAmount,
+              participants: payload
+            }
+          })
+        }).catch(e => console.warn("GAS Background Sync Queued", e));
+
+        currentPaymentDetails = {
+          transactionId: txId,
+          registrationId: regId,
+          paymentToken: paymentToken,
+          paymentUrl: paymentUrl,
+          subtotal: subtotal,
+          uniqueCode: uniqueCode,
+          finalAmount: finalAmount,
+          qrisPayload: generateDynamicQrisPayload(APP_CONFIG.QRIS_STATIC_PAYLOAD, finalAmount),
+          participants: participantDetails,
+          namaKontak: payload[0].nama,
+          waKontak: payload[0].wa,
+          jumlahPeserta: payload.length
+        };
+
+        try {
+          window.history.pushState({}, '', `?payment=${paymentToken}`);
+        } catch (e) {
+          console.warn("pushState ignored in preview environment.");
+        }
+
+        await loadPaymentScreen(paymentToken);
+
+      } catch (err) {
+        showToast(err.message || err.toString(), "error");
+      } finally {
+        toggleLoader(false);
+      }
+    }
+
+    async function loadPaymentScreen(token) {
+      if (currentPaymentDetails && (token === 'lunas' || token === 'd739b175b86f49ed')) {
+        currentPaymentDetails = null;
+      }
+
+      if (!currentPaymentDetails) {
+        toggleLoader(true, "Mengambil data pendaftaran...");
+        try {
+          if (supabaseClient) {
+            let { data: tx, error: txErr } = await supabaseClient.from('transaksi').select('*').eq('payment_token', token).single();
+            let pend = [];
+
+            if (txErr || !tx) {
+              // Demo mock fallback data
+              if (token === 'd739b175b86f49ed') {
+                tx = {
+                  id: 'TX-DEMO-999',
+                  registration_id: 'REG-DEMO-999',
+                  payment_token: 'd739b175b86f49ed',
+                  payment_url: window.location.origin + window.location.pathname + '?payment=d739b175b86f49ed',
+                  subtotal: 70000,
+                  kode_unik: 123,
+                  nominal_pembayaran: 70123,
+                  status: 'MENUNGGU_PEMBAYARAN',
+                  nama_kontak: 'Budi Santoso (Demo Belum Bayar)',
+                  wa_kontak: '081234567890',
+                  jumlah_peserta: 2
+                };
+                pend = [
+                  { nama_lengkap: 'Budi Santoso', nomor_wa: '081234567890', nomor_peserta: '00001', usia: 28, harga_htm: 35000, jenis_kelamin: 'Laki-laki' },
+                  { nama_lengkap: 'Siti Rahmawati', nomor_wa: '081234567890', nomor_peserta: '00002', usia: 25, harga_htm: 35000, jenis_kelamin: 'Perempuan' }
+                ];
+              } else if (token === 'lunas') {
+                tx = {
+                  id: 'TX-DEMO-LUNAS-777',
+                  registration_id: 'REG-DEMO-777',
+                  payment_token: 'lunas',
+                  payment_url: window.location.origin + window.location.pathname + '?payment=lunas',
+                  subtotal: 70000,
+                  kode_unik: 123,
+                  nominal_pembayaran: 70123,
+                  status: 'LUNAS',
+                  nama_kontak: 'Budi Santoso (Demo Ticket Lunas)',
+                  wa_kontak: '081234567890',
+                  jumlah_peserta: 2
+                };
+                pend = [
+                  { nama_lengkap: 'Budi Santoso', nomor_wa: '081234567890', nomor_peserta: '01001', usia: 28, harga_htm: 35000, jenis_kelamin: 'Laki-laki' },
+                  { nama_lengkap: 'Siti Rahmawati', nomor_wa: '081234567890', nomor_peserta: '01002', usia: 25, harga_htm: 35000, jenis_kelamin: 'Perempuan' }
+                ];
+              } else {
+                throw new Error("Data transaksi tidak ditemukan!");
+              }
+            } else {
+              const { data: pendData, error: pendErr } = await supabaseClient.from('pendaftaran').select('*').eq('transaction_id', tx.id).order('id', { ascending: true });
+              if (pendErr) throw pendErr;
+              pend = pendData || [];
+            }
+
+            const participantDetails = pend.map(p => ({
+              nama: p.nama_lengkap,
+              wa: p.nomor_wa,
+              nomorPeserta: p.nomor_peserta,
+              usia: p.usia,
+              harga: p.harga_htm,
+              gender: p.jenis_kelamin
+            }));
+
+            currentPaymentDetails = {
+              transactionId: tx.id,
+              registrationId: tx.registration_id,
+              paymentToken: tx.payment_token,
+              paymentUrl: tx.payment_url,
+              subtotal: tx.subtotal,
+              uniqueCode: tx.kode_unik,
+              finalAmount: tx.nominal_pembayaran,
+              status: tx.status,
+              qrisPayload: generateDynamicQrisPayload(APP_CONFIG.QRIS_STATIC_PAYLOAD, tx.nominal_pembayaran),
+              participants: participantDetails,
+              namaKontak: tx.nama_kontak,
+              waKontak: tx.wa_kontak,
+              jumlahPeserta: tx.jumlah_peserta,
+              nomorPesertaAwal: tx.nomor_peserta_awal,
+              nomorPesertaAkhir: tx.nomor_peserta_akhir
+            };
+          }
+        } catch (e) {
+          document.getElementById('screen-error').classList.remove('hidden');
+          return;
+        } finally {
+          toggleLoader(false);
+        }
+      }
+
+      document.getElementById('screen-form').classList.add('hidden');
+      document.getElementById('sticky-action-bar').classList.add('hidden');
+      document.getElementById('screen-payment').classList.remove('hidden');
+      document.getElementById('screen-error').classList.add('hidden');
+
+      renderPaymentDetails();
+    }
+
+    function renderPaymentDetails() {
+      document.getElementById('payment-global-paid-count').textContent = currentGlobalCount;
+      const listContainer = document.getElementById('payment-participants-list');
+      listContainer.innerHTML = '';
+
+      const isLunas = currentPaymentDetails.status === 'LUNAS' || currentPaymentDetails.status === 'DIAMBIL';
+
+      currentPaymentDetails.participants.forEach((p, index) => {
+        const pCard = document.createElement('div');
+        pCard.className = "flex justify-between items-center text-xs p-2.5 rounded-xl bg-gray-50/70 border border-gray-100";
+        const formattedNum = p.nomorPeserta ? String(p.nomorPeserta).padStart(5, '0') : '-';
+        
+        const lunasDetails = isLunas 
+          ? `<div class="mt-1 flex items-center gap-2">
+               <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">LUNAS</span>
+               <span class="font-mono font-extrabold text-merdekaNavy text-[11px] bg-white px-2 py-0.5 rounded border border-gray-200 shadow-2xs">No. ${formattedNum}</span>
+             </div>`
+          : '';
+
+        pCard.innerHTML = `
+          <div>
+            <p class="font-extrabold text-gray-800">${index + 1}. ${p.nama}</p>
+            <p class="text-[10px] text-gray-500">${p.gender}, ${p.usia} Thn</p>
+            ${lunasDetails}
+          </div>
+          <div class="text-right">
+            <p class="font-black text-merdekaNavy">Rp${p.harga.toLocaleString('id-ID')}</p>
+          </div>
+        `;
+        listContainer.appendChild(pCard);
+      });
+
+      document.getElementById('pay-total').textContent = `Rp${currentPaymentDetails.finalAmount.toLocaleString('id-ID')}`;
+      
+      const qrisUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentPaymentDetails.qrisPayload)}`;
+      document.getElementById('qris-img').src = qrisUrl;
+
+      if (isLunas) {
+        document.getElementById('payment-warning-container').classList.add('hidden');
+        document.getElementById('payment-nominal-card').classList.add('hidden');
+        document.getElementById('payment-qris-card').classList.add('hidden');
+        document.getElementById('btn-open-confirm-modal').classList.add('hidden');
+        
+        document.getElementById('payment-success-card').classList.remove('hidden');
+        
+        document.getElementById('ticket-tx-id').textContent = currentPaymentDetails.transactionId;
+        const txQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentPaymentDetails.transactionId)}`;
+        document.getElementById('ticket-qr-code').src = txQrUrl;
+
+        const ticketNumbers = document.getElementById('ticket-participants-numbers');
+        if (ticketNumbers) {
+          ticketNumbers.innerHTML = '';
+          currentPaymentDetails.participants.forEach((p, idx) => {
+            const formattedNum = p.nomorPeserta ? String(p.nomorPeserta).padStart(5, '0') : '-';
+            ticketNumbers.innerHTML += `
+              <div class="bg-gradient-to-br from-merdekaNavy to-slate-900 text-white rounded-2xl p-4 text-center shadow-md border border-slate-700 space-y-1 relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-yellow-400"></div>
+                <p class="text-sm font-extrabold text-white uppercase tracking-wide truncate">${p.nama}</p>
+                <p class="text-3xl font-black text-yellow-300 font-mono tracking-widest py-1">${formattedNum}</p>
+                <span class="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest border border-emerald-500/30">NOMOR PESERTA</span>
+              </div>
+            `;
+          });
+        }
+      } else {
+        document.getElementById('payment-warning-container').classList.remove('hidden');
+        document.getElementById('payment-nominal-card').classList.remove('hidden');
+        document.getElementById('payment-qris-card').classList.remove('hidden');
+        document.getElementById('btn-open-confirm-modal').classList.remove('hidden');
+        document.getElementById('payment-success-card').classList.add('hidden');
+      }
     }
 
     function setupFileUploadHandlers() {
       const dropZone = document.getElementById('drop-zone');
       const fileInput = document.getElementById('proof-file');
-      
-      document.getElementById('btn-open-confirm-modal')?.addEventListener('click', () => {
+      const placeholder = document.getElementById('file-placeholder');
+      const previewContainer = document.getElementById('file-preview-container');
+      const previewImg = document.getElementById('file-preview');
+      const nameText = document.getElementById('file-name-text');
+      const btnChange = document.getElementById('btn-change-file');
+
+      document.getElementById('btn-open-confirm-modal').addEventListener('click', () => {
         document.getElementById('modal-upload').classList.remove('hidden');
       });
-      document.getElementById('btn-close-modal')?.addEventListener('click', () => {
+
+      document.getElementById('btn-close-modal').addEventListener('click', () => {
         document.getElementById('modal-upload').classList.add('hidden');
       });
 
-      document.getElementById('btn-change-file')?.addEventListener('click', (e) => {
-        e.stopPropagation(); fileInput.click();
+      dropZone.addEventListener('click', (e) => {
+        if (e.target !== btnChange) fileInput.click();
       });
 
-      fileInput?.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) handleFile(e.target.files[0]);
+      btnChange.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.value = '';
+        resetPreview();
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          handleFile(e.target.files[0]);
+        }
+      });
+
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-merdekaRed', 'bg-red-50'); });
+      dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('border-merdekaRed', 'bg-red-50'); });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-merdekaRed', 'bg-red-50');
+        if (e.dataTransfer.files.length > 0) {
+          handleFile(e.dataTransfer.files[0]);
+        }
       });
 
       function handleFile(file) {
-        if (file.size > 5 * 1024 * 1024) return showToast("Maksimal 5 MB!", "error");
+        if (file.size > 5 * 1024 * 1024) {
+          showToast("Ukuran file maksimal 5 MB!", "error");
+          return;
+        }
+        
         selectedFileObject = file;
+        selectedFileName = file.name;
+        selectedFileMime = file.type;
+        nameText.textContent = file.name;
+
         const reader = new FileReader();
         reader.onload = (e) => {
-          document.getElementById('file-preview').src = e.target.result;
-          document.getElementById('file-placeholder').classList.add('hidden');
-          document.getElementById('file-preview-container').classList.remove('hidden');
+          selectedFileBase64 = e.target.result;
+          previewImg.src = e.target.result;
+          placeholder.classList.add('hidden');
+          previewContainer.classList.remove('hidden');
         };
         reader.readAsDataURL(file);
       }
+
+      function resetPreview() {
+        selectedFileObject = null;
+        selectedFileName = null;
+        selectedFileBase64 = null;
+        selectedFileMime = null;
+        placeholder.classList.remove('hidden');
+        previewContainer.classList.add('hidden');
+        previewImg.src = '';
+      }
     }
 
-    document.getElementById('btn-confirm-upload')?.addEventListener('click', async () => {
-      if (!selectedFileObject) return showToast("Pilih foto dulu!", "error");
-      document.getElementById('modal-upload').classList.add('hidden');
-      toggleLoader(true, "Mengunggah bukti...");
-      try {
-        const compressedBase64 = await compressImage(selectedFileObject, 1000, 1000, 0.7);
-        
-        let gdriveUrl = null;
-        try {
-          const response = await fetch(APP_CONFIG.GAS_WEB_APP_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'uploadProofToDrive',
-              data: { transactionId: currentPaymentDetails.transactionId, fileBase64: compressedBase64, fileName: selectedFileObject.name, mimeType: "image/jpeg" }
-            })
-          });
-          const resJson = await response.json();
-          if (resJson.success) gdriveUrl = resJson.fileUrl;
-        } catch(e) {}
-
-        const finalUrl = gdriveUrl || compressedBase64;
-        if (supabaseClient) {
-          await supabaseClient.from('transaksi').update({ status: 'BUKTI_DIUPLOAD', bukti_url: finalUrl }).eq('id', currentPaymentDetails.transactionId);
-          await supabaseClient.from('pendaftaran').update({ status_pembayaran: 'BUKTI_DIUPLOAD', bukti_pembayaran_url: finalUrl }).eq('transaction_id', currentPaymentDetails.transactionId);
-        }
-        showToast("Berhasil diunggah!", "success");
-        await loadPaymentScreen(currentPaymentDetails.paymentToken);
-      } catch (err) {
-        showToast("Gagal: " + err.message, "error");
-      } finally {
-        toggleLoader(false);
-      }
-    });
-
-    function compressImage(file, maxWidth, maxHeight, quality) {
+    function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.7) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = new Image();
           img.onload = () => {
-            let width = img.width, height = img.height;
+            let width = img.width;
+            let height = img.height;
+
             if (width > maxWidth || height > maxHeight) {
-              if (width > height) { height = Math.round((height * maxWidth) / width); width = maxWidth; } 
-              else { width = Math.round((width * maxHeight) / height); height = maxHeight; }
+              if (width > height) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              } else {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
             }
+
             const canvas = document.createElement('canvas');
-            canvas.width = width; canvas.height = height;
-            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL('image/jpeg', quality));
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+            resolve(compressedBase64);
           };
-          img.onerror = reject; img.src = e.target.result;
+          img.onerror = (err) => reject(err);
+          img.src = e.target.result;
         };
-        reader.onerror = reject; reader.readAsDataURL(file);
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
       });
     }
 
-    function renderPetugasScreen() {
+    document.getElementById('btn-confirm-upload').addEventListener('click', async () => {
+      if (!selectedFileObject) {
+        showToast("Pilih foto bukti transfer terlebih dahulu!", "error");
+        return;
+      }
+
+      document.getElementById('modal-upload').classList.add('hidden');
+      toggleLoader(true, "Mengompresi & mengunggah bukti pembayaran...");
+
+      try {
+        const compressedBase64 = await compressImage(selectedFileObject, 1200, 1200, 0.7);
+        const fileName = (selectedFileName || "bukti").replace(/\.[^/.]+$/, "") + ".jpg";
+
+        let gdriveUrl = null;
+
+        try {
+          const response = await fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'uploadProofToDrive',
+              data: {
+                transactionId: currentPaymentDetails.transactionId,
+                fileBase64: compressedBase64,
+                fileName: fileName,
+                mimeType: "image/jpeg"
+              }
+            })
+          });
+
+          const resJson = await response.json();
+          if (resJson && resJson.success) {
+            gdriveUrl = resJson.data.fileUrl;
+          }
+        } catch (fetchErr) {
+          console.warn("GAS Upload Warning (Fallback to Supabase):", fetchErr);
+        }
+
+        if (supabaseClient) {
+          const { error: updateErr } = await supabaseClient.from('transaksi').update({
+            status: 'BUKTI_DIUPLOAD',
+            bukti_url: gdriveUrl || compressedBase64
+          }).eq('id', currentPaymentDetails.transactionId);
+
+          if (updateErr) throw updateErr;
+
+          await supabaseClient.from('pendaftaran').update({
+            status_pembayaran: 'BUKTI_DIUPLOAD',
+            bukti_pembayaran_url: gdriveUrl || compressedBase64,
+            tanggal_upload: new Date().toISOString()
+          }).eq('transaction_id', currentPaymentDetails.transactionId);
+        }
+
+        showToast("Bukti pembayaran berhasil diunggah!", "success");
+
+        const msg = buildWhatsAppMessage(currentPaymentDetails, true);
+        await loadPaymentScreen(currentPaymentDetails.paymentToken);
+
+        safeRedirectToWhatsApp(msg, "Konfirmasi Pembayaran", "Kamu akan diarahkan ke WhatsApp admin Suryatokoku untuk konfirmasi pembayaran. Klik <strong class=\"text-emerald-600 uppercase font-black\">OK</strong> untuk melanjutkan.");
+
+      } catch (err) {
+        console.error("Upload error detail:", err);
+        showToast("Gagal mengunggah bukti: " + (err.message || "Periksa koneksi internet Anda"), "error");
+      } finally {
+        toggleLoader(false);
+      }
+    });
+
+    let officerAuthToken = localStorage.getItem('petugas_token') || null;
+    let rawTransactions = [];
+
+    async function renderPetugasScreen() {
       document.getElementById('screen-petugas').classList.remove('hidden');
-      if (!officerAuthToken) renderOfficerLogin();
-      else loadOfficerDashboard();
+      if (!officerAuthToken) {
+        renderOfficerLogin();
+      } else {
+        await loadOfficerDashboard();
+      }
     }
 
     function renderOfficerLogin() {
@@ -569,8 +1678,7 @@
         const user = document.getElementById('officer-user').value.trim();
         const pass = document.getElementById('officer-pass').value.trim();
         if (!user || !pass) return showToast("Semua kolom login harus diisi!", "error");
-        
-        // Very basic mock login auth token structure
+
         officerAuthToken = btoa(`${user}:${pass}`);
         localStorage.setItem('petugas_token', officerAuthToken);
         showToast("Login berhasil!", "success");
@@ -578,269 +1686,651 @@
       });
     }
 
-    document.getElementById('btn-petugas-logout')?.addEventListener('click', () => {
+    document.getElementById('btn-petugas-logout').addEventListener('click', () => {
       localStorage.removeItem('petugas_token');
       officerAuthToken = null;
-      renderPetugasScreen();
-    });
-
-    document.getElementById('btn-goto-pengambilan')?.addEventListener('click', () => {
-      window.location.hash = 'pengambilan';
+      window.location.reload();
     });
 
     async function loadOfficerDashboard() {
-      if (!supabaseClient) return showToast("Mode Demo: Supabase tidak terhubung", "error");
-      toggleLoader(true, "Memuat data tiket Supabase...");
+      toggleLoader(true, "Memuat data transaksi dari Supabase...");
       try {
-        const { data, error } = await supabaseClient.from('transaksi').select('*').order('created_at', { ascending: false });
-        if (error) throw error;
-        
-        rawTransactions = data.map(tx => ({
-          transactionId: tx.id,
-          namaKontak: tx.nama_kontak,
-          waKontak: tx.wa_kontak,
-          jumlahPeserta: tx.jumlah_peserta,
-          status: tx.status,
-          nominal: tx.nominal_pembayaran,
-          nomorPesertaAwal: tx.nomor_peserta_awal,
-          nomorPesertaAkhir: tx.nomor_peserta_akhir,
-          buktiUrl: tx.bukti_url,
-          namaPengambil: tx.nama_pengambil,
-          tanggalPengambilan: tx.tanggal_pengambilan
-        }));
-        
-        renderPetugasList(rawTransactions);
-      } catch (e) {
-        showToast(e.message, "error");
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient
+            .from('transaksi')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          rawTransactions = (data || []).map(row => ({
+            timestamp: row.created_at,
+            transactionId: row.id,
+            registrationId: row.registration_id,
+            jumlahPeserta: row.jumlah_peserta,
+            nomorPesertaAwal: row.nomor_peserta_awal || '',
+            nomorPesertaAkhir: row.nomor_peserta_akhir || '',
+            subtotal: row.subtotal,
+            kodeUnik: row.kode_unik,
+            nominalPembayaran: row.nominal_pembayaran,
+            status: row.status,
+            paymentToken: row.payment_token,
+            paymentUrl: row.payment_url,
+            namaKontak: row.nama_kontak,
+            waKontak: row.wa_kontak,
+            buktiUrl: row.bukti_url,
+            verifiedBy: row.verified_by,
+            verifiedAt: row.verified_at,
+            namaPengambil: row.nama_pengambil || '',
+            tanggalPengambilan: row.tanggal_pengambilan || ''
+          }));
+        }
+        applyPetugasFilters();
+      } catch (err) {
+        showToast(err.message || err.toString(), "error");
       } finally {
         toggleLoader(false);
       }
     }
 
-    function renderPetugasList(dataList) {
+    let activeStatusFilter = 'ALL';
+    document.querySelectorAll('.btn-filter-status').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.btn-filter-status').forEach(b => {
+          b.className = "btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap";
+        });
+        this.className = "btn-filter-status bg-merdekaNavy text-white px-3 py-2 rounded-xl whitespace-nowrap active";
+        activeStatusFilter = this.dataset.status;
+        applyPetugasFilters();
+      });
+    });
+
+    document.getElementById('petugas-search').addEventListener('input', () => {
+      applyPetugasFilters();
+    });
+
+    function applyPetugasFilters() {
+      const searchKey = document.getElementById('petugas-search').value.toLowerCase().trim();
       const container = document.getElementById('petugas-list');
       container.innerHTML = '';
-      if(dataList.length === 0) {
-        container.innerHTML = `<p class="text-center text-gray-500 text-xs py-4">Tidak ada data transaksi.</p>`;
+
+      const filtered = rawTransactions.filter(tx => {
+        if (activeStatusFilter !== 'ALL' && tx.status !== activeStatusFilter) return false;
+        
+        if (searchKey) {
+          const matchName = tx.namaKontak.toLowerCase().includes(searchKey);
+          const matchWa = tx.waKontak.includes(searchKey);
+          const matchNum = (tx.nomorPesertaAwal + " " + tx.nomorPesertaAkhir).includes(searchKey);
+          return matchName || matchWa || matchNum;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center p-6 text-xs text-gray-400 font-bold bg-white rounded-2xl border border-gray-100">Tidak ada data transaksi ditemukan.</div>`;
         return;
       }
-      
-      dataList.forEach(tx => {
+
+      filtered.forEach(tx => {
         const card = document.createElement('div');
-        card.className = "bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3";
+        card.className = "bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3 text-xs animate-fade-in";
         
-        let actions = '';
-        if (tx.status === 'BUKTI_DIUPLOAD') {
-          actions = `
-            <div class="flex gap-2 pt-2 border-t border-gray-100">
-              <button onclick="verifyPaymentAction('${tx.transactionId}', 'LUNAS')" class="flex-1 bg-emerald-500 text-white font-bold py-2 rounded-lg text-xs hover:bg-emerald-600">Verifikasi Lunas</button>
-              <button onclick="window.openViewer('${tx.buktiUrl}')" class="flex-1 bg-blue-100 text-blue-700 font-bold py-2 rounded-lg text-xs hover:bg-blue-200">👁️ Lihat Bukti</button>
-            </div>`;
-        } else if (tx.status === 'LUNAS' || tx.status === 'DIAMBIL') {
-          actions = `<div class="pt-2 border-t border-gray-100 text-[10px] text-emerald-600 font-bold text-center">Status: ${tx.status}</div>`;
+        let statusBadge = '';
+        if (tx.status === 'MENUNGGU_PEMBAYARAN') {
+          statusBadge = `<span class="bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-md">Menunggu</span>`;
+        } else if (tx.status === 'BUKTI_DIUPLOAD') {
+          statusBadge = `<span class="bg-blue-100 text-blue-700 font-extrabold px-2 py-0.5 rounded-md animate-pulse">Butuh Verifikasi</span>`;
+        } else if (tx.status === 'LUNAS') {
+          statusBadge = `<span class="bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-md">Lunas</span>`;
+        } else if (tx.status === 'DITOLAK') {
+          statusBadge = `<span class="bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-md">Ditolak</span>`;
+        } else if (tx.status === 'DIAMBIL') {
+          statusBadge = `<span class="bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded-md">Sudah Diambil</span>`;
         }
 
+        const viewProofBtn = tx.buktiUrl 
+          ? `<button class="btn-view-proof text-[11px] font-extrabold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg flex items-center gap-1 border border-blue-200 transition active:scale-95" data-proofurl="${tx.buktiUrl}">👁️ Lihat Bukti Transfer</button>`
+          : `<span class="text-gray-400">Bukti Belum Diupload</span>`;
+
+        let actionButtons = '';
+        if (tx.status === 'BUKTI_DIUPLOAD' || tx.status === 'MENUNGGU_PEMBAYARAN' || tx.status === 'DITOLAK') {
+          actionButtons += `<button class="btn-action-lunas bg-emerald-500 text-white font-bold px-3 py-2 rounded-xl active:scale-95 transition" data-txid="${tx.transactionId}">LUNAS</button>`;
+        }
+        if (tx.status === 'BUKTI_DIUPLOAD' || tx.status === 'MENUNGGU_PEMBAYARAN') {
+          actionButtons += `<button class="btn-action-tolak bg-red-500 text-white font-bold px-3 py-2 rounded-xl active:scale-95 transition" data-txid="${tx.transactionId}">TOLAK</button>`;
+        }
+        if (tx.status === 'LUNAS' || tx.status === 'DITOLAK' || tx.status === 'DIAMBIL') {
+          actionButtons += `<button class="btn-action-revert bg-gray-500 text-white font-bold px-3 py-2 rounded-xl active:scale-95 transition" data-txid="${tx.transactionId}">RESET</button>`;
+        }
+
+        const formattedAwal = tx.nomorPesertaAwal ? String(tx.nomorPesertaAwal).padStart(5, '0') : '-';
+        const formattedAkhir = tx.nomorPesertaAkhir ? String(tx.nomorPesertaAkhir).padStart(5, '0') : '-';
+
         card.innerHTML = `
-          <div class="flex justify-between items-start text-xs">
+          <div class="flex justify-between items-center border-b border-gray-100 pb-2">
             <div>
-              <p class="font-extrabold text-merdekaNavy">${tx.namaKontak}</p>
-              <p class="text-gray-500 font-mono text-[10px]">${tx.transactionId}</p>
+              <p class="font-extrabold text-merdekaNavy text-sm">${tx.namaKontak}</p>
+              <p class="text-[10px] text-gray-400">No. WA: ${tx.waKontak}</p>
             </div>
-            <div class="text-right">
-              <p class="font-black text-merdekaRed">Rp${tx.nominal.toLocaleString('id-ID')}</p>
-              <p class="text-gray-500 text-[10px]">${tx.jumlahPeserta} Paket</p>
-            </div>
+            ${statusBadge}
           </div>
-          ${actions}
+          
+          <div class="grid grid-cols-2 gap-2 text-[10px] bg-gray-50 p-3 rounded-xl">
+            <p><span class="font-bold text-gray-400">ID Transaksi:</span> <br>${tx.transactionId}</p>
+            <p><span class="font-bold text-gray-400">Jumlah:</span> <br>${tx.jumlahPeserta} Peserta</p>
+            <p><span class="font-bold text-gray-400">No. Peserta:</span> <br>${formattedAwal} - ${formattedAkhir}</p>
+            <p><span class="font-bold text-gray-400">Harus Bayar:</span> <br><strong class="text-merdekaRed">Rp${tx.nominalPembayaran.toLocaleString('id-ID')}</strong></p>
+          </div>
+
+          <div class="flex justify-between items-center text-[10px]">
+            ${viewProofBtn}
+            <span class="text-gray-400">${new Date(tx.timestamp).toLocaleString('id-ID')}</span>
+          </div>
+
+          <div class="flex gap-2 justify-end pt-1">
+            ${actionButtons}
+          </div>
         `;
+        
         container.appendChild(card);
+      });
+
+      document.querySelectorAll('.btn-view-proof').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const rawProofUrl = this.dataset.proofurl;
+          const proofUrl = normalizeDriveUrl(rawProofUrl);
+          const modal = document.getElementById('modal-proof-viewer');
+          const img = document.getElementById('proof-modal-img');
+          const openLink = document.getElementById('proof-modal-open-link');
+
+          img.src = proofUrl;
+          if (proofUrl.startsWith('data:')) {
+            openLink.classList.add('hidden');
+          } else {
+            openLink.classList.remove('hidden');
+            openLink.href = rawProofUrl;
+          }
+
+          modal.classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('btn-close-proof-modal').addEventListener('click', () => {
+        document.getElementById('modal-proof-viewer').classList.add('hidden');
+      });
+
+      document.querySelectorAll('.btn-action-lunas').forEach(btn => {
+        btn.addEventListener('click', function() {
+          updateTransactionStatus(this.dataset.txid, 'LUNAS');
+        });
+      });
+
+      document.querySelectorAll('.btn-action-revert').forEach(btn => {
+        btn.addEventListener('click', function() {
+          updateTransactionStatus(this.dataset.txid, 'MENUNGGU_PEMBAYARAN');
+        });
+      });
+
+      document.querySelectorAll('.btn-action-tolak').forEach(btn => {
+        btn.addEventListener('click', function() {
+          activeRejectTxId = this.dataset.txid;
+          document.getElementById('reject-reason').value = '';
+          document.getElementById('modal-reject').classList.remove('hidden');
+        });
       });
     }
 
-    window.openViewer = function(url) {
-      const normalizedUrl = normalizeDriveUrl(url);
-      document.getElementById('proof-viewer-img').src = normalizedUrl;
-      document.getElementById('btn-open-drive-link').href = url;
-      document.getElementById('modal-proof-viewer').classList.remove('hidden');
-    };
-    
-    document.getElementById('btn-close-proof-modal')?.addEventListener('click', () => {
-      document.getElementById('modal-proof-viewer').classList.add('hidden');
+    document.getElementById('btn-cancel-reject').addEventListener('click', () => {
+      document.getElementById('modal-reject').classList.add('hidden');
+      activeRejectTxId = null;
     });
 
+    document.getElementById('btn-submit-reject').addEventListener('click', () => {
+      const reason = document.getElementById('reject-reason').value.trim();
+      if (!reason) return showToast("Alasan penolakan harus diisi!", "error");
+      document.getElementById('modal-reject').classList.add('hidden');
+      updateTransactionStatus(activeRejectTxId, 'DITOLAK', reason);
+      activeRejectTxId = null;
+    });
+
+    async function updateTransactionStatus(txId, newStatus, catatan = "", namaPengambil = "") {
+      toggleLoader(true, "Memperbarui status transaksi di Supabase...");
+      try {
+        const officerName = getLoggedInOfficerName();
+        const nowIso = new Date().toISOString();
+
+        if (supabaseClient) {
+          if (newStatus === 'LUNAS' || newStatus === 'DIAMBIL') {
+            const { count: currentPaidCount } = await supabaseClient
+              .from('pendaftaran')
+              .select('*', { count: 'exact', head: true })
+              .in('status_pembayaran', ['LUNAS', 'DIAMBIL']);
+
+            const { data: pendList } = await supabaseClient
+              .from('pendaftaran')
+              .select('id, nomor_peserta')
+              .eq('transaction_id', txId)
+              .order('id', { ascending: true });
+
+            let startNum = "", endNum = "";
+            let seq = currentPaidCount || 0;
+            const alreadyAssigned = pendList && pendList.length > 0 && pendList[0].nomor_peserta;
+
+            for (let i = 0; i < (pendList || []).length; i++) {
+              let numStr = pendList[i].nomor_peserta;
+              let globalSeq = null;
+
+              if (!alreadyAssigned) {
+                seq++;
+                numStr = String(1000 + seq).padStart(5, '0');
+                globalSeq = seq;
+              }
+              if (i === 0) startNum = numStr;
+              endNum = numStr;
+
+              const updatePendData = {
+                status_pembayaran: newStatus,
+                verified_by: officerName,
+                verified_at: nowIso
+              };
+
+              if (!alreadyAssigned) {
+                updatePendData.nomor_peserta = numStr;
+                updatePendData.urutan_global = globalSeq;
+              }
+
+              if (newStatus === 'DIAMBIL' && namaPengambil) {
+                updatePendData.nama_pengambil = namaPengambil;
+                updatePendData.tanggal_pengambilan = nowIso;
+              }
+
+              await supabaseClient.from('pendaftaran').update(updatePendData).eq('id', pendList[i].id);
+            }
+
+            const updateTxData = {
+              status: newStatus,
+              verified_by: officerName,
+              verified_at: nowIso
+            };
+
+            if (!alreadyAssigned) {
+              updateTxData.nomor_peserta_awal = startNum;
+              updateTxData.nomor_peserta_akhir = endNum;
+            }
+
+            if (newStatus === 'DIAMBIL' && namaPengambil) {
+              updateTxData.nama_pengambil = namaPengambil;
+              updateTxData.tanggal_pengambilan = nowIso;
+            }
+
+            await supabaseClient.from('transaksi').update(updateTxData).eq('id', txId);
+
+          } else {
+            await supabaseClient.from('pendaftaran').update({
+              nomor_peserta: null,
+              urutan_global: null,
+              status_pembayaran: newStatus,
+              verified_by: officerName,
+              verified_at: nowIso
+            }).eq('transaction_id', txId);
+
+            await supabaseClient.from('transaksi').update({
+              status: newStatus,
+              nomor_peserta_awal: null,
+              nomor_peserta_akhir: null,
+              verified_by: officerName,
+              verified_at: nowIso
+            }).eq('id', txId);
+          }
+
+          await supabaseClient.from('log_status').insert([{
+            transaction_id: txId,
+            status_baru: newStatus,
+            petugas: officerName,
+            catatan: catatan
+          }]);
+        }
+
+        fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'updateStatusSync',
+            data: { 
+              transactionId: txId, 
+              newStatus: newStatus, 
+              officerName: officerName, 
+              catatan: catatan,
+              namaPengambil: namaPengambil,
+              tanggalPengambilan: nowIso
+            }
+          })
+        }).catch(e => console.warn(e));
+
+        showToast("Status transaksi berhasil diubah!", "success");
+        await loadOfficerDashboard();
+
+      } catch (err) {
+        showToast(err.message || err.toString(), "error");
+      } finally {
+        toggleLoader(false);
+      }
+    }
+
     function renderPengambilanScreen() {
-      if (!officerAuthToken) { window.location.hash = 'petugas'; return; }
+      if (!officerAuthToken) {
+        document.getElementById('screen-petugas').classList.remove('hidden');
+        renderOfficerLogin();
+        return;
+      }
       
       document.getElementById('screen-petugas').classList.add('hidden');
       document.getElementById('screen-pengambilan').classList.remove('hidden');
 
       document.getElementById('btn-start-scanner').onclick = startQRScanner;
-      document.getElementById('btn-close-scanner-modal').onclick = stopQRScanner;
-      document.getElementById('btn-close-result-modal').onclick = () => document.getElementById('modal-scanned-result').classList.add('hidden');
-      document.getElementById('btn-pengambilan-back').onclick = () => { stopQRScanner(); window.location.hash = 'petugas'; };
+      document.getElementById('btn-close-scanner').onclick = stopQRScanner;
 
       document.getElementById('btn-search-peserta').onclick = () => {
         const inputVal = document.getElementById('input-manual-peserta').value.trim();
-        if (!inputVal) return showToast("Masukkan Nomor Peserta!", "error");
+        if (!inputVal) {
+          return showToast("Masukkan Nomor Peserta terlebih dahulu!", "error");
+        }
         handleScannedTransactionId(inputVal, 'peserta');
       };
-    }
 
-    function startQRScanner() {
-      const scannerModal = document.getElementById('modal-qr-scanner');
-      scannerModal.classList.remove('hidden');
-      html5QrScanner = new Html5Qrcode("qr-reader");
-      html5QrScanner.start(
-        { facingMode: "environment" },
-        { fps: 15, qrbox: { width: 260, height: 260 } },
-        (decodedText) => { stopQRScanner(); handleScannedTransactionId(decodedText, 'tx'); },
-        () => {}
-      ).catch(err => { showToast("Gagal kamera: " + err, "error"); stopQRScanner(); });
-    }
+      document.getElementById('btn-pengambilan-back').onclick = () => {
+        stopQRScanner();
+        document.getElementById('screen-pengambilan').classList.add('hidden');
+        renderPetugasScreen();
+      };
 
-    function stopQRScanner() {
-      const scannerModal = document.getElementById('modal-qr-scanner');
-      if (html5QrScanner && html5QrScanner.isScanning) {
-        html5QrScanner.stop().then(() => scannerModal.classList.add('hidden')).catch(() => scannerModal.classList.add('hidden'));
-      } else { scannerModal.classList.add('hidden'); }
-    }
-
-    async function handleScannedTransactionId(query, searchType = 'tx') {
-      const resultModal = document.getElementById('modal-scanned-result');
-      const modalContent = document.getElementById('scanned-modal-content');
-      modalContent.innerHTML = '';
-
-      if (!rawTransactions || rawTransactions.length === 0) await loadOfficerDashboard();
-
-      let tx = null;
-      if (searchType === 'tx') tx = rawTransactions.find(t => t.transactionId.toUpperCase() === query.toUpperCase());
-      else {
-        const targetNum = parseInt(query.replace(/\D/g, ''), 10);
-        tx = rawTransactions.find(t => targetNum >= parseInt(t.nomorPesertaAwal, 10) && targetNum <= parseInt(t.nomorPesertaAkhir, 10));
-      }
-
-      if (!tx) return showToast("Data tidak ditemukan!", "error");
-      
-      resultModal.classList.remove('hidden');
-      const timeNow = getFormattedNowDateTime();
-
-      let content = ``;
-      if (tx.status !== 'LUNAS' && tx.status !== 'DIAMBIL') {
-        content = `<div class="bg-red-50 text-red-800 rounded-xl p-4 text-center"><p class="font-bold">⚠️ BELUM LUNAS!</p></div>`;
-      } else if (tx.status === 'DIAMBIL') {
-        content = `<div class="bg-amber-50 text-amber-800 rounded-xl p-4 text-center"><p class="font-bold">⚠️ SUDAH DIAMBIL!</p><p class="text-xs">Oleh: ${tx.namaPengambil || '-'} pada ${tx.tanggalPengambilan || '-'}</p></div>`;
-      } else {
-        content = `
-          <div class="bg-emerald-50 text-emerald-800 rounded-xl p-4 text-center"><p class="font-bold">✅ SIAP DISERAHKAN!</p></div>
-          <div class="space-y-1 text-left text-xs pt-2">
-            <label class="font-bold text-gray-700">Nama Pengambil Race Pack *</label>
-            <input type="text" id="input-nama-pengambil" value="${tx.namaKontak}" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2 outline-none">
-          </div>
-          <div class="flex justify-between items-center text-[10px] bg-gray-50 p-2 rounded-xl">
-            <span class="font-bold text-gray-500">Waktu:</span><span class="font-bold text-merdekaNavy">${timeNow}</span>
-          </div>
-          <button id="btn-konfirmasi-serah-terima" class="w-full bg-emerald-500 text-white font-bold py-3 rounded-xl">Simpan Penyerahan</button>
-        `;
-      }
-
-      modalContent.innerHTML = `
-        ${content}
-        <div class="text-xs space-y-1 mt-4 pt-2 border-t border-gray-100">
-          <p><strong>Nama:</strong> ${tx.namaKontak}</p>
-          <p><strong>Paket:</strong> ${tx.jumlahPeserta}</p>
-          <p><strong>BIB:</strong> ${tx.nomorPesertaAwal} - ${tx.nomorPesertaAkhir}</p>
-        </div>
-      `;
-
-      if(document.getElementById('btn-konfirmasi-serah-terima')) {
-        document.getElementById('btn-konfirmasi-serah-terima').onclick = async () => {
-          const nama = document.getElementById('input-nama-pengambil').value.trim();
-          if(!nama) return showToast("Isi nama pengambil!", "error");
-          await verifyPaymentAction(tx.transactionId, 'DIAMBIL', nama, timeNow);
-          resultModal.classList.add('hidden');
+      const btnCloseScannedModal = document.getElementById('btn-close-scanned-modal');
+      if (btnCloseScannedModal) {
+        btnCloseScannedModal.onclick = () => {
+          document.getElementById('modal-scanned-result').classList.add('hidden');
         };
       }
     }
 
-    async function verifyPaymentAction(txId, newStatus, namaPengambil = "", tanggalPengambilan = "") {
-      toggleLoader(true, "Update Supabase...");
-      try {
-        const officerName = getLoggedInOfficerName();
-        if (supabaseClient) {
-          const payloadTx = { status: newStatus, verified_by: officerName };
-          const payloadPend = { status_pembayaran: newStatus, verified_by: officerName };
-          
-          if(namaPengambil) {
-              payloadTx.nama_pengambil = namaPengambil; payloadTx.tanggal_pengambilan = tanggalPengambilan;
-              payloadPend.nama_pengambil = namaPengambil; payloadPend.tanggal_pengambilan = tanggalPengambilan;
-          }
+    document.getElementById('btn-goto-pengambilan').addEventListener('click', () => {
+      renderPengambilanScreen();
+    });
 
-          if(newStatus === 'LUNAS') {
-             // Mockup of BIB generation
-             const startNum = "01001"; const endNum = "01002";
-             payloadTx.nomor_peserta_awal = startNum; payloadTx.nomor_peserta_akhir = endNum;
-             payloadPend.nomor_peserta = startNum;
-          }
+    function startQRScanner() {
+      const modal = document.getElementById('modal-scanner');
+      modal.classList.remove('hidden');
 
-          await supabaseClient.from('transaksi').update(payloadTx).eq('id', txId);
-          await supabaseClient.from('pendaftaran').update(payloadPend).eq('transaction_id', txId);
-        }
+      html5QrScanner = new Html5Qrcode("qr-reader");
+      const scanConfig = { fps: 15, qrbox: { width: 250, height: 250 } };
 
-        // Trigger GAS Apps Script (Background)
-        fetch(APP_CONFIG.GAS_WEB_APP_URL, {
-          method: 'POST', body: JSON.stringify({
-            action: 'updateStatusSync', data: { transactionId: txId, newStatus, officerName, namaPengambil, tanggalPengambilan }
-          })
-        }).catch(e => {});
-
-        showToast("Berhasil diperbarui!", "success");
-        await loadOfficerDashboard();
-      } catch (err) { showToast(err.message, "error"); }
-      finally { toggleLoader(false); }
+      html5QrScanner.start(
+        { facingMode: "environment" },
+        scanConfig,
+        (decodedText) => {
+          stopQRScanner();
+          handleScannedTransactionId(decodedText, 'tx');
+        },
+        () => {}
+      ).catch(err => {
+        showToast("Gagal mengakses kamera: " + err, "error");
+        stopQRScanner();
+      });
     }
 
-    async function loadPaymentScreen(token) {
-        // Simplified mockup logic for the Demo functionality so the UI works
-        document.getElementById('screen-form').classList.add('hidden');
-        document.getElementById('screen-payment').classList.remove('hidden');
-        document.getElementById('payment-success-card').classList.add('hidden');
-        
-        let tx = null; let pend = [];
-        if (token === 'd739b175b86f49ed') {
-            tx = { nominal_pembayaran: 70123, status: 'MENUNGGU_PEMBAYARAN' };
-            pend = [{ nama: 'Budi Santoso', gender: 'Laki-laki', usia: 28, harga: 35000 }, { nama: 'Siti', gender: 'Perempuan', usia: 25, harga: 35000 }];
-        } else if (token === 'lunas') {
-            tx = { transactionId: 'TX-DEMO-777', nominal_pembayaran: 70123, status: 'LUNAS' };
-            pend = [{ nama: 'Budi Santoso', gender: 'Laki-laki', usia: 28, harga: 35000, nomorPeserta: '01001' }, { nama: 'Siti', gender: 'Perempuan', usia: 25, harga: 35000, nomorPeserta: '01002' }];
+    function stopQRScanner() {
+      const modal = document.getElementById('modal-scanner');
+      if (modal) modal.classList.add('hidden');
+
+      if (html5QrScanner) {
+        if (html5QrScanner.isScanning) {
+          html5QrScanner.stop().then(() => {
+            html5QrScanner.clear();
+          }).catch(err => console.error(err));
         }
-        
-        if(!tx) return;
-        
-        currentPaymentDetails = tx; currentPaymentDetails.participants = pend; currentPaymentDetails.paymentToken = token;
-        
-        document.getElementById('pay-total').textContent = `Rp${tx.nominal_pembayaran.toLocaleString('id-ID')}`;
-        
-        const listContainer = document.getElementById('payment-participants-list'); listContainer.innerHTML = '';
-        pend.forEach((p, index) => {
-            const lunasBadge = tx.status === 'LUNAS' ? `<div class="mt-1 flex items-center gap-2"><span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">LUNAS</span><span class="font-mono font-extrabold text-merdekaNavy text-[11px] bg-white px-2 py-0.5 rounded border border-gray-200">No. ${p.nomorPeserta}</span></div>` : '';
-            listContainer.innerHTML += `<div class="flex justify-between items-center text-xs p-2.5 rounded-xl bg-gray-50/70 border border-gray-100"><div><p class="font-extrabold text-gray-800">${index + 1}. ${p.nama}</p><p class="text-[10px] text-gray-500">${p.gender}, ${p.usia} Thn</p>${lunasBadge}</div><div class="text-right"><p class="font-black text-merdekaNavy">Rp${p.harga.toLocaleString('id-ID')}</p></div></div>`;
+      }
+    }
+
+    async function handleScannedTransactionId(query, searchType = 'tx') {
+      const scannedModal = document.getElementById('modal-scanned-result');
+      const modalContent = document.getElementById('scanned-modal-content');
+      
+      modalContent.innerHTML = '';
+
+      if (!rawTransactions || rawTransactions.length === 0) {
+        await loadOfficerDashboard();
+      }
+
+      let tx = null;
+      if (searchType === 'tx') {
+        tx = rawTransactions.find(t => t.transactionId.toUpperCase() === query.toUpperCase());
+      } else {
+        const targetNum = parseInt(query.replace(/\D/g, ''), 10);
+        if (isNaN(targetNum)) {
+          return showToast("Masukkan angka nomor peserta yang valid!", "error");
+        }
+        tx = rawTransactions.find(t => {
+          const start = parseInt(t.nomorPesertaAwal, 10);
+          const end = parseInt(t.nomorPesertaAkhir, 10);
+          return targetNum >= start && targetNum <= end;
+        });
+      }
+
+      if (!tx) {
+        showToast("Data tiket tidak ditemukan di database!", "error");
+        return;
+      }
+
+      scannedModal.classList.remove('hidden');
+      
+      let statusBanner = '';
+      let actionForm = '';
+
+      if (tx.status !== 'LUNAS' && tx.status !== 'DIAMBIL') {
+        statusBanner = `
+          <div class="bg-red-50 border-2 border-red-200 text-red-800 rounded-2xl p-4 text-center space-y-1">
+            <p class="font-extrabold text-sm uppercase tracking-wider">⚠️ BELUM LUNAS!</p>
+            <p class="text-[11px] font-medium leading-relaxed">Transaksi ini masih berstatus <strong class="underline">${tx.status}</strong>. Kelengkapan gowes TIDAK BOLEH diserahkan.</p>
+          </div>
+        `;
+      } else if (tx.status === 'DIAMBIL') {
+        const tglDiambil = tx.tanggalPengambilan ? new Date(tx.tanggalPengambilan).toLocaleString('id-ID') : '-';
+        statusBanner = `
+          <div class="bg-amber-50 border-2 border-amber-200 text-amber-800 rounded-2xl p-4 text-center space-y-1">
+            <p class="font-extrabold text-sm uppercase tracking-wider">⚠️ BARANG SUDAH PERNAH DIAMBIL!</p>
+            <p class="text-[11px] font-medium">Pengambil sebelumnya: <strong>${tx.namaPengambil || '-'}</strong> (${tglDiambil})</p>
+          </div>
+        `;
+      } else {
+        statusBanner = `
+          <div class="bg-emerald-50 border-2 border-emerald-200 text-emerald-800 rounded-2xl p-4 text-center space-y-1">
+            <p class="font-extrabold text-sm uppercase tracking-wider">✅ SIAP DISERAHKAN!</p>
+            <p class="text-[11px] font-medium">Pembayaran lunas terverifikasi. Silakan isi nama pengambil di bawah ini.</p>
+          </div>
+        `;
+      }
+
+      if (tx.status === 'LUNAS' || tx.status === 'DIAMBIL') {
+        const defaultNamaPengambil = tx.namaPengambil || tx.namaKontak || '';
+        const btnText = tx.status === 'DIAMBIL' ? '✏️ Update Nama Pengambil' : '💾 Simpan & Konfirmasi Penyerahan';
+        const btnBg = tx.status === 'DIAMBIL' ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-500 hover:bg-emerald-600';
+
+        actionForm = `
+          <div class="space-y-3 pt-2 border-t border-gray-100">
+            <div class="space-y-1">
+              <label class="block font-extrabold text-xs text-merdekaNavy">Nama Pengambil Race Pack <span class="text-red-500">*</span></label>
+              <input type="text" id="input-nama-pengambil" value="${defaultNamaPengambil}" placeholder="Masukkan nama penerima/pengambil" class="w-full border-2 border-gray-200 focus:border-emerald-500 rounded-xl px-4 py-3 text-xs outline-none font-bold text-gray-800 bg-gray-50 focus:bg-white transition">
+            </div>
+            <button id="btn-save-pengambilan" class="w-full ${btnBg} text-white font-extrabold py-3.5 px-4 rounded-xl shadow-md transition active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+              <span>${btnText}</span>
+            </button>
+          </div>
+        `;
+      }
+
+      const formattedAwal = tx.nomorPesertaAwal ? String(tx.nomorPesertaAwal).padStart(5, '0') : '-';
+      const formattedAkhir = tx.nomorPesertaAkhir ? String(tx.nomorPesertaAkhir).padStart(5, '0') : '-';
+
+      modalContent.innerHTML = `
+        ${statusBanner}
+        <div class="space-y-2 text-xs bg-gray-50 p-4 rounded-2xl border border-gray-100">
+          <h4 class="font-extrabold text-merdekaNavy text-xs border-b border-gray-200 pb-2 uppercase tracking-wider">Informasi Pendaftaran</h4>
+          <p><span class="font-bold text-gray-400 uppercase tracking-wider text-[9px]">Nama Pemesan :</span> <br><strong class="text-merdekaNavy text-sm">${tx.namaKontak}</strong></p>
+          <p><span class="font-bold text-gray-400 uppercase tracking-wider text-[9px]">No. WhatsApp :</span> <br><span class="font-medium text-gray-700">${tx.waKontak}</span></p>
+          <p><span class="font-bold text-gray-400 uppercase tracking-wider text-[9px]">Jumlah Paket Kelengkapan :</span> <br><span class="font-bold text-merdekaRed text-sm">${tx.jumlahPeserta} Paket</span></p>
+          <p><span class="font-bold text-gray-400 uppercase tracking-wider text-[9px]">Nomor Urut Rombongan :</span> <br><span class="inline-block bg-white text-merdekaNavy border border-gray-200 font-mono px-2.5 py-1 rounded-lg font-bold mt-1 text-sm">${formattedAwal} - ${formattedAkhir}</span></p>
+          <p><span class="font-bold text-gray-400 uppercase tracking-wider text-[9px]">ID Transaksi :</span> <br><span class="font-mono text-gray-600 text-[10px]">${tx.transactionId}</span></p>
+        </div>
+        ${actionForm}
+      `;
+
+      const btnSave = document.getElementById('btn-save-pengambilan');
+      if (btnSave) {
+        btnSave.onclick = async () => {
+          const namaPengambilInput = document.getElementById('input-nama-pengambil').value.trim();
+          if (!namaPengambilInput) {
+            return showToast("Nama pengambil harus diisi!", "error");
+          }
+
+          scannedModal.classList.add('hidden');
+          const officerName = getLoggedInOfficerName();
+          await updateTransactionStatus(tx.transactionId, 'DIAMBIL', `Diserahkan oleh petugas: ${officerName}`, namaPengambilInput);
+          
+          await loadOfficerDashboard();
+        };
+      }
+    }
+
+    let staffAuthToken = localStorage.getItem('staff_token') || null;
+
+    async function renderStaffScreen() {
+      document.getElementById('screen-staff').classList.remove('hidden');
+      if (!staffAuthToken) {
+        renderStaffLogin();
+      } else {
+        await loadStaffDashboard();
+      }
+    }
+
+    function renderStaffLogin() {
+      const container = document.getElementById('staff-metrics-container');
+      container.innerHTML = `
+        <div class="col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="font-extrabold text-merdekaNavy text-base text-center">Login Staff</h3>
+          <div class="space-y-3">
+            <input type="text" id="staff-user" value="admin" placeholder="Username" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none">
+            <input type="password" id="staff-pass" value="admin123" placeholder="Password" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 text-xs outline-none">
+            <button id="btn-login-staff" class="w-full bg-merdekaNavy hover:bg-navy-800 text-white font-extrabold py-3 rounded-xl transition active:scale-95 text-xs uppercase tracking-wider">Masuk</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('btn-login-staff').addEventListener('click', async () => {
+        const user = document.getElementById('staff-user').value.trim();
+        const pass = document.getElementById('staff-pass').value.trim();
+        if (!user || !pass) return showToast("Semua kolom login harus diisi!", "error");
+
+        staffAuthToken = btoa(`${user}:${pass}`);
+        localStorage.setItem('staff_token', staffAuthToken);
+        showToast("Login berhasil!", "success");
+        await loadStaffDashboard();
+      });
+    }
+
+    document.getElementById('btn-staff-logout').addEventListener('click', () => {
+      localStorage.removeItem('staff_token');
+      staffAuthToken = null;
+      window.location.reload();
+    });
+
+    async function loadStaffDashboard() {
+      toggleLoader(true, "Memuat ringkasan data staff dari Supabase...");
+      try {
+        if (!supabaseClient) throw new Error("Supabase tidak terhubung.");
+
+        const { data: pendaftar, error: err1 } = await supabaseClient.from('pendaftaran').select('status_pembayaran');
+        const { data: transaksi, error: err2 } = await supabaseClient.from('transaksi').select('status, nominal_pembayaran');
+
+        if (err1 || err2) throw err1 || err2;
+
+        let pesertaMenunggu = 0;
+        let pesertaBuktiUploaded = 0;
+        let pesertaLunas = 0;
+
+        (pendaftar || []).forEach(p => {
+          if (p.status_pembayaran === 'LUNAS' || p.status_pembayaran === 'DIAMBIL') pesertaLunas++;
+          else if (p.status_pembayaran === 'MENUNGGU_PEMBAYARAN') pesertaMenunggu++;
+          else if (p.status_pembayaran === 'BUKTI_DIUPLOAD') pesertaBuktiUploaded++;
         });
 
-        if (tx.status === 'LUNAS') {
-            document.getElementById('payment-warning-container').classList.add('hidden');
-            document.getElementById('payment-nominal-card').classList.add('hidden');
-            document.getElementById('payment-qris-card').classList.add('hidden');
-            document.getElementById('btn-open-confirm-modal').classList.add('hidden');
-            document.getElementById('payment-success-card').classList.remove('hidden');
-            document.getElementById('ticket-tx-id').textContent = tx.transactionId;
-            const txQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(tx.transactionId)}`;
-            document.getElementById('ticket-qr-code').src = txQrUrl;
-            
-            const ticketNumbers = document.getElementById('ticket-participants-numbers'); ticketNumbers.innerHTML = '';
-            pend.forEach(p => {
-               ticketNumbers.innerHTML += `<div class="bg-gradient-to-br from-merdekaNavy to-slate-900 text-white rounded-2xl p-4 text-center shadow-md border border-slate-700 space-y-1 relative overflow-hidden"><div class="absolute top-0 left-0 right-0 h-1 bg-yellow-400"></div><p class="text-sm font-extrabold text-white uppercase tracking-wide truncate">${p.nama}</p><p class="text-3xl font-black text-yellow-300 font-mono tracking-widest py-1">${p.nomorPeserta}</p><span class="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest border border-emerald-500/30">NOMOR PESERTA</span></div>`;
-            });
-        }
+        let totalNominalTerverifikasi = 0;
+        (transaksi || []).forEach(t => {
+          if (t.status === 'LUNAS' || t.status === 'DIAMBIL') {
+            totalNominalTerverifikasi += parseFloat(t.nominal_pembayaran) || 0;
+          }
+        });
+
+        const sisaSlot35 = Math.max(0, 100 - pesertaLunas);
+        const sisaSlot40 = pesertaLunas <= 100 ? 300 : Math.max(0, 300 - (pesertaLunas - 100));
+        const jumlahTier45 = Math.max(0, pesertaLunas - 400);
+
+        renderStaffMetrics({
+          pesertaMenunggu,
+          pesertaBuktiUploaded,
+          pesertaLunas,
+          totalNominalTerverifikasi,
+          sisaSlot35,
+          sisaSlot40,
+          jumlahTier45
+        });
+
+      } catch (err) {
+        showToast(err.message || err.toString(), "error");
+      } finally {
+        toggleLoader(false);
+      }
+    }
+
+    function renderStaffMetrics(data) {
+      const container = document.getElementById('staff-metrics-container');
+      container.innerHTML = `
+        <div class="bg-amber-50 rounded-2xl p-4 shadow-sm border border-amber-100 flex flex-col justify-between">
+          <span class="text-[10px] font-extrabold text-amber-700 uppercase tracking-wider">Peserta Belum Lunas</span>
+          <span class="text-2xl font-black text-amber-700 mt-1">${data.pesertaMenunggu}</span>
+        </div>
+
+        <div class="bg-blue-50 rounded-2xl p-4 shadow-sm border border-blue-100 flex flex-col justify-between">
+          <span class="text-[10px] font-extrabold text-blue-700 uppercase tracking-wider">Butuh Verifikasi</span>
+          <span class="text-2xl font-black text-blue-700 mt-1">${data.pesertaBuktiUploaded}</span>
+        </div>
+
+        <div class="col-span-2 bg-emerald-50 rounded-2xl p-4 shadow-sm border border-emerald-100 flex flex-col justify-between">
+          <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-wider">Peserta Lunas</span>
+          <span class="text-2xl font-black text-emerald-700 mt-1">${data.pesertaLunas}</span>
+        </div>
+      `;
+
+      const revContainer = document.getElementById('staff-revenue-container');
+      if (revContainer) {
+        revContainer.innerHTML = `
+          <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 shadow-md flex justify-between items-center">
+            <div>
+              <span class="text-[10px] font-extrabold text-emerald-200 uppercase tracking-wider block">Total Dana Terverifikasi</span>
+              <span class="text-2xl font-black text-white mt-1 block">Rp${data.totalNominalTerverifikasi.toLocaleString('id-ID')}</span>
+            </div>
+            <span class="text-3xl">💰</span>
+          </div>
+        `;
+      }
+
+      const slot35Percent = Math.min(100, ((100 - data.sisaSlot35) / 100) * 100);
+      document.getElementById('staff-progress-35-text').textContent = `${100 - data.sisaSlot35}/100`;
+      document.getElementById('staff-progress-35-bar').style.width = `${slot35Percent}%`;
+
+      const slot40Percent = Math.min(100, ((300 - data.sisaSlot40) / 300) * 100);
+      document.getElementById('staff-progress-40-text').textContent = `${300 - data.sisaSlot40}/300`;
+      document.getElementById('staff-progress-40-bar').style.width = `${slot40Percent}%`;
+
+      document.getElementById('staff-tier-45-count').textContent = `${data.jumlahTier45} Peserta`;
     }
   </script>
 </body>
