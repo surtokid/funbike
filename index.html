@@ -775,6 +775,7 @@
           kabSelect.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
           kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
           desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+          if (index === 1) syncAllSameAddressesFromPrimary();
           if (!provId) return;
           
           try {
@@ -799,6 +800,7 @@
           const kabId = kabSelect.value;
           kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
           desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+          if (index === 1) syncAllSameAddressesFromPrimary();
           if (!kabId) return;
           
           try {
@@ -822,6 +824,7 @@
         kecSelect.addEventListener('change', async () => {
           const kecId = kecSelect.value;
           desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+          if (index === 1) syncAllSameAddressesFromPrimary();
           if (!kecId) return;
           
           try {
@@ -841,9 +844,210 @@
             fallbackToManualAddress(index);
           }
         });
+
+        desaSelect.addEventListener('change', () => {
+          if (index === 1) syncAllSameAddressesFromPrimary();
+        });
       } catch (err) {
         fallbackToManualAddress(index);
       }
+    }
+
+    function setupPrimaryContactListeners() {
+      const wa1 = document.getElementById('p-wa-1');
+      const club1 = document.getElementById('p-club-1');
+
+      if (wa1) {
+        wa1.addEventListener('input', () => {
+          for (let i = 2; i <= participantsCount; i++) {
+            const chk = document.getElementById(`p-same-wa-${i}`);
+            if (chk && chk.checked) {
+              const waInput = document.getElementById(`p-wa-${i}`);
+              if (waInput) waInput.value = wa1.value;
+            }
+          }
+        });
+      }
+
+      if (club1) {
+        club1.addEventListener('input', () => {
+          for (let i = 2; i <= participantsCount; i++) {
+            const chk = document.getElementById(`p-same-club-${i}`);
+            if (chk && chk.checked) {
+              const clubInput = document.getElementById(`p-club-${i}`);
+              if (clubInput) clubInput.value = club1.value;
+            }
+          }
+        });
+      }
+    }
+
+    function setupSameAsPrimarySync(index) {
+      if (index <= 1) return;
+
+      const sameWa = document.getElementById(`p-same-wa-${index}`);
+      const sameClub = document.getElementById(`p-same-club-${index}`);
+      const sameAddr = document.getElementById(`p-same-addr-${index}`);
+
+      const waInput = document.getElementById(`p-wa-${index}`);
+      const clubInput = document.getElementById(`p-club-${index}`);
+
+      if (sameWa) {
+        sameWa.addEventListener('change', () => {
+          if (sameWa.checked) {
+            const primaryWa = document.getElementById('p-wa-1').value;
+            waInput.value = primaryWa;
+            waInput.readOnly = true;
+            waInput.classList.add('bg-gray-100');
+          } else {
+            waInput.readOnly = false;
+            waInput.classList.remove('bg-gray-100');
+          }
+        });
+      }
+
+      if (sameClub) {
+        sameClub.addEventListener('change', () => {
+          if (sameClub.checked) {
+            const primaryClub = document.getElementById('p-club-1').value;
+            clubInput.value = primaryClub;
+            clubInput.readOnly = true;
+            clubInput.classList.add('bg-gray-100');
+          } else {
+            clubInput.readOnly = false;
+            clubInput.classList.remove('bg-gray-100');
+          }
+        });
+      }
+
+      if (sameAddr) {
+        sameAddr.addEventListener('change', async () => {
+          if (sameAddr.checked) {
+            await syncAddressFromPrimary(index);
+            setAddressInputsLocked(index, true);
+          } else {
+            setAddressInputsLocked(index, false);
+          }
+        });
+      }
+    }
+
+    function syncAllSameAddressesFromPrimary() {
+      for (let i = 2; i <= participantsCount; i++) {
+        const chk = document.getElementById(`p-same-addr-${i}`);
+        if (chk && chk.checked) {
+          syncAddressFromPrimary(i);
+        }
+      }
+    }
+
+    async function syncAddressFromPrimary(index) {
+      const p1Prov = document.getElementById('p-prov-1');
+      const p1Kab = document.getElementById('p-kab-1');
+      const p1Kec = document.getElementById('p-kec-1');
+      const p1Desa = document.getElementById('p-desa-1');
+
+      if (!p1Prov) return;
+
+      const targetProv = document.getElementById(`p-prov-${index}`);
+      const targetKab = document.getElementById(`p-kab-${index}`);
+      const targetKec = document.getElementById(`p-kec-${index}`);
+      const targetDesa = document.getElementById(`p-desa-${index}`);
+
+      if (!targetProv) return;
+
+      if (p1Prov.dataset.manual === "true" || p1Prov.tagName === "INPUT") {
+        fallbackToManualAddress(index);
+        document.getElementById(`p-prov-${index}`).value = p1Prov.value;
+        document.getElementById(`p-kab-${index}`).value = p1Kab.value;
+        document.getElementById(`p-kec-${index}`).value = p1Kec.value;
+        document.getElementById(`p-desa-${index}`).value = p1Desa.value;
+        return;
+      }
+
+      const provId = p1Prov.value;
+      if (!provId) {
+        targetProv.value = "";
+        targetKab.innerHTML = '<option value="">-- Pilih --</option>';
+        targetKec.innerHTML = '<option value="">-- Pilih --</option>';
+        targetDesa.innerHTML = '<option value="">-- Pilih --</option>';
+        return;
+      }
+
+      targetProv.value = provId;
+
+      try {
+        targetKab.innerHTML = '<option value="">Memuat...</option>';
+        const resKab = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provId}.json`);
+        if (!resKab.ok) throw new Error();
+        const regencies = await resKab.json();
+        targetKab.innerHTML = '<option value="">-- Pilih --</option>';
+        regencies.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r.id;
+          opt.textContent = r.name;
+          opt.dataset.name = r.name;
+          targetKab.appendChild(opt);
+        });
+        
+        const kabId = p1Kab.value;
+        if (!kabId) return;
+        targetKab.value = kabId;
+
+        targetKec.innerHTML = '<option value="">Memuat...</option>';
+        const resKec = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${kabId}.json`);
+        if (!resKec.ok) throw new Error();
+        const districts = await resKec.json();
+        targetKec.innerHTML = '<option value="">-- Pilih --</option>';
+        districts.forEach(d => {
+          const opt = document.createElement('option');
+          opt.value = d.id;
+          opt.textContent = d.name;
+          opt.dataset.name = d.name;
+          targetKec.appendChild(opt);
+        });
+
+        const kecId = p1Kec.value;
+        if (!kecId) return;
+        targetKec.value = kecId;
+
+        targetDesa.innerHTML = '<option value="">Memuat...</option>';
+        const resDesa = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${kecId}.json`);
+        if (!resDesa.ok) throw new Error();
+        const villages = await resDesa.json();
+        targetDesa.innerHTML = '<option value="">-- Pilih --</option>';
+        villages.forEach(v => {
+          const opt = document.createElement('option');
+          opt.value = v.id;
+          opt.textContent = v.name;
+          opt.dataset.name = v.name;
+          targetDesa.appendChild(opt);
+        });
+
+        const desaId = p1Desa.value;
+        if (desaId) targetDesa.value = desaId;
+
+      } catch (e) {
+        fallbackToManualAddress(index);
+        document.getElementById(`p-prov-${index}`).value = p1Prov.options[p1Prov.selectedIndex]?.dataset.name || p1Prov.value;
+        document.getElementById(`p-kab-${index}`).value = p1Kab.options[p1Kab.selectedIndex]?.dataset.name || p1Kab.value;
+        document.getElementById(`p-kec-${index}`).value = p1Kec.options[p1Kec.selectedIndex]?.dataset.name || p1Kec.value;
+        document.getElementById(`p-desa-${index}`).value = p1Desa.options[p1Desa.selectedIndex]?.dataset.name || p1Desa.value;
+      }
+    }
+
+    function setAddressInputsLocked(index, locked) {
+      ['prov', 'kab', 'kec', 'desa'].forEach(st => {
+        const el = document.getElementById(`p-${st}-${index}`);
+        if (el) {
+          el.disabled = locked;
+          if (locked) {
+            el.classList.add('bg-gray-100', 'cursor-not-allowed');
+          } else {
+            el.classList.remove('bg-gray-100', 'cursor-not-allowed');
+          }
+        }
+      });
     }
 
     function fallbackToManualAddress(index) {
@@ -1034,6 +1238,11 @@
       });
       
       initRegionCascade(index);
+      if (index > 1) {
+        setupSameAsPrimarySync(index);
+      } else {
+        setupPrimaryContactListeners();
+      }
     }
 
     function removeLastParticipantCard(index) {
