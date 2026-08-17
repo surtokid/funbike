@@ -49,7 +49,8 @@
     <!-- Quick Nav Bar for Preview / Page Switcher -->
     <div class="bg-slate-900 text-white px-3 py-2 flex items-center justify-between text-[10px] font-bold border-b border-white/10 overflow-x-auto no-scrollbar gap-1.5 z-30">
       <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest whitespace-nowrap">Menu Preview:</span>
-      <button onclick="window.location.hash='payment=d739b175b86f49ed'" class="px-2 py-1 rounded bg-amber-500/30 text-amber-300 hover:bg-amber-500/40 whitespace-nowrap border border-amber-500/40">💳 Payment Demo</button>
+      <button onclick="window.location.hash='payment=d739b175b86f49ed'" class="px-2 py-1 rounded bg-amber-500/30 text-amber-300 hover:bg-amber-500/40 whitespace-nowrap border border-amber-500/40">💳 Demo Bayar</button>
+      <button onclick="window.location.hash='payment=lunas'" class="px-2 py-1 rounded bg-emerald-500/30 text-emerald-300 hover:bg-emerald-500/40 whitespace-nowrap border border-emerald-500/40">🎟️ Demo Lunas</button>
       <button onclick="window.location.hash='form'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">📝 Form</button>
       <button onclick="window.location.hash='staff'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">📊 Staff</button>
       <button onclick="window.location.hash='petugas'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">👮 Petugas</button>
@@ -137,7 +138,7 @@
         <div id="participants-container" class="space-y-6"></div>
       </div>
 
-      <!-- SCREEN 2: HALAMAN PEMBAYARAN -->
+      <!-- SCREEN 2: HALAMAN PEMBAYARAN & E-TICKET -->
       <div id="screen-payment" class="hidden space-y-6">
         <div class="text-center space-y-2">
           <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full text-3xl animate-bounce">
@@ -174,7 +175,7 @@
         <!-- Transaction Details Card -->
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
           <h3 class="font-extrabold text-sm text-merdekaNavy border-b border-gray-100 pb-2">Rincian Tiket Peserta</h3>
-          <div id="payment-participants-list" class="space-y-4"></div>
+          <div id="payment-participants-list" class="space-y-3"></div>
         </div>
 
         <!-- Nominal Pembayaran Card -->
@@ -197,7 +198,7 @@
           <p class="text-[10px] text-red-500 font-extrabold leading-tight">⚠️ Jangan membulatkan nominal pembayaran! Pastikan jumlah transfer sama persis hingga digit terakhir.</p>
         </div>
 
-        <!-- E-Ticket Success Container -->
+        <!-- E-Ticket Success Container (Appears when status is LUNAS / DIAMBIL) -->
         <div id="payment-success-card" class="hidden bg-white rounded-2xl p-6 shadow-md border-2 border-emerald-500 text-center space-y-5 relative overflow-hidden">
           <div class="absolute -top-1 left-0 right-0 h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
           
@@ -207,6 +208,7 @@
             <p class="text-[11px] text-gray-500">Tunjukkan barcode / QR Code di bawah ini kepada petugas di lokasi untuk mengambil kelengkapan gowes Anda.</p>
           </div>
 
+          <!-- Ticket QR Code -->
           <div class="flex flex-col items-center justify-center space-y-2 py-2">
             <div class="p-3 bg-white rounded-2xl border-2 border-dashed border-emerald-200 inline-block shadow-sm">
               <img id="ticket-qr-code" src="" class="w-[160px] h-[160px] aspect-square rounded-lg" alt="QR Code Transaksi">
@@ -219,6 +221,7 @@
             <div class="absolute -right-9 -top-2.5 w-5 h-5 bg-merdekaCream rounded-full border-l border-gray-100"></div>
           </div>
 
+          <!-- Participant Colored Cards Below QR Code -->
           <div id="ticket-participants-numbers" class="space-y-3"></div>
 
           <div class="pt-3 pb-1 flex flex-col items-center justify-center space-y-1 bg-gray-50 rounded-xl p-3 border border-gray-100">
@@ -271,7 +274,7 @@
         <div id="petugas-list" class="space-y-4"></div>
       </div>
 
-      <!-- SCREEN 5: HALAMAN PENGAMBILAN KELENGKAPAN -->
+      <!-- SCREEN 5: HALAMAN PENGAMBILAN RACE PACK -->
       <div id="screen-pengambilan" class="hidden space-y-6">
         <div class="flex justify-between items-center">
           <div>
@@ -811,10 +814,6 @@
         token = 'd739b175b86f49ed';
       }
 
-      if (!token && !hash) {
-        token = 'd739b175b86f49ed';
-      }
-
       document.getElementById('screen-form').classList.add('hidden');
       document.getElementById('screen-payment').classList.add('hidden');
       document.getElementById('screen-petugas').classList.add('hidden');
@@ -1233,15 +1232,63 @@
     }
 
     async function loadPaymentScreen(token) {
+      if (currentPaymentDetails && (token === 'lunas' || token === 'd739b175b86f49ed')) {
+        currentPaymentDetails = null;
+      }
+
       if (!currentPaymentDetails) {
         toggleLoader(true, "Mengambil data pendaftaran...");
         try {
           if (supabaseClient) {
-            const { data: tx, error: txErr } = await supabaseClient.from('transaksi').select('*').eq('payment_token', token).single();
-            if (txErr || !tx) throw new Error("Data transaksi tidak ditemukan!");
+            let { data: tx, error: txErr } = await supabaseClient.from('transaksi').select('*').eq('payment_token', token).single();
+            let pend = [];
 
-            const { data: pend, error: pendErr } = await supabaseClient.from('pendaftaran').select('*').eq('transaction_id', tx.id).order('id', { ascending: true });
-            if (pendErr) throw pendErr;
+            if (txErr || !tx) {
+              // Jika token demo diakses tetapi belum ada di Supabase, tampilkan Data Mock Demo Fallback
+              if (token === 'd739b175b86f49ed') {
+                tx = {
+                  id: 'TX-DEMO-999',
+                  registration_id: 'REG-DEMO-999',
+                  payment_token: 'd739b175b86f49ed',
+                  payment_url: window.location.origin + window.location.pathname + '?payment=d739b175b86f49ed',
+                  subtotal: 70000,
+                  kode_unik: 123,
+                  nominal_pembayaran: 70123,
+                  status: 'MENUNGGU_PEMBAYARAN',
+                  nama_kontak: 'Budi Santoso (Demo Belum Bayar)',
+                  wa_kontak: '081234567890',
+                  jumlah_peserta: 2
+                };
+                pend = [
+                  { nama_lengkap: 'Budi Santoso', nomor_wa: '081234567890', nomor_peserta: '00001', usia: 28, harga_htm: 35000, jenis_kelamin: 'Laki-laki' },
+                  { nama_lengkap: 'Siti Rahmawati', nomor_wa: '081234567890', nomor_peserta: '00002', usia: 25, harga_htm: 35000, jenis_kelamin: 'Perempuan' }
+                ];
+              } else if (token === 'lunas') {
+                tx = {
+                  id: 'TX-DEMO-LUNAS-777',
+                  registration_id: 'REG-DEMO-777',
+                  payment_token: 'lunas',
+                  payment_url: window.location.origin + window.location.pathname + '?payment=lunas',
+                  subtotal: 70000,
+                  kode_unik: 123,
+                  nominal_pembayaran: 70123,
+                  status: 'LUNAS',
+                  nama_kontak: 'Budi Santoso (Demo Ticket Lunas)',
+                  wa_kontak: '081234567890',
+                  jumlah_peserta: 2
+                };
+                pend = [
+                  { nama_lengkap: 'Budi Santoso', nomor_wa: '081234567890', nomor_peserta: '01001', usia: 28, harga_htm: 35000, jenis_kelamin: 'Laki-laki' },
+                  { nama_lengkap: 'Siti Rahmawati', nomor_wa: '081234567890', nomor_peserta: '01002', usia: 25, harga_htm: 35000, jenis_kelamin: 'Perempuan' }
+                ];
+              } else {
+                throw new Error("Data transaksi tidak ditemukan!");
+              }
+            } else {
+              const { data: pendData, error: pendErr } = await supabaseClient.from('pendaftaran').select('*').eq('transaction_id', tx.id).order('id', { ascending: true });
+              if (pendErr) throw pendErr;
+              pend = pendData || [];
+            }
 
             const participantDetails = pend.map(p => ({
               nama: p.nama_lengkap,
@@ -1291,15 +1338,29 @@
       const listContainer = document.getElementById('payment-participants-list');
       listContainer.innerHTML = '';
 
+      const isLunas = currentPaymentDetails.status === 'LUNAS' || currentPaymentDetails.status === 'DIAMBIL';
+
       currentPaymentDetails.participants.forEach((p, index) => {
         const pCard = document.createElement('div');
-        pCard.className = "flex justify-between items-center text-xs";
+        pCard.className = "flex justify-between items-center text-xs p-2.5 rounded-xl bg-gray-50/70 border border-gray-100";
+        const formattedNum = p.nomorPeserta ? String(p.nomorPeserta).padStart(5, '0') : '-';
+        
+        const lunasDetails = isLunas 
+          ? `<div class="mt-1 flex items-center gap-2">
+               <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">LUNAS</span>
+               <span class="font-mono font-extrabold text-merdekaNavy text-[11px] bg-white px-2 py-0.5 rounded border border-gray-200 shadow-2xs">No. ${formattedNum}</span>
+             </div>`
+          : '';
+
         pCard.innerHTML = `
           <div>
             <p class="font-extrabold text-gray-800">${index + 1}. ${p.nama}</p>
             <p class="text-[10px] text-gray-500">${p.gender}, ${p.usia} Thn</p>
+            ${lunasDetails}
           </div>
-          <p class="font-black text-merdekaNavy">Rp${p.harga.toLocaleString('id-ID')}</p>
+          <div class="text-right">
+            <p class="font-black text-merdekaNavy">Rp${p.harga.toLocaleString('id-ID')}</p>
+          </div>
         `;
         listContainer.appendChild(pCard);
       });
@@ -1309,7 +1370,7 @@
       const qrisUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentPaymentDetails.qrisPayload)}`;
       document.getElementById('qris-img').src = qrisUrl;
 
-      if (currentPaymentDetails.status === 'LUNAS' || currentPaymentDetails.status === 'DIAMBIL') {
+      if (isLunas) {
         document.getElementById('payment-warning-container').classList.add('hidden');
         document.getElementById('payment-nominal-card').classList.add('hidden');
         document.getElementById('payment-qris-card').classList.add('hidden');
@@ -1322,16 +1383,26 @@
         document.getElementById('ticket-qr-code').src = txQrUrl;
 
         const ticketNumbers = document.getElementById('ticket-participants-numbers');
-        ticketNumbers.innerHTML = '';
-        currentPaymentDetails.participants.forEach((p, idx) => {
-          const formattedNum = p.nomorPeserta ? String(p.nomorPeserta).padStart(5, '0') : '-';
-          ticketNumbers.innerHTML += `
-            <div class="flex justify-between items-center text-xs bg-gray-50 rounded-lg p-2 border border-gray-100">
-              <span class="font-bold text-gray-600 truncate mr-2">${p.nama}</span>
-              <span class="font-black text-merdekaNavy font-mono bg-white px-2 py-1 rounded shadow-sm border border-gray-200">${formattedNum}</span>
-            </div>
-          `;
-        });
+        if (ticketNumbers) {
+          ticketNumbers.innerHTML = '';
+          currentPaymentDetails.participants.forEach((p, idx) => {
+            const formattedNum = p.nomorPeserta ? String(p.nomorPeserta).padStart(5, '0') : '-';
+            ticketNumbers.innerHTML += `
+              <div class="bg-gradient-to-br from-merdekaNavy to-slate-900 text-white rounded-2xl p-4 text-center shadow-md border border-slate-700 space-y-1 relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-yellow-400"></div>
+                <p class="text-sm font-extrabold text-white uppercase tracking-wide truncate">${p.nama}</p>
+                <p class="text-3xl font-black text-yellow-300 font-mono tracking-widest py-1">${formattedNum}</p>
+                <span class="inline-block bg-emerald-500/20 text-emerald-300 text-[9px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest border border-emerald-500/30">NOMOR PESERTA</span>
+              </div>
+            `;
+          });
+        }
+      } else {
+        document.getElementById('payment-warning-container').classList.remove('hidden');
+        document.getElementById('payment-nominal-card').classList.remove('hidden');
+        document.getElementById('payment-qris-card').classList.remove('hidden');
+        document.getElementById('btn-open-confirm-modal').classList.remove('hidden');
+        document.getElementById('payment-success-card').classList.add('hidden');
       }
     }
 
