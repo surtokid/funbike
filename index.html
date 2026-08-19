@@ -1618,6 +1618,70 @@
               pend = pendData || [];
             }
 
+            // --- LOGIKA PENYESUAIAN HARGA OTOMATIS (DYNAMIC PRICING) ---
+            if (tx.status === 'MENUNGGU_PEMBAYARAN' && token !== 'd739b175b86f49ed' && token !== 'lunas') {
+              let isPriceChanged = false;
+              let newSubtotal = 0;
+              const baseGlobalCount = parseInt(currentGlobalCount, 10) || 0;
+
+              for (let i = 0; i < pend.length; i++) {
+                const nextPaidSeq = baseGlobalCount + i + 1;
+                let newHtm = 45000; // Default Harga Normal
+                if (nextPaidSeq <= 100) newHtm = 35000; // 100 Pertama
+                else if (nextPaidSeq <= 400) newHtm = 40000; // 300 Berikutnya
+
+                newSubtotal += newHtm;
+                if (newHtm !== pend[i].harga_htm) {
+                  pend[i].harga_htm = newHtm;
+                  isPriceChanged = true; // Tandai bahwa harga telah berubah karena kuota lewat
+                }
+              }
+
+              // Jika harga berubah, segera Update ke Database (Supabase & Google Sheets)
+              if (isPriceChanged) {
+                const newNominal = newSubtotal + tx.kode_unik;
+
+                if (supabaseClient) {
+                  // Update Supabase Transaksi
+                  await supabaseClient.from('transaksi').update({
+                    subtotal: newSubtotal,
+                    nominal_pembayaran: newNominal
+                  }).eq('id', tx.id);
+
+                  // Update Supabase Pendaftaran (Masing-masing peserta)
+                  for (let i = 0; i < pend.length; i++) {
+                    await supabaseClient.from('pendaftaran').update({
+                      harga_htm: pend[i].harga_htm,
+                      nominal_pembayaran: newNominal
+                    }).eq('id', pend[i].id);
+                  }
+                }
+
+                // Sync ke Google Sheets (Background)
+                fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                  body: JSON.stringify({
+                    action: 'updatePriceSync',
+                    data: {
+                      transactionId: tx.id,
+                      newSubtotal: newSubtotal,
+                      newNominal: newNominal,
+                      participants: pend.map(p => ({ nama: p.nama_lengkap, harga: p.harga_htm }))
+                    }
+                  })
+                }).catch(e => console.warn(e));
+
+                // Terapkan ke memori variabel di web
+                tx.subtotal = newSubtotal;
+                tx.nominal_pembayaran = newNominal;
+                
+                // Beri notifikasi ke user bahwa harga telah disesuaikan
+                showToast("Harga telah disesuaikan secara otomatis karena kuota promo sebelumnya telah terisi.", "info");
+              }
+            }
+            // --- END LOGIKA PENYESUAIAN HARGA ---
+
             const participantDetails = pend.map(p => ({
               nama: p.nama_lengkap,
               wa: p.nomor_wa,
