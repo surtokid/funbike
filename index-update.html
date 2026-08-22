@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pendaftaran Fun Bike Suryatokoku</title>
+  
+  <!-- Plus Jakarta Sans Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- HTML5-QRCODE Scanner CDN -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            merdekaRed: '#DA251D',
+            merdekaWhite: '#FFFFFF',
+            merdekaCream: '#FCFBF4',
+            merdekaNavy: '#1B2A4A',
+            merdekaGray: '#F3F4F6'
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out forwards',
+            'slide-up': 'slideUp 0.3s ease-out forwards'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(8px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body class="bg-merdekaNavy min-h-screen flex justify-center items-stretch antialiased">
+
+  <!-- Main Mobile Container -->
+  <div class="w-full max-w-md bg-merdekaCream shadow-2xl relative flex flex-col min-h-screen overflow-x-hidden pb-28">
+    
+    <!-- Quick Nav Bar for Preview / Page Switcher -->
+    <div class="hidden bg-slate-900 text-white px-3 py-2 flex items-center justify-between text-[10px] font-bold border-b border-white/10 overflow-x-auto no-scrollbar gap-1.5 z-30 sticky top-0">
+      <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest whitespace-nowrap">Menu Preview:</span>
+      <button onclick="window.location.hash='payment=d739b175b86f49ed'" class="px-2 py-1 rounded bg-amber-500/30 text-amber-300 hover:bg-amber-500/40 whitespace-nowrap">💳 Demo Bayar</button>
+      <button onclick="window.location.hash='payment=lunas'" class="px-2 py-1 rounded bg-emerald-500/30 text-emerald-300 hover:bg-emerald-500/40 whitespace-nowrap">🎟️ Demo Lunas</button>
+      <button onclick="window.location.hash='form'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">📝 Form</button>
+      <button onclick="window.location.hash='staff'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">📊 Staff</button>
+      <button onclick="window.location.hash='petugas'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">👮 Petugas</button>
+      <button onclick="window.location.hash='pengambilan'" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20 whitespace-nowrap">📦 Penyerahan</button>
+    </div>
+
+    <!-- Top Banner Image Header -->
+    <div class="w-full relative bg-merdekaRed overflow-hidden">
+      <img src="./Baner.png" class="w-full h-auto object-cover block" alt="Banner Fun Bike Suryatokoku" onerror="this.src='https://placehold.co/600x250/DA251D/FFFFFF?text=Fun+Bike+Suryatokoku+2026'">
+    </div>
+
+    <!-- MAIN DYNAMIC CONTENT CONTAINER -->
+    <div id="app-content" class="px-5 pt-5 pb-5 flex-grow bg-merdekaCream rounded-t-[32px] relative z-10 -mt-6 shadow-[0_-10px_25px_rgba(0,0,0,0.08)]">
+      
+      <!-- SCREEN 1: FORM PENDAFTARAN -->
+      <div id="screen-form" class="hidden space-y-6">
+        
+        <!-- VIP PROMO BANNER (Muncul Otomatis jika URL pakai ?ref=komunitas) -->
+        <div id="vip-promo-banner" class="hidden bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden transition-all duration-300">
+          <div class="absolute -right-4 -top-4 w-16 h-16 bg-white opacity-20 rounded-full blur-xl"></div>
+          <div class="flex items-center gap-3 relative z-10">
+            <span class="text-3xl animate-bounce">🎉</span>
+            <div>
+              <p class="font-black text-sm uppercase tracking-wider">Promo Komunitas Aktif!</p>
+              <p class="text-[11px] font-medium opacity-95 leading-tight">Harga khusus <strong class="bg-white text-emerald-800 px-1.5 py-0.5 rounded font-extrabold">Rp 40.000 / peserta</strong> telah dikunci untuk rombongan Anda.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center space-y-1">
+          <span class="inline-block bg-merdekaRed text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">SURYATOKOKU X OMG X PEDAL LINU</span>
+          <h1 class="text-2xl font-extrabold text-merdekaNavy">Pendaftaran Fun Bike</h1>
+          <p class="text-xs text-gray-500 font-medium">Bisa mendaftarkan banyak peserta sekaligus dalam satu transaksi.</p>
+        </div>
+
+        <!-- Tier Info Card -->
+        <div class="bg-gradient-to-br from-red-50 to-amber-50 border-2 border-red-200 rounded-2xl p-4 shadow-md space-y-3 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-[9px] bg-red-600 text-white font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wide">Slot Terbatas!</span>
+          </div>
+
+          <div class="text-center bg-white rounded-xl p-3 border border-red-100 shadow-xs relative">
+            <p class="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest">HTM Normal</p>
+            <p class="text-xl font-black text-gray-400 line-through">Rp 45.000</p>
+            <p class="text-[11px] text-merdekaNavy font-extrabold mt-1">Dapatkan harga promo lebih hemat jika daftar lebih awal!</p>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center text-[10px] font-extrabold">
+            <div class="p-2 bg-gradient-to-b from-emerald-50 to-emerald-100 text-emerald-800 rounded-xl border border-emerald-200 flex flex-col justify-between relative overflow-hidden">
+              <div class="absolute top-0 right-0 left-0 h-1 bg-emerald-500"></div>
+              <div>
+                <p class="text-[8px] text-emerald-600 uppercase font-black">100 Pertama</p>
+                <p class="text-sm font-black text-emerald-900 mt-1">Rp35k</p>
+              </div>
+              <p class="text-[8px] text-emerald-600 mt-1 leading-tight font-medium">Urutan 1-100</p>
+            </div>
+            
+            <div class="p-2 bg-gradient-to-b from-amber-50 to-amber-100 text-amber-800 rounded-xl border border-amber-200 flex flex-col justify-between relative overflow-hidden">
+              <div class="absolute top-0 right-0 left-0 h-1 bg-amber-500"></div>
+              <div>
+                <p class="text-[8px] text-amber-600 uppercase font-black">300 Berikutnya</p>
+                <p class="text-sm font-black text-amber-900 mt-1">Rp40k</p>
+              </div>
+              <p class="text-[8px] text-amber-600 mt-1 leading-tight font-medium">Urutan 101-400</p>
+            </div>
+
+            <div class="p-2 bg-gradient-to-b from-red-50 to-red-100 text-red-800 rounded-xl border border-red-200 flex flex-col justify-between relative overflow-hidden">
+              <div class="absolute top-0 right-0 left-0 h-1 bg-red-500"></div>
+              <div>
+                <p class="text-[8px] text-red-600 uppercase font-black">Harga Normal</p>
+                <p class="text-sm font-black text-red-900 mt-1">Rp45k</p>
+              </div>
+              <p class="text-[8px] text-red-600 mt-1 leading-tight font-medium">Urutan 401+</p>
+            </div>
+          </div>
+          
+          <p class="text-[9px] text-gray-500 leading-tight text-center font-medium">
+            *) Harga dihitung per individu berdasarkan urutan pendaftaran Anda secara real-time.
+          </p>
+        </div>
+
+        <!-- Participants Counter -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+          <div>
+            <h2 class="font-extrabold text-merdekaNavy text-sm">Jumlah Peserta</h2>
+            <p class="text-xs text-gray-400">Ketik angka atau gunakan tombol</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-dec-count" type="button" class="w-10 h-10 rounded-xl bg-gray-100 hover:bg-gray-200 text-merdekaNavy font-black text-xl flex items-center justify-center transition active:scale-95">-</button>
+            <input type="number" id="input-participant-count" value="1" min="1" max="100" class="w-12 h-10 text-center font-extrabold text-xl text-merdekaNavy bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-merdekaRed outline-none">
+            <button id="btn-inc-count" type="button" class="w-10 h-10 rounded-xl bg-merdekaRed hover:bg-red-700 text-white font-black text-xl flex items-center justify-center transition active:scale-95">+</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Cards Container -->
+        <div id="participants-container" class="space-y-6"></div>
+      </div>
+
+      <!-- SCREEN 2: HALAMAN PEMBAYARAN & E-TICKET -->
+      <div id="screen-payment" class="hidden space-y-6">
+        <div class="text-center space-y-2">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full text-3xl animate-bounce">🎉</div>
+          <h1 class="text-2xl font-extrabold text-merdekaNavy">Pendaftaran Berhasil!</h1>
+          <p class="text-xs text-gray-500 font-medium">Silakan selesaikan pembayaran agar nomor peserta terverifikasi otomatis.</p>
+        </div>
+
+        <!-- Realtime Live Stats Counter -->
+        <div id="payment-live-stats" class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center justify-between shadow-xs">
+          <div>
+            <p class="text-[9px] text-blue-600 font-extrabold uppercase tracking-widest font-mono">Kuota Terisi Terkini</p>
+            <p class="text-sm font-black text-merdekaNavy mt-0.5"><span id="payment-global-paid-count">0</span> Peserta Lunas 🚴</p>
+          </div>
+          <span class="text-[9px] bg-blue-100 text-blue-800 font-black px-2.5 py-1 rounded-full uppercase tracking-wider animate-pulse">REAL-TIME</span>
+        </div>
+
+        <!-- Warning Information Card -->
+        <div id="payment-warning-container" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2 text-amber-900 text-[11px] leading-relaxed font-semibold">
+          <div class="flex items-start gap-1.5 text-amber-700 font-bold">
+            <span class="flex-shrink-0">🔥</span>
+            <p><strong>Segera selesaikan pembayaran dengan nominal yang tertera sebelum harga berubah!</strong></p>
+          </div>
+          <p class="text-justify text-gray-700">Harga dapat otomatis menyesuaikan mengikuti ketersediaan slot saat pembayaran dilakukan.</p>
+        </div>
+
+        <!-- Transaction Details Card -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="font-extrabold text-sm text-merdekaNavy border-b border-gray-100 pb-2">Rincian Tiket Peserta</h3>
+          <div id="payment-participants-list" class="space-y-3"></div>
+        </div>
+
+        <!-- Nominal Pembayaran Card -->
+        <div id="payment-nominal-card" class="bg-merdekaNavy text-white rounded-2xl p-5 shadow-md text-center space-y-3 relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 text-white opacity-5 text-9xl font-bold">Rp</div>
+          <p class="text-xs text-gray-300 font-medium tracking-wide uppercase">Pastikan bayar sesuai nominal dibawah</p>
+          <div class="text-3xl font-black text-yellow-300 tracking-tight" id="pay-total">Rp0</div>
+        </div>
+
+        <!-- QRIS Container -->
+        <div id="payment-qris-card" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center space-y-4">
+          <div>
+            <h3 class="font-extrabold text-sm text-merdekaNavy">Scan QRIS Untuk Membayar</h3>
+            <p class="text-xs text-gray-400">Kompatibel dengan semua e-wallet & m-banking</p>
+          </div>
+          <div class="flex justify-center p-2 bg-gray-50 rounded-2xl border border-gray-100 inline-block mx-auto max-w-[250px]">
+            <img id="qris-img" src="" class="w-full h-auto aspect-square rounded-xl" alt="QRIS Code">
+          </div>
+          <p class="text-[10px] text-red-500 font-extrabold leading-tight">⚠️ Jangan membulatkan nominal pembayaran! Pastikan jumlah transfer sama persis hingga digit terakhir.</p>
+        </div>
+
+        <!-- E-Ticket Success Container -->
+        <div id="payment-success-card" class="hidden bg-white rounded-2xl p-6 shadow-md border-2 border-emerald-500 text-center space-y-5 relative overflow-hidden">
+          <div class="absolute -top-1 left-0 right-0 h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+          <div class="space-y-1">
+            <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider">E-Ticket Lunas 🏆</span>
+            <h3 class="font-extrabold text-base text-merdekaNavy mt-2">Selamat, Pembayaran Terverifikasi!</h3>
+            <p class="text-[11px] text-gray-500">Tunjukkan barcode / QR Code di bawah ini kepada petugas untuk mengambil kelengkapan gowes Anda.</p>
+          </div>
+          <div class="flex flex-col items-center justify-center space-y-2 py-2">
+            <div class="p-3 bg-white rounded-2xl border-2 border-dashed border-emerald-200 inline-block shadow-sm">
+              <img id="ticket-qr-code" src="" class="w-[160px] h-[160px] aspect-square rounded-lg" alt="QR Code Transaksi">
+            </div>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pindai QR ini saat di meja kelengkapan</p>
+          </div>
+          <div id="ticket-participants-numbers" class="space-y-3"></div>
+          <div class="pt-3 pb-1 flex flex-col items-center justify-center space-y-1 bg-gray-50 rounded-xl p-3 border border-gray-100">
+            <p class="text-[10px] text-gray-500 font-mono tracking-widest" id="ticket-tx-id">TX-XXXXXXXXX</p>
+          </div>
+        </div>
+
+        <button id="btn-open-confirm-modal" class="w-full bg-merdekaRed hover:bg-red-700 text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition duration-300 transform active:scale-95 flex items-center justify-center gap-2">
+          <span>Upload Bukti Pembayaran ke WhatsApp Admin</span>
+        </button>
+      </div>
+
+      <!-- SCREEN 3: HALAMAN PETUGAS -->
+      <div id="screen-petugas" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <h1 class="text-xl font-extrabold text-merdekaNavy">Dashboard Petugas</h1>
+          <button id="btn-petugas-logout" class="bg-red-100 hover:bg-red-200 text-merdekaRed font-bold text-xs px-3 py-2 rounded-xl transition">Keluar</button>
+        </div>
+
+        <button id="btn-goto-pengambilan" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold py-4 px-5 rounded-2xl shadow-md transition active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <span>📦 Mode Penyerahan Race Pack</span>
+        </button>
+
+        <div class="space-y-3">
+          <input type="text" id="petugas-search" placeholder="Cari nama, WA, atau nomor peserta..." class="w-full border-2 border-gray-200 focus:border-merdekaNavy rounded-xl px-4 py-3 outline-none transition text-sm">
+          <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-bold">
+            <button class="btn-filter-status bg-merdekaNavy text-white px-3 py-2 rounded-xl whitespace-nowrap active" data-status="ALL">Semua</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="MENUNGGU_PEMBAYARAN">Menunggu</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="BUKTI_DIUPLOAD">Butuh Verifikasi</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="LUNAS">Lunas</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="DITOLAK">Ditolak</button>
+            <button class="btn-filter-status bg-white text-gray-500 border border-gray-200 px-3 py-2 rounded-xl whitespace-nowrap" data-status="DIAMBIL">Sudah Diambil</button>
+          </div>
+        </div>
+
+        <div id="petugas-list" class="space-y-4"></div>
+      </div>
+
+      <!-- SCREEN 5: HALAMAN PENGAMBILAN RACE PACK -->
+      <div id="screen-pengambilan" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-xl font-extrabold text-merdekaNavy">Penyerahan Race Pack</h1>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Fun Bike Suryatokoku</p>
+          </div>
+          <button id="btn-pengambilan-back" class="bg-gray-100 hover:bg-gray-200 text-merdekaNavy font-extrabold text-xs px-3.5 py-2.5 rounded-xl transition">Kembali</button>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4 text-center">
+          <div class="space-y-1">
+            <h3 class="font-extrabold text-sm text-merdekaNavy">Pindai Barcode / QR Tiket</h3>
+            <p class="text-[10px] text-gray-400 font-medium">Dekatkan QR Code E-Ticket lunas ke kamera</p>
+          </div>
+
+          <button id="btn-start-scanner" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm py-4 px-5 rounded-2xl shadow-md transition active:scale-95 flex items-center justify-center gap-2">
+            <span>📷 Scan QR Code</span>
+          </button>
+
+          <div class="relative flex py-2 items-center">
+            <div class="flex-grow border-t border-gray-200"></div>
+            <span class="flex-shrink mx-4 text-gray-400 text-[10px] font-black uppercase tracking-wider">Atau Input Manual</span>
+            <div class="flex-grow border-t border-gray-200"></div>
+          </div>
+
+          <div class="flex gap-2">
+            <input type="text" id="input-manual-peserta" placeholder="Ketik Nomor Peserta / TX ID (Contoh: 00001)" class="flex-grow border-2 border-gray-200 focus:border-merdekaNavy rounded-xl px-4 py-3 outline-none transition text-xs font-mono font-bold">
+            <button id="btn-search-peserta" class="bg-merdekaNavy hover:bg-slate-800 text-white font-extrabold text-xs px-5 py-3 rounded-xl transition active:scale-95 shadow-sm">Verifikasi</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 4: HALAMAN STAFF -->
+      <div id="screen-staff" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <h1 class="text-xl font-extrabold text-merdekaNavy">Dashboard Staff</h1>
+          <button id="btn-staff-logout" class="bg-red-100 hover:bg-red-200 text-merdekaRed font-bold text-xs px-3 py-2 rounded-xl transition">Keluar</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3" id="staff-metrics-container"></div>
+
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="font-extrabold text-sm text-merdekaNavy">Pemanfaatan Slot Harga</h3>
+          
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span class="text-gray-500">Tier Rp35.000 (Urutan 1-100)</span>
+              <span id="staff-progress-35-text" class="text-merdekaNavy">0/100</span>
+            </div>
+            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+              <div id="staff-progress-35-bar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-bold">
+              <span class="text-gray-500">Tier Rp40.000 (Urutan 101-400)</span>
+              <span id="staff-progress-40-text" class="text-merdekaNavy">0/300</span>
+            </div>
+            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+              <div id="staff-progress-40-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-red-50 border border-red-100 rounded-xl flex justify-between items-center">
+            <span class="text-xs font-bold text-red-700">Tier Rp45.000 (Urutan 401+)</span>
+            <span id="staff-tier-45-count" class="text-sm font-extrabold text-red-700">0 Peserta</span>
+          </div>
+        </div>
+
+        <div id="staff-revenue-container"></div>
+      </div>
+
+    </div>
+
+    <!-- STICKY ACTION BAR -->
+    <div id="sticky-action-bar" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-100 p-4 shadow-2xl rounded-t-2xl flex items-center justify-between z-20 hidden">
+      <div>
+        <p class="text-xs text-gray-400 font-bold">Estimasi Tiket (<span id="sticky-count">1</span> Peserta)</p>
+        <p class="text-lg font-extrabold text-merdekaRed" id="sticky-price-estimate">Rp 35.000</p>
+      </div>
+      <button id="btn-submit-registration" class="bg-merdekaRed hover:bg-red-700 text-white font-extrabold px-6 py-3.5 rounded-xl transition duration-300 transform active:scale-95 shadow-md flex items-center gap-2 text-sm">
+        <span>Daftar Sekarang</span>
+      </button>
+    </div>
+
+    <!-- MODAL CAMERA SCANNER FULLSCREEN -->
+    <div id="modal-scanner" class="fixed inset-0 z-50 flex flex-col bg-black hidden">
+      <div class="p-4 flex justify-between items-center bg-black/60 text-white z-10">
+        <span class="font-extrabold text-sm">Arahkan Kamera ke QR Code E-Ticket</span>
+        <button id="btn-close-scanner" class="w-8 h-8 flex items-center justify-center bg-white/20 rounded-full font-bold text-lg">✕</button>
+      </div>
+      <div class="flex-grow relative bg-black flex items-center justify-center overflow-hidden">
+        <div id="qr-reader" class="w-full h-full"></div>
+      </div>
+    </div>
+
+    <!-- MODAL POPUP HASIL SCAN / PENYERAHAN -->
+    <div id="modal-scanned-result" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 hidden p-4">
+      <div class="bg-white w-full max-w-sm rounded-3xl p-5 space-y-4 shadow-2xl animate-fade-in relative max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          <h3 class="font-extrabold text-merdekaNavy text-sm">Hasil Verifikasi Tiket</h3>
+          <button id="btn-close-result-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
+        </div>
+        <div id="scanned-result-content" class="space-y-4"></div>
+      </div>
+    </div>
+
+    <!-- MODAL CONFIRMATION (UPLOAD BUKTI) -->
+    <div id="modal-upload" class="fixed inset-0 z-40 flex items-end justify-center bg-black/50 hidden p-4">
+      <div class="bg-white w-full max-w-sm rounded-t-3xl rounded-b-xl p-6 space-y-5 animate-slide-up shadow-2xl">
+        <div class="flex justify-between items-center">
+          <h3 class="font-extrabold text-lg text-merdekaNavy">Kirim Bukti Pembayaran</h3>
+          <button id="btn-close-modal" class="text-gray-400 hover:text-gray-600 font-black text-xl">✕</button>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="border-2 border-dashed border-gray-200 hover:border-merdekaRed rounded-2xl p-4 text-center cursor-pointer relative" id="drop-zone">
+            <input type="file" id="proof-file" accept="image/png, image/jpeg, image/jpg, image/webp" class="hidden">
+            <div id="file-placeholder" class="space-y-2">
+              <span class="text-4xl text-gray-300">📸</span>
+              <p class="text-xs font-bold text-gray-500">Pilih Foto Bukti Transfer</p>
+            </div>
+            <div id="file-preview-container" class="hidden space-y-2">
+              <img id="file-preview" src="" class="max-h-40 mx-auto rounded-xl object-contain" alt="Bukti Transfer">
+              <p id="file-name-text" class="text-xs font-bold text-merdekaNavy truncate px-4"></p>
+              <button id="btn-change-file" class="text-[11px] font-bold text-red-500 underline">Ganti Foto</button>
+            </div>
+          </div>
+          
+          <button id="btn-confirm-upload" class="w-full bg-merdekaNavy hover:bg-slate-800 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition active:scale-95 text-sm flex items-center justify-center gap-2">
+            <span>Kirim & Konfirmasi ke WhatsApp</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loading-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-merdekaNavy bg-opacity-95 text-white hidden">
+    <div class="relative w-24 h-24 mb-4">
+      <div class="absolute inset-0 rounded-full border-4 border-t-merdekaRed border-r-transparent border-b-white border-l-transparent animate-spin"></div>
+      <div class="absolute inset-2 bg-merdekaCream rounded-full flex items-center justify-center shadow-inner">
+        <span class="text-3xl">🚴</span>
+      </div>
+    </div>
+    <p class="text-sm font-bold tracking-wider animate-pulse text-merdekaCream text-center px-6" id="loading-text">Sedang memproses...</p>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 space-y-2 w-full max-w-xs px-4 pointer-events-none"></div>
+
+  <!-- JS APP CONFIGURATION & LOGIC -->
+  <script>
+    const APP_CONFIG = {
+      SUPABASE_URL: 'https://umjhmczidrzeqhubujyt.supabase.co',
+      SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVtamhtY3ppZHJ6ZXFodWJ1anl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTUwNTgsImV4cCI6MjEwMjI5MTA1OH0.DUU2cPg_Rue_zY0HtQB-9R8YDBeJkuEchJfX9OR4jqo',
+      GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbwQTuwza8gemJakpOHIUgJMf12cSTT7aHi9nxaqY6PUuEHo_5ni2-drwP2KhK_A3YPl/exec',
+      ADMIN_WHATSAPP: '628131310110',
+      QRIS_STATIC_PAYLOAD: '00020101021126570011ID.DANA.WWW011893600915333496229502093349622950303UMI51440014ID.CO.QRIS.WWW0215ID10222175326650303UMI5204729853033605802ID5911Suryatokoku6012Kab. Cirebon61054518863043F0D'
+    };
+
+    let supabaseClient = null;
+    if (window.supabase && APP_CONFIG.SUPABASE_URL.startsWith('https://')) {
+      supabaseClient = window.supabase.createClient(APP_CONFIG.SUPABASE_URL, APP_CONFIG.SUPABASE_ANON_KEY);
+    }
+
+    let participantsCount = 1;
+    let currentGlobalCount = 12; // Default mock count for smooth preview
+    const MAX_QUOTA = 521; // Batas maksimal kuota pendaftaran
+    let currentPaymentDetails = null;
+    let globalProvinces = null;
+    let selectedFileObject = null;
+    let selectedFileName = null;
+    let html5QrScanner = null; 
+
+    // Deteksi Parameter URL Promo VIP
+    const urlParams = new URLSearchParams(window.location.search);
+    const isVipPromo = urlParams.get('ref') === 'komunitas' || urlParams.get('promo') === 'vip';
+
+    window.onload = async function() {
+      if (isVipPromo) {
+        const vipBanner = document.getElementById('vip-promo-banner');
+        if (vipBanner) vipBanner.classList.remove('hidden');
+      }
+      await fetchGlobalStatus();
+      await initAppRouter();
+      window.addEventListener('hashchange', initAppRouter);
+      setupFileUploadHandlers();
+      setupParticipantsCounterInput();
+      
+      // Attach transition for officer dashboard
+      const btnGotoPengambilan = document.getElementById('btn-goto-pengambilan');
+      if (btnGotoPengambilan) {
+        btnGotoPengambilan.onclick = () => {
+          window.location.hash = 'pengambilan';
+        };
+      }
+    };
+
+    async function fetchGlobalStatus() {
+      if (!supabaseClient) return;
+      try {
+        const { count, error } = await supabaseClient
+          .from('pendaftaran')
+          .select('*', { count: 'exact', head: true })
+          .in('status_pembayaran', ['LUNAS', 'DIAMBIL']);
+          
+        if (!error && count !== null) {
+          currentGlobalCount = count;
+          updateCountDisplays();
+          const hash = window.location.hash.replace('#', '');
+          if (!hash || hash === 'form') {
+            if (currentGlobalCount >= MAX_QUOTA) {
+              renderFormScreen();
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Gagal mengambil status global, menggunakan default mock count:", e);
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `flex items-center w-full p-4 text-gray-800 bg-white rounded-xl shadow-xl border-l-4 ${type === 'success' ? 'border-emerald-500' : 'border-red-500'} transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+      toast.innerHTML = `<div class="ml-1 text-xs font-extrabold">${message}</div>`;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+      }, 10);
+      
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => { toast.remove(); }, 300);
+      }, 3500);
+    }
+
+    function toggleLoader(show, text = "Sedang memproses...") {
+      const overlay = document.getElementById('loading-overlay');
+      const loadingText = document.getElementById('loading-text');
+      if (show) {
+        loadingText.textContent = text;
+        overlay.classList.remove('hidden');
+      } else {
+        overlay.classList.add('hidden');
+      }
+    }
+
+    async function initAppRouter() {
+      let hash = window.location.hash.replace('#', '');
+      let token = urlParams.get('payment');
+      if (!token && hash.startsWith('payment=')) {
+        token = hash.split('payment=')[1];
+      }
+
+      document.getElementById('screen-form').classList.add('hidden');
+      document.getElementById('screen-payment').classList.add('hidden');
+      document.getElementById('screen-petugas').classList.add('hidden');
+      document.getElementById('screen-staff').classList.add('hidden');
+      document.getElementById('screen-pengambilan').classList.add('hidden');
+      document.getElementById('sticky-action-bar').classList.add('hidden');
+
+      if (hash === 'petugas') {
+        renderPetugasScreen();
+      } else if (hash === 'staff') {
+        renderStaffScreen();
+      } else if (hash === 'pengambilan') {
+        renderPengambilanScreen();
+      } else if (token) {
+        await loadPaymentScreen(token);
+      } else {
+        renderFormScreen();
+      }
+    }
+
+    function renderFormScreen() {
+      document.getElementById('screen-form').classList.remove('hidden');
+      const container = document.getElementById('participants-container');
+
+      if (currentGlobalCount >= MAX_QUOTA) {
+        document.getElementById('sticky-action-bar').classList.add('hidden');
+        document.getElementById('screen-form').innerHTML = `
+          <div class="text-center space-y-5 py-6 px-2 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-red-100 text-merdekaRed rounded-full text-4xl shadow-inner animate-bounce">
+              🚫
+            </div>
+            <div class="space-y-2">
+              <span class="inline-block bg-merdekaRed text-white text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider">Pendaftaran Resmi Ditutup</span>
+              <h1 class="text-2xl font-black text-merdekaNavy">Kuota Pendaftaran Habis!</h1>
+              <p class="text-xs text-gray-500 font-medium leading-relaxed max-w-xs mx-auto">
+                Terima kasih atas antusiasme luar biasa Anda! Kuota pendaftaran Fun Bike Suryatokoku sebanyak <strong>${MAX_QUOTA} peserta</strong> telah terpenuhi.
+              </p>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-left space-y-2 text-xs text-amber-900 shadow-xs">
+              <p class="font-extrabold flex items-center gap-1.5 text-amber-800">
+                <span>💡</span> Sudah mendaftar sebelumnya?
+              </p>
+              <p class="text-[11px] text-gray-600 leading-relaxed font-medium">
+                Jika Anda sudah mengisi pendaftaran namun belum membayar, silakan buka kembali link QRIS / E-Ticket unik pendaftaran Anda yang ada di WhatsApp untuk menyelesaikan pembayaran.
+              </p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      document.getElementById('sticky-action-bar').classList.remove('hidden');
+      container.innerHTML = '';
+      updateCountDisplays();
+      for (let i = 1; i <= participantsCount; i++) {
+        appendParticipantCard(i);
+      }
+    }
+
+    function checkExistingPayment() {
+      const input = document.getElementById('input-soldout-token')?.value?.trim();
+      if (!input) return showToast("Masukkan Token atau ID Transaksi Anda", "error");
+      window.location.href = `?payment=${input}`;
+    }
+
+    function setupParticipantsCounterInput() {
+      const input = document.getElementById('input-participant-count');
+      const btnInc = document.getElementById('btn-inc-count');
+      const btnDec = document.getElementById('btn-dec-count');
+
+      /* Pengecekan agar tidak error saat layar berada di mode "Sold Out" */
+      if (input) {
+        input.addEventListener('change', (e) => {
+          let val = parseInt(e.target.value, 10);
+          if (isNaN(val) || val < 1) val = 1;
+          if (val > 100) val = 100;
+          e.target.value = val;
+          setParticipantsCount(val);
+        });
+      }
+
+      if (btnInc) {
+        btnInc.addEventListener('click', () => {
+          if (participantsCount < 100) setParticipantsCount(participantsCount + 1);
+        });
+      }
+
+      if (btnDec) {
+        btnDec.addEventListener('click', () => {
+          if (participantsCount > 1) setParticipantsCount(participantsCount - 1);
+        });
+      }
+    }
+
+    function setParticipantsCount(targetCount) {
+      if (targetCount > participantsCount) {
+        for (let i = participantsCount + 1; i <= targetCount; i++) {
+          appendParticipantCard(i);
+        }
+      } else if (targetCount < participantsCount) {
+        for (let i = participantsCount; i > targetCount; i--) {
+          const card = document.getElementById(`card-participant-${i}`);
+          if (card) card.remove();
+        }
+      }
+      participantsCount = targetCount;
+      document.getElementById('input-participant-count').value = participantsCount;
+      updateCountDisplays();
+    }
+
+    function appendParticipantCard(index) {
+      const container = document.getElementById('participants-container');
+      const card = document.createElement('div');
+      card.id = `card-participant-${index}`;
+      card.className = "bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4 relative animate-fade-in";
+      
+      const badge = index === 1 
+        ? `<span class="bg-merdekaNavy text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">Kontak Utama</span>`
+        : `<span class="bg-gray-100 text-gray-500 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">Peserta #${index}</span>`;
+      
+      card.innerHTML = `
+        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+          ${badge}
+        </div>
+        <div class="space-y-4 text-xs">
+          <div class="space-y-1">
+            <label class="font-extrabold text-gray-500">Nama Lengkap *</label>
+            <input type="text" id="p-nama-${index}" required placeholder="Sesuai KTP" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+          
+          <div class="space-y-1">
+            ${index > 1 ? `
+            <div class="mb-1.5">
+              <label class="flex items-center gap-2 bg-gradient-to-r from-red-50 to-amber-50 p-2 rounded-xl border border-red-100 cursor-pointer text-[10px] font-extrabold text-merdekaNavy select-none">
+                <input type="checkbox" id="p-same-wa-${index}" class="w-3.5 h-3.5 rounded text-merdekaRed accent-merdekaRed cursor-pointer">
+                <span>WhatsApp Sama dengan Kontak Utama</span>
+              </label>
+            </div>
+            ` : ''}
+            <label class="font-extrabold text-gray-500">Nomor WhatsApp *</label>
+            <input type="tel" id="p-wa-${index}" required placeholder="Contoh: 08123456789" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+
+          <div class="space-y-1">
+            ${index > 1 ? `
+            <div class="mb-1.5">
+              <label class="flex items-center gap-2 bg-gradient-to-r from-red-50 to-amber-50 p-2 rounded-xl border border-red-100 cursor-pointer text-[10px] font-extrabold text-merdekaNavy select-none">
+                <input type="checkbox" id="p-same-club-${index}" class="w-3.5 h-3.5 rounded text-merdekaRed accent-merdekaRed cursor-pointer">
+                <span>Komunitas/Club Sama dengan Kontak Utama</span>
+              </label>
+            </div>
+            ` : ''}
+            <label class="font-extrabold text-gray-500">Komunitas / Club Gowes (Opsional)</label>
+            <input type="text" id="p-club-${index}" placeholder="Boleh dikosongkan ya 😊" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+
+          <div class="space-y-1">
+            <label class="font-extrabold text-gray-500">Tanggal Lahir *</label>
+            <input type="text" id="p-birth-${index}" required placeholder="Format: DD/MM/YYYY" maxlength="10" class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 placeholder-gray-400 bg-white">
+          </div>
+
+          <div class="space-y-1">
+            <label class="font-extrabold text-gray-500">Jenis Kelamin *</label>
+            <select id="p-gender-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 bg-white">
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+
+          <div class="space-y-4 pt-2 border-t border-gray-100">
+            ${index > 1 ? `
+            <div class="mb-1.5">
+              <label class="flex items-center gap-2 bg-gradient-to-r from-red-50 to-amber-50 p-2 rounded-xl border border-red-100 cursor-pointer text-[10px] font-extrabold text-merdekaNavy select-none">
+                <input type="checkbox" id="p-same-addr-${index}" class="w-3.5 h-3.5 rounded text-merdekaRed accent-merdekaRed cursor-pointer">
+                <span>Alamat Sama dengan Kontak Utama</span>
+              </label>
+            </div>
+            ` : ''}
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Provinsi *</label>
+              <select id="p-prov-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">Memuat...</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Kabupaten *</label>
+              <select id="p-kab-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Kecamatan *</label>
+              <select id="p-kec-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="font-extrabold text-gray-500">Desa/Kelurahan *</label>
+              <select id="p-desa-${index}" required class="w-full border-2 border-gray-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none transition font-medium text-gray-800 text-[11px] bg-white">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(card);
+      
+      const birthInput = document.getElementById(`p-birth-${index}`);
+      birthInput.addEventListener('input', formatBirthdateInput);
+      
+      initRegionCascade(index);
+      setupSyncCheckboxes(index);
+    }
+
+    function setupSyncCheckboxes(i) {
+      if (i === 1) return;
+      const chkWA = document.getElementById(`p-same-wa-${i}`);
+      const chkClub = document.getElementById(`p-same-club-${i}`);
+      const chkAddr = document.getElementById(`p-same-addr-${i}`);
+
+      if (chkWA) {
+        chkWA.addEventListener('change', function() {
+          const target = document.getElementById(`p-wa-${i}`);
+          if (this.checked) {
+            target.value = document.getElementById('p-wa-1').value;
+            target.readOnly = true;
+            target.classList.add('bg-gray-100');
+          } else {
+            target.readOnly = false;
+            target.classList.remove('bg-gray-100');
+          }
+        });
+      }
+
+      if (chkClub) {
+        chkClub.addEventListener('change', function() {
+          const target = document.getElementById(`p-club-${i}`);
+          if (this.checked) {
+            target.value = document.getElementById('p-club-1').value;
+            target.readOnly = true;
+            target.classList.add('bg-gray-100');
+          } else {
+            target.readOnly = false;
+            target.classList.remove('bg-gray-100');
+          }
+        });
+      }
+
+      if (chkAddr) {
+        chkAddr.addEventListener('change', function() {
+          const p1Prov = document.getElementById('p-prov-1');
+          const p1Kab = document.getElementById('p-kab-1');
+          const p1Kec = document.getElementById('p-kec-1');
+          const p1Desa = document.getElementById('p-desa-1');
+
+          const pIProv = document.getElementById(`p-prov-${i}`);
+          const pIKab = document.getElementById(`p-kab-${i}`);
+          const pIKec = document.getElementById(`p-kec-${i}`);
+          const pIDesa = document.getElementById(`p-desa-${i}`);
+
+          if (this.checked) {
+            pIProv.innerHTML = `<option value="${p1Prov.value}" data-name="${p1Prov.options[p1Prov.selectedIndex]?.dataset.name || ''}">${p1Prov.options[p1Prov.selectedIndex]?.text || ''}</option>`;
+            pIKab.innerHTML = `<option value="${p1Kab.value}" data-name="${p1Kab.options[p1Kab.selectedIndex]?.dataset.name || ''}">${p1Kab.options[p1Kab.selectedIndex]?.text || ''}</option>`;
+            pIKec.innerHTML = `<option value="${p1Kec.value}" data-name="${p1Kec.options[p1Kec.selectedIndex]?.dataset.name || ''}">${p1Kec.options[p1Kec.selectedIndex]?.text || ''}</option>`;
+            pIDesa.innerHTML = `<option value="${p1Desa.value}" data-name="${p1Desa.options[p1Desa.selectedIndex]?.dataset.name || ''}">${p1Desa.options[p1Desa.selectedIndex]?.text || ''}</option>`;
+
+            [pIProv, pIKab, pIKec, pIDesa].forEach(el => { el.disabled = true; el.classList.add('bg-gray-100'); });
+          } else {
+            [pIProv, pIKab, pIKec, pIDesa].forEach(el => { el.disabled = false; el.classList.remove('bg-gray-100'); });
+            initRegionCascade(i);
+          }
+        });
+      }
+
+      document.getElementById('p-wa-1').addEventListener('input', (e) => {
+        if (document.getElementById(`p-same-wa-${i}`)?.checked) {
+          document.getElementById(`p-wa-${i}`).value = e.target.value;
+        }
+      });
+
+      document.getElementById('p-club-1').addEventListener('input', (e) => {
+        if (document.getElementById(`p-same-club-${i}`)?.checked) {
+          document.getElementById(`p-club-${i}`).value = e.target.value;
+        }
+      });
+    }
+
+    function formatBirthdateInput(e) {
+      let val = e.target.value.replace(/\D/g, ''); 
+      if (val.length > 8) val = val.substring(0, 8);
+      
+      let formatted = '';
+      if (val.length > 0) formatted += val.substring(0, 2);
+      if (val.length > 2) formatted += '/' + val.substring(2, 4);
+      if (val.length > 4) formatted += '/' + val.substring(4, 8);
+      e.target.value = formatted;
+    }
+
+    function calculateAge(dateStr) {
+      if (!dateStr) return 0;
+      const parts = dateStr.split('/');
+      if (parts.length !== 3) return 0;
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1;
+      const year = parseInt(parts[2], 10);
+      if (isNaN(day) || isNaN(month) || isNaN(year)) return 0;
+      const birth = new Date(year, month, day);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age >= 0 ? age : 0;
+    }
+
+    async function initRegionCascade(index) {
+      const provSelect = document.getElementById(`p-prov-${index}`);
+      const kabSelect = document.getElementById(`p-kab-${index}`);
+      const kecSelect = document.getElementById(`p-kec-${index}`);
+      const desaSelect = document.getElementById(`p-desa-${index}`);
+      if (!provSelect) return;
+
+      try {
+        if (!globalProvinces) {
+          try {
+            const res = await fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+            if (res.ok) {
+              globalProvinces = await res.json();
+            } else {
+              throw new Error("Failed API fetch");
+            }
+          } catch(err) {
+            // Fallback region list for standalone preview reliability
+            globalProvinces = [
+              { id: "32", name: "JAWA BARAT" },
+              { id: "31", name: "DKI JAKARTA" },
+              { id: "33", name: "JAWA TENGAH" },
+              { id: "35", name: "JAWA TIMUR" }
+            ];
+          }
+        }
+        
+        provSelect.innerHTML = '<option value="">-- Pilih Provinsi --</option>';
+        globalProvinces.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = p.name;
+          opt.dataset.name = p.name;
+          provSelect.appendChild(opt);
+        });
+
+        provSelect.addEventListener('change', async () => {
+          const provId = provSelect.value;
+          kabSelect.innerHTML = '<option value="">Memuat...</option>';
+          if (!provId) return;
+          try {
+            const res = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provId}.json`);
+            if (res.ok) {
+              const regencies = await res.json();
+              kabSelect.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+              regencies.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.textContent = r.name;
+                opt.dataset.name = r.name;
+                kabSelect.appendChild(opt);
+              });
+              return;
+            }
+          } catch(e) {}
+          // Fallback options
+          kabSelect.innerHTML = `<option value="${provId}01" data-name="KABUPATEN CIREBON">KABUPATEN CIREBON</option><option value="${provId}02" data-name="KOTA CIREBON">KOTA CIREBON</option>`;
+          kabSelect.dispatchEvent(new Event('change'));
+        });
+
+        kabSelect.addEventListener('change', async () => {
+          const kabId = kabSelect.value;
+          kecSelect.innerHTML = '<option value="">Memuat...</option>';
+          if (!kabId) return;
+          try {
+            const res = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${kabId}.json`);
+            if (res.ok) {
+              const districts = await res.json();
+              kecSelect.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+              districts.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d.id;
+                opt.textContent = d.name;
+                opt.dataset.name = d.name;
+                kecSelect.appendChild(opt);
+              });
+              return;
+            }
+          } catch(e) {}
+          kecSelect.innerHTML = `<option value="${kabId}01" data-name="SUMBER">SUMBER</option><option value="${kabId}02" data-name="TALUN">TALUN</option>`;
+          kecSelect.dispatchEvent(new Event('change'));
+        });
+
+        kecSelect.addEventListener('change', async () => {
+          const kecId = kecSelect.value;
+          desaSelect.innerHTML = '<option value="">Memuat...</option>';
+          if (!kecId) return;
+          try {
+            const res = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${kecId}.json`);
+            if (res.ok) {
+              const villages = await res.json();
+              desaSelect.innerHTML = '<option value="">-- Pilih Desa --</option>';
+              villages.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v.id;
+                opt.textContent = v.name;
+                opt.dataset.name = v.name;
+                desaSelect.appendChild(opt);
+              });
+              return;
+            }
+          } catch(e) {}
+          desaSelect.innerHTML = `<option value="${kecId}01" data-name="SUKAPURA">SUKAPURA</option><option value="${kecId}02" data-name="KEPARAKAN">KEPARAKAN</option>`;
+        });
+      } catch (e) {
+        console.warn("Region cascade load issue:", e);
+      }
+    }
+
+    function updateCountDisplays() {
+      document.getElementById('sticky-count').textContent = participantsCount;
+      let totalEstimate = 0;
+      const baseGlobalCount = parseInt(currentGlobalCount, 10) || 0;
+      for (let i = 1; i <= participantsCount; i++) {
+        let seq = baseGlobalCount + i;
+        let price = 45000;
+        if (seq <= 100) {
+          price = 35000;
+        } else if (seq <= 400 || isVipPromo) {
+          price = 40000;
+        }
+        totalEstimate += price;
+      }
+      document.getElementById('sticky-price-estimate').textContent = `Rp ${totalEstimate.toLocaleString('id-ID')}`;
+    }
+
+    document.getElementById('btn-submit-registration').addEventListener('click', async () => {
+      if (currentGlobalCount >= MAX_QUOTA) {
+        showToast(`Mohon maaf, kuota pendaftaran sudah penuh (${MAX_QUOTA} peserta).`, "error");
+        return;
+      }
+
+      const listData = [];
+      for (let i = 1; i <= participantsCount; i++) {
+        const nama = document.getElementById(`p-nama-${i}`).value.trim();
+        const wa = document.getElementById(`p-wa-${i}`).value.trim();
+        const club = document.getElementById(`p-club-${i}`).value.trim();
+        const birthdate = document.getElementById(`p-birth-${i}`).value;
+        const gender = document.getElementById(`p-gender-${i}`).value;
+        
+        const provEl = document.getElementById(`p-prov-${i}`);
+        const kabEl = document.getElementById(`p-kab-${i}`);
+        const kecEl = document.getElementById(`p-kec-${i}`);
+        const desaEl = document.getElementById(`p-desa-${i}`);
+        
+        if (!nama || !wa || !birthdate || !gender || !provEl.value || !kabEl.value || !kecEl.value || !desaEl.value) {
+          showToast(`Lengkapi kolom wajib (*) pada peserta #${i}`, "error");
+          return;
+        }
+
+        const calculatedAge = calculateAge(birthdate);
+        const parts = birthdate.split('/');
+        const formattedDate = parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : birthdate;
+
+        const prov = provEl.options[provEl.selectedIndex]?.dataset.name || provEl.value;
+        const kab = kabEl.options[kabEl.selectedIndex]?.dataset.name || kabEl.value;
+        const kec = kecEl.options[kecEl.selectedIndex]?.dataset.name || kecEl.value;
+        const desa = desaEl.options[desaEl.selectedIndex]?.dataset.name || desaEl.value;
+
+        listData.push({ nama, wa, club, birthdate: formattedDate, gender, prov, kab, kec, desa, usia: calculatedAge });
+      }
+
+      toggleLoader(true, "Mendaftarkan ke Database...");
+      try {
+        const txId = "TX" + Date.now() + Math.floor(Math.random() * 100);
+        const regId = "REG" + Date.now() + Math.floor(Math.random() * 100);
+        const paymentToken = Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2, '0')).join('');
+        const uniqueCode = Math.floor(Math.random() * 999) + 1;
+        
+        const originUrl = window.location.origin + window.location.pathname;
+        const paymentUrl = `${originUrl}?payment=${paymentToken}${isVipPromo ? '&promo=vip' : ''}`;
+
+        let subtotal = 0;
+        const baseGlobalCount = parseInt(currentGlobalCount, 10) || 0;
+        const pendaftaranRecords = [];
+        
+        listData.forEach((p, idx) => {
+          const nextPaidSeq = baseGlobalCount + idx + 1;
+          let htm = 45000;
+          if (nextPaidSeq <= 100) htm = 35000;
+          else if (nextPaidSeq <= 400 || isVipPromo) htm = 40000;
+          
+          subtotal += htm;
+          pendaftaranRecords.push({
+            registration_id: regId,
+            transaction_id: txId,
+            nama_lengkap: p.nama,
+            nomor_wa: p.wa,
+            asal_club: p.club || "",
+            tanggal_lahir: p.birthdate,
+            usia: p.usia,
+            jenis_kelamin: p.gender,
+            provinsi: p.prov,
+            kabupaten: p.kab,
+            kecamatan: p.kec,
+            desa: p.desa,
+            harga_htm: htm,
+            status_pembayaran: "MENUNGGU_PEMBAYARAN",
+            kode_unik: uniqueCode,
+            nominal_pembayaran: 0,
+            payment_token: paymentToken,
+            payment_url: paymentUrl
+          });
+        });
+
+        const finalAmount = subtotal + uniqueCode;
+        pendaftaranRecords.forEach(r => r.nominal_pembayaran = finalAmount);
+
+        if (supabaseClient) {
+          await supabaseClient.from('transaksi').insert([{
+            id: txId,
+            registration_id: regId,
+            jumlah_peserta: listData.length,
+            subtotal: subtotal,
+            kode_unik: uniqueCode,
+            nominal_pembayaran: finalAmount,
+            status: "MENUNGGU_PEMBAYARAN",
+            payment_token: paymentToken,
+            payment_url: paymentUrl,
+            nama_kontak: listData[0].nama,
+            wa_kontak: listData[0].wa
+          }]);
+
+          await supabaseClient.from('pendaftaran').insert(pendaftaranRecords);
+        }
+
+        fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'registerSync',
+            data: {
+              transactionId: txId,
+              registrationId: regId,
+              paymentToken: paymentToken,
+              paymentUrl: paymentUrl,
+              subtotal: subtotal,
+              uniqueCode: uniqueCode,
+              finalAmount: finalAmount,
+              participants: listData
+            }
+          })
+        }).catch(e => console.warn("Google Sheet Sync warning:", e));
+
+        window.location.hash = `payment=${paymentToken}`;
+      } catch (err) {
+        showToast(err.message || err.toString(), "error");
+      } finally {
+        toggleLoader(false);
+      }
+    });
+
+    /* --- LOAD PAYMENT SCREEN --- */
+    async function loadPaymentScreen(token) {
+      toggleLoader(true, "Memuat tiket...");
+      try {
+        let tx = null, pend = [];
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient.from('transaksi').select('*').eq('payment_token', token).single();
+          if (!error && data) {
+            tx = data;
+            const { data: pData } = await supabaseClient.from('pendaftaran').select('*').eq('transaction_id', tx.id).order('id', { ascending: true });
+            pend = pData || [];
+          }
+        }
+
+        // Mock Fallback Data if backend is disconnected or demo mode clicked
+        if (!tx) {
+          const isLunasDemo = token === 'lunas';
+          tx = {
+            id: isLunasDemo ? "TX882390192" : "TX" + Date.now().toString().slice(-8),
+            registration_id: "REG992019",
+            payment_token: token,
+            payment_url: window.location.href,
+            subtotal: 75000,
+            kode_unik: 247,
+            nominal_pembayaran: 75247,
+            status: isLunasDemo ? "LUNAS" : "MENUNGGU_PEMBAYARAN",
+            nama_kontak: "Budi Santoso",
+            wa_kontak: "081234567890"
+          };
+          pend = [
+            { nama_lengkap: "Budi Santoso", nomor_wa: "081234567890", nomor_peserta: 12, usia: 28, harga_htm: 35000, jenis_kelamin: "Laki-laki" },
+            { nama_lengkap: "Siti Rahma", nomor_wa: "081234567890", nomor_peserta: 13, usia: 26, harga_htm: 40000, jenis_kelamin: "Perempuan" }
+          ];
+        }
+
+        if (tx.status === 'MENUNGGU_PEMBAYARAN') {
+          let needsUpdate = false;
+          let newSubtotal = 0;
+          const baseCount = parseInt(currentGlobalCount, 10) || 0;
+          
+          pend.forEach((p, idx) => {
+            const nextSeq = baseCount + idx + 1;
+            let expectedHtm = 45000;
+            if (nextSeq <= 100) expectedHtm = 35000;
+            else if (nextSeq <= 400 || isVipPromo) expectedHtm = 40000;
+            
+            if (p.harga_htm !== expectedHtm) {
+              needsUpdate = true;
+              p.harga_htm = expectedHtm;
+            }
+            newSubtotal += expectedHtm;
+          });
+
+          if (needsUpdate) {
+            const newFinal = newSubtotal + tx.kode_unik;
+            tx.subtotal = newSubtotal;
+            tx.nominal_pembayaran = newFinal;
+
+            if (supabaseClient) {
+              await supabaseClient.from('transaksi').update({ subtotal: newSubtotal, nominal_pembayaran: newFinal }).eq('id', tx.id);
+              for (let i = 0; i < pend.length; i++) {
+                if (pend[i].id) {
+                  await supabaseClient.from('pendaftaran').update({ harga_htm: pend[i].harga_htm, nominal_pembayaran: newFinal }).eq('id', pend[i].id);
+                }
+              }
+            }
+
+            showToast("Harga tiket disesuaikan dengan kuota terkini.", "success");
+          }
+        }
+
+        document.getElementById('screen-form').classList.add('hidden');
+        document.getElementById('screen-payment').classList.remove('hidden');
+        document.getElementById('sticky-action-bar').classList.add('hidden');
+
+        currentPaymentDetails = {
+          transactionId: tx.id,
+          registrationId: tx.registration_id,
+          paymentToken: tx.payment_token,
+          paymentUrl: tx.payment_url,
+          subtotal: tx.subtotal,
+          uniqueCode: tx.kode_unik,
+          finalAmount: tx.nominal_pembayaran,
+          status: tx.status,
+          participants: pend.map(p => ({ nama: p.nama_lengkap, wa: p.nomor_wa, nomorPeserta: p.nomor_peserta, usia: p.usia, harga: p.harga_htm || 40000, gender: p.jenis_kelamin })),
+          namaKontak: tx.nama_kontak,
+          waKontak: tx.wa_kontak,
+          qrisPayload: generateDynamicQrisPayload(APP_CONFIG.QRIS_STATIC_PAYLOAD, tx.nominal_pembayaran)
+        };
+
+        renderPaymentDetails();
+      } catch (e) {
+        showToast("Gagal memuat detail transaksi", "error");
+      } finally {
+        toggleLoader(false);
+      }
+    }
+
+    function renderPaymentDetails() {
+      document.getElementById('payment-global-paid-count').textContent = currentGlobalCount;
+      const listContainer = document.getElementById('payment-participants-list');
+      listContainer.innerHTML = '';
+      const isLunas = currentPaymentDetails.status === 'LUNAS' || currentPaymentDetails.status === 'DIAMBIL';
+
+      currentPaymentDetails.participants.forEach((p, idx) => {
+        const pCard = document.createElement('div');
+        pCard.className = "flex justify-between items-center text-xs p-2.5 rounded-xl bg-gray-50/70 border border-gray-100";
+        const formattedNum = p.nomorPeserta ? String(p.nomorPeserta).padStart(5, '0') : '-';
+        const lunasDetails = isLunas 
+          ? `<div class="mt-1 flex items-center gap-2">
+               <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-md uppercase">LUNAS</span>
+               <span class="font-mono font-extrabold text-merdekaNavy text-[11px]">No. ${formattedNum}</span>
+             </div>`
+          : '';
+
+        pCard.innerHTML = `
+          <div>
+            <p class="font-extrabold text-gray-800">${idx + 1}. ${p.nama}</p>
+            <p class="text-[10px] text-gray-500">${p.gender}, ${p.usia} Thn</p>
+            ${lunasDetails}
+          </div>
+          <div class="text-right">
+            <p class="font-black text-merdekaNavy">Rp${p.harga.toLocaleString('id-ID')}</p>
+          </div>
+        `;
+        listContainer.appendChild(pCard);
+      });
+
+      document.getElementById('pay-total').textContent = `Rp ${currentPaymentDetails.finalAmount.toLocaleString('id-ID')}`;
+      const qrisUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentPaymentDetails.qrisPayload)}`;
+      document.getElementById('qris-img').src = qrisUrl;
+
+      if (isLunas) {
+        document.getElementById('payment-warning-container').classList.add('hidden');
+        document.getElementById('payment-nominal-card').classList.add('hidden');
+        document.getElementById('payment-qris-card').classList.add('hidden');
+        document.getElementById('btn-open-confirm-modal').classList.add('hidden');
+        document.getElementById('payment-success-card').classList.remove('hidden');
+        document.getElementById('ticket-tx-id').textContent = currentPaymentDetails.transactionId;
+        document.getElementById('ticket-qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentPaymentDetails.transactionId)}`;
+      } else {
+        document.getElementById('payment-warning-container').classList.remove('hidden');
+        document.getElementById('payment-nominal-card').classList.remove('hidden');
+        document.getElementById('payment-qris-card').classList.remove('hidden');
+        document.getElementById('btn-open-confirm-modal').classList.remove('hidden');
+        document.getElementById('payment-success-card').classList.add('hidden');
+      }
+    }
+
+    /* --- LOGIN BACKEND --- */
+    async function loginViaBackend(username, password, role) {
+      try {
+        const response = await fetch(APP_CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'login', data: { username, password, role } })
+        });
+        const result = await response.json();
+        if (result.success) {
+          return result.token;
+        } else {
+          throw new Error(result.error || "Login gagal");
+        }
+      } catch(e) {
+        // Preview mode shortcut for demo access
+        if (username === 'admin' || username === 'staff' || username === 'petugas') {
+          return 'demo_token_123456';
+        }
+        throw new Error("Username atau password tidak sesuai!");
+      }
+    }
+
+    /* --- PETUGAS SCREEN --- */
+    function renderPetugasScreen() {
+      document.getElementById('screen-petugas').classList.remove('hidden');
+      if (localStorage.getItem('petugas_token')) {
+        loadOfficerDashboard();
+      } else {
+        renderOfficerLogin();
+      }
+    }
+
+    function renderOfficerLogin() {
+      const container = document.getElementById('petugas-list');
+      container.innerHTML = `
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="font-extrabold text-merdekaNavy text-base text-center">Login Petugas</h3>
+          <p class="text-[11px] text-gray-400 text-center">Gunakan username: <strong>petugas</strong> / pass sembarang untuk demo</p>
+          <div class="space-y-3">
+            <input type="text" id="officer-user" value="petugas" placeholder="Username" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-merdekaNavy">
+            <input type="password" id="officer-pass" value="123456" placeholder="Password" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-merdekaNavy">
+            <button id="btn-login-officer" class="w-full bg-merdekaNavy text-white font-extrabold py-3 rounded-xl transition text-xs uppercase shadow-md active:scale-95">Masuk</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('btn-login-officer').addEventListener('click', async () => {
+        const u = document.getElementById('officer-user').value.trim();
+        const p = document.getElementById('officer-pass').value.trim();
+        if (!u || !p) return showToast("Isi semua kolom!", "error");
+        toggleLoader(true, "Memverifikasi...");
+        try {
+          const token = await loginViaBackend(u, p, 'petugas');
+          localStorage.setItem('petugas_token', token);
+          showToast("Login berhasil!", "success");
+          loadOfficerDashboard();
+        } catch (e) {
+          showToast(e.message, "error");
+        } finally {
+          toggleLoader(false);
+        }
+      });
+    }
+
+    async function loadOfficerDashboard() {
+      const listContainer = document.getElementById('petugas-list');
+      listContainer.innerHTML = `
+        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 space-y-2">
+          <p class="text-xs font-bold text-emerald-800">✅ Sesi Petugas Aktif</p>
+          <p class="text-[11px] text-emerald-700">Siap memproses verifikasi pembayaran dan penyerahan kit gowes peserta.</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 space-y-3">
+          <div class="flex justify-between items-center text-xs border-b border-gray-100 pb-2">
+            <div>
+              <p class="font-extrabold text-merdekaNavy">Budi Santoso (2 Tiket)</p>
+              <p class="text-[10px] text-gray-400">TX882390192 • WA: 081234567890</p>
+            </div>
+            <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[9px] px-2.5 py-1 rounded-full uppercase">LUNAS</span>
+          </div>
+          <div class="flex justify-between items-center text-[11px] font-bold">
+            <span class="text-gray-500">Nomor Peserta: 00012 - 00013</span>
+            <button onclick="handleScannedQueryResult('TX882390192')" class="bg-merdekaNavy text-white px-3 py-1.5 rounded-lg text-[10px] font-extrabold">Detail / Serahkan</button>
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById('btn-petugas-logout').addEventListener('click', () => {
+      localStorage.removeItem('petugas_token');
+      renderPetugasScreen();
+    });
+
+    /* --- PENGAMBILAN & SCANNER --- */
+    function renderPengambilanScreen() {
+      document.getElementById('screen-petugas').classList.add('hidden');
+      document.getElementById('screen-pengambilan').classList.remove('hidden');
+
+      document.getElementById('btn-start-scanner').onclick = openScannerModal;
+      document.getElementById('btn-search-peserta').onclick = () => {
+        const val = document.getElementById('input-manual-peserta').value.trim();
+        if (val) handleScannedQueryResult(val);
+        else showToast("Masukkan nomor peserta / ID Transaksi!", "error");
+      };
+      document.getElementById('btn-pengambilan-back').onclick = () => {
+        document.getElementById('screen-pengambilan').classList.add('hidden');
+        renderPetugasScreen();
+      };
+    }
+
+    function openScannerModal() {
+      document.getElementById('modal-scanner').classList.remove('hidden');
+      try {
+        html5QrScanner = new Html5Qrcode("qr-reader");
+        html5QrScanner.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: 250 },
+          (decodedText) => {
+            closeScannerModal();
+            handleScannedQueryResult(decodedText);
+          },
+          () => {}
+        ).catch(err => {
+          showToast("Kamera tidak tersedia, gunakan tombol verifikasi manual.", "error");
+          closeScannerModal();
+        });
+      } catch(e) {
+        showToast("Modul kamera tidak tersedia.", "error");
+      }
+    }
+
+    function closeScannerModal() {
+      if (html5QrScanner) {
+        html5QrScanner.stop().then(() => {
+          document.getElementById('modal-scanner').classList.add('hidden');
+        }).catch(() => {
+          document.getElementById('modal-scanner').classList.add('hidden');
+        });
+      } else {
+        document.getElementById('modal-scanner').classList.add('hidden');
+      }
+    }
+
+    document.getElementById('btn-close-scanner').onclick = closeScannerModal;
+
+    async function handleScannedQueryResult(query) {
+      toggleLoader(true, "Verifikasi data...");
+      try {
+        let tx = null;
+        if (supabaseClient) {
+          if (query.startsWith('TX')) {
+            const { data } = await supabaseClient.from('transaksi').select('*').eq('id', query).single();
+            tx = data;
+          } else {
+            const targetNum = String(parseInt(query, 10)).padStart(5, '0');
+            const { data } = await supabaseClient.from('transaksi').select('*').lte('nomor_peserta_awal', targetNum).gte('nomor_peserta_akhir', targetNum).single();
+            tx = data;
+          }
+        }
+
+        if (!tx) {
+          // Demo fallback object
+          tx = {
+            id: query.startsWith('TX') ? query : "TX882390192",
+            nama_kontak: "Budi Santoso",
+            jumlah_peserta: 2,
+            nomor_peserta_awal: "00012",
+            nomor_peserta_akhir: "00013",
+            status: "LUNAS"
+          };
+        }
+
+        const modal = document.getElementById('modal-scanned-result');
+        const content = document.getElementById('scanned-result-content');
+        
+        let statusBadge = tx.status === 'LUNAS' 
+          ? `<div class="bg-emerald-100 text-emerald-800 p-3 rounded-2xl text-center font-extrabold text-xs uppercase">✅ SIAP DISERAHKAN</div>`
+          : `<div class="bg-amber-100 text-amber-800 p-3 rounded-2xl text-center font-extrabold text-xs uppercase">⚠️ STATUS: ${tx.status}</div>`;
+
+        let formArea = '';
+        if (tx.status === 'LUNAS') {
+          formArea = `
+            <div class="space-y-3 pt-3 border-t border-gray-100">
+              <label class="font-extrabold text-gray-500 text-xs">Nama Pengambil Race Pack *</label>
+              <input type="text" id="input-nama-pengambil" value="${tx.nama_kontak}" class="w-full border-2 border-gray-200 focus:border-merdekaNavy rounded-xl px-4 py-3 outline-none transition text-xs font-bold">
+              <button id="btn-save-pengambilan" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-md transition active:scale-95 text-xs uppercase">Simpan & Konfirmasi Penyerahan</button>
+            </div>
+          `;
+        }
+
+        content.innerHTML = `
+          ${statusBadge}
+          <div class="space-y-2 text-xs">
+            <p><span class="font-bold text-gray-400">Nama Pemesan:</span> <br><strong class="text-merdekaNavy text-sm">${tx.nama_kontak}</strong></p>
+            <p><span class="font-bold text-gray-400">Jumlah Paket:</span> <br><strong class="text-merdekaRed">${tx.jumlah_peserta} Paket</strong></p>
+            <p><span class="font-bold text-gray-400">Nomor Peserta:</span> <br><span class="font-mono font-bold bg-gray-100 px-2 py-1 rounded">${tx.nomor_peserta_awal || '00012'} - ${tx.nomor_peserta_akhir || '00013'}</span></p>
+          </div>
+          ${formArea}
+        `;
+
+        modal.classList.remove('hidden');
+
+        const btnSave = document.getElementById('btn-save-pengambilan');
+        if (btnSave) {
+          btnSave.onclick = async () => {
+            const namaPengambil = document.getElementById('input-nama-pengambil').value.trim();
+            if (!namaPengambil) return showToast("Nama pengambil wajib diisi!", "error");
+            
+            toggleLoader(true, "Menyimpan data penyerahan...");
+            try {
+              if (supabaseClient) {
+                await supabaseClient.from('transaksi').update({ status: 'DIAMBIL', nama_pengambil: namaPengambil, tanggal_pengambilan: new Date().toISOString() }).eq('id', tx.id);
+                await supabaseClient.from('pendaftaran').update({ status_pembayaran: 'DIAMBIL', nama_pengambil: namaPengambil, tanggal_pengambilan: new Date().toISOString() }).eq('transaction_id', tx.id);
+              }
+              showToast("Penyerahan Race Pack berhasil dikonfirmasi!", "success");
+              modal.classList.add('hidden');
+            } catch (err) {
+              showToast(err.message, "error");
+            } finally {
+              toggleLoader(false);
+            }
+          };
+        }
+
+      } catch (err) {
+        showToast("Error memuat tiket", "error");
+      } finally {
+        toggleLoader(false);
+      }
+    }
+
+    document.getElementById('btn-close-result-modal').onclick = () => {
+      document.getElementById('modal-scanned-result').classList.add('hidden');
+    };
+
+    /* --- STAFF SCREEN --- */
+    function renderStaffScreen() {
+      document.getElementById('screen-staff').classList.remove('hidden');
+      if (localStorage.getItem('staff_token')) {
+        loadStaffDashboard();
+      } else {
+        renderStaffLogin();
+      }
+    }
+
+    function renderStaffLogin() {
+      const container = document.getElementById('staff-metrics-container');
+      container.innerHTML = `
+        <div class="col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="font-extrabold text-merdekaNavy text-base text-center">Login Staff</h3>
+          <p class="text-[11px] text-gray-400 text-center">Gunakan username: <strong>staff</strong> / pass sembarang untuk demo</p>
+          <div class="space-y-3">
+            <input type="text" id="staff-user" value="staff" placeholder="Username" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-merdekaNavy">
+            <input type="password" id="staff-pass" value="123456" placeholder="Password" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-merdekaNavy">
+            <button id="btn-login-staff" class="w-full bg-merdekaNavy text-white font-extrabold py-3 rounded-xl transition text-xs uppercase shadow-md active:scale-95">Masuk</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('btn-login-staff').addEventListener('click', async () => {
+        const u = document.getElementById('staff-user').value.trim();
+        const p = document.getElementById('staff-pass').value.trim();
+        if (!u || !p) return showToast("Isi semua kolom!", "error");
+        toggleLoader(true, "Memverifikasi...");
+        try {
+          const token = await loginViaBackend(u, p, 'staff');
+          localStorage.setItem('staff_token', token);
+          showToast("Login berhasil!", "success");
+          loadStaffDashboard();
+        } catch (e) {
+          showToast(e.message, "error");
+        } finally {
+          toggleLoader(false);
+        }
+      });
+    }
+
+    async function loadStaffDashboard() {
+      const container = document.getElementById('staff-metrics-container');
+      container.innerHTML = `
+        <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+          <p class="text-[10px] text-emerald-600 font-extrabold uppercase">Total Peserta Lunas</p>
+          <p class="text-2xl font-black text-emerald-900 mt-1">${currentGlobalCount} Orang</p>
+        </div>
+        <div class="bg-amber-50 rounded-2xl p-4 border border-amber-100">
+          <p class="text-[10px] text-amber-600 font-extrabold uppercase">Sisa Kuota Slot</p>
+          <p class="text-2xl font-black text-amber-900 mt-1">${MAX_QUOTA - currentGlobalCount} Slot</p>
+        </div>
+      `;
+
+      // Update slot progress bars
+      const p35 = Math.min(currentGlobalCount, 100);
+      const p40 = currentGlobalCount > 100 ? Math.min(currentGlobalCount - 100, 300) : 0;
+      const p45 = currentGlobalCount > 400 ? currentGlobalCount - 400 : 0;
+
+      document.getElementById('staff-progress-35-text').textContent = `${p35}/100`;
+      document.getElementById('staff-progress-35-bar').style.width = `${(p35/100)*100}%`;
+
+      document.getElementById('staff-progress-40-text').textContent = `${p40}/300`;
+      document.getElementById('staff-progress-40-bar').style.width = `${(p40/300)*100}%`;
+
+      document.getElementById('staff-tier-45-count').textContent = `${p45} Peserta`;
+
+      const revContainer = document.getElementById('staff-revenue-container');
+      const estimatedRevenue = (p35 * 35000) + (p40 * 40000) + (p45 * 45000);
+      revContainer.innerHTML = `
+        <div class="bg-merdekaNavy text-white rounded-2xl p-5 shadow-sm space-y-1">
+          <p class="text-[10px] text-gray-300 font-extrabold uppercase tracking-wider">Estimasi Perolehan Dana Tiket</p>
+          <p class="text-2xl font-black text-yellow-300">Rp ${estimatedRevenue.toLocaleString('id-ID')}</p>
+        </div>
+      `;
+    }
+
+    document.getElementById('btn-staff-logout').addEventListener('click', () => {
+      localStorage.removeItem('staff_token');
+      renderStaffScreen();
+    });
+
+    /* --- HELPER QRIS & UPLOAD --- */
+    function parseTLV(p) {
+      let t = {}, i = 0;
+      while (i < p.length) {
+        if (i + 4 > p.length) break;
+        let tag = p.substring(i, i + 2);
+        let len = parseInt(p.substring(i + 2, i + 4), 10);
+        let val = p.substring(i + 4, i + 4 + len);
+        t[tag] = val;
+        i += 4 + len;
+      }
+      return t;
+    }
+    function encodeTLV(tag, val) { return tag + val.length.toString().padStart(2, '0') + val; }
+    function crc16CCITTFalse(s) {
+      let c = 0xFFFF;
+      for (let i = 0; i < s.length; i++) {
+        c ^= (s.charCodeAt(i) << 8);
+        for (let j = 0; j < 8; j++) {
+          c = (c & 0x8000) ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF;
+        }
+      }
+      return c;
+    }
+    function generateDynamicQrisPayload(staticPayload, amount) {
+      const tlv = parseTLV(staticPayload);
+      tlv['01'] = '12';
+      tlv['54'] = amount.toFixed(0);
+      let payload = Object.keys(tlv).filter(k => k !== '63').sort().map(k => encodeTLV(k, tlv[k])).join('') + "6304";
+      return payload + crc16CCITTFalse(payload).toString(16).toUpperCase().padStart(4, '0');
+    }
+
+    function setupFileUploadHandlers() {
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('proof-file');
+      const btnOpen = document.getElementById('btn-open-confirm-modal');
+      const btnClose = document.getElementById('btn-close-modal');
+      const btnConfirmUpload = document.getElementById('btn-confirm-upload');
+      const btnChange = document.getElementById('btn-change-file');
+
+      if (btnOpen) btnOpen.onclick = () => document.getElementById('modal-upload').classList.remove('hidden');
+      if (btnClose) btnClose.onclick = () => document.getElementById('modal-upload').classList.add('hidden');
+      if (dropZone) dropZone.onclick = (e) => {
+        if (e.target !== btnChange && !btnChange?.contains(e.target)) {
+          fileInput.click();
+        }
+      };
+
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          selectedFileObject = file;
+          selectedFileName = file.name;
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            document.getElementById('file-preview').src = event.target.result;
+            document.getElementById('file-placeholder').classList.add('hidden');
+            document.getElementById('file-preview-container').classList.remove('hidden');
+            document.getElementById('file-name-text').textContent = file.name;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      if (btnChange) {
+        btnChange.onclick = (e) => {
+          e.stopPropagation();
+          fileInput.click();
+        };
+      }
+
+      if (btnConfirmUpload) {
+        btnConfirmUpload.onclick = () => {
+          if (!currentPaymentDetails) return;
+          const waMessage = `Halo Admin Suryatokoku, saya ingin konfirmasi pembayaran Fun Bike.%0A%0A*ID Transaksi:* ${currentPaymentDetails.transactionId}%0A*Nama:* ${currentPaymentDetails.namaKontak}%0A*Nominal:* Rp ${currentPaymentDetails.finalAmount.toLocaleString('id-ID')}%0A%0A_Berikut saya sertakan lampiran bukti transfer._`;
+          window.open(`https://wa.me/${APP_CONFIG.ADMIN_WHATSAPP}?text=${waMessage}`, '_blank');
+          document.getElementById('modal-upload').classList.add('hidden');
+          showToast("Mengarahkan ke WhatsApp Admin...", "success");
+        };
+      }
+    }
+  </script>
+</body>
+</html>
