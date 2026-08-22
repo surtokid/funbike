@@ -76,12 +76,12 @@
       <!-- SCREEN 1: FORM PENDAFTARAN -->
       <div id="screen-form" class="hidden space-y-6">
 
-        <!-- UI SOLD OUT (Hanya Muncul Jika Kuota >= 521) -->
+        <!-- UI SOLD OUT (Hanya Muncul Jika Kuota >= 600) -->
         <div id="soldout-container" class="hidden space-y-5 animate-fade-in">
           <div class="bg-red-50 border-2 border-red-200 rounded-3xl p-6 text-center space-y-3 relative overflow-hidden shadow-sm">
             <div class="text-5xl mb-2 animate-bounce">🛑</div>
             <h2 class="text-xl font-black text-red-900 uppercase tracking-wide">Pendaftaran Ditutup</h2>
-            <p class="text-xs text-red-700 font-medium leading-relaxed">Mohon maaf, kuota maksimal pendaftaran <strong>521 peserta</strong> telah terpenuhi. Sampai jumpa di event Fun Bike Suryatokoku!</p>
+            <p class="text-xs text-red-700 font-medium leading-relaxed">Mohon maaf, kuota maksimal pendaftaran <strong>600 peserta</strong> telah terpenuhi. Sampai jumpa di event Fun Bike Suryatokoku!</p>
           </div>
           
           <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
@@ -586,6 +586,9 @@
       QRIS_STATIC_PAYLOAD: '00020101021126580013ID.CO.BRI.WWW01189360000200414511920208414511920303UMI51440014ID.CO.QRIS.WWW0215ID10243449659580303UMI5204581453033605802ID5912SURYA TOKOKU6007CIREBON61054518862070703A0163041036'
     };
 
+    // MAX QUOTA PENDAFTARAN
+    const MAX_QUOTA = 559;
+
     // Initialize Supabase Client
     let supabaseClient = null;
     if (window.supabase && APP_CONFIG.SUPABASE_URL.startsWith('https://')) {
@@ -664,9 +667,18 @@
         if (!error && count !== null) {
           currentGlobalCount = count;
           updateCountDisplays();
+          checkSoldOutStatus();
         }
       } catch (e) {
         console.error("Gagal mengambil urutan global Supabase:", e);
+      }
+    }
+
+    function checkSoldOutStatus() {
+      if (currentGlobalCount >= MAX_QUOTA) {
+        document.getElementById('main-form-container').classList.add('hidden');
+        document.getElementById('sticky-action-bar').classList.add('hidden');
+        document.getElementById('soldout-container').classList.remove('hidden');
       }
     }
 
@@ -1490,6 +1502,11 @@
     }
 
     async function submitRegistration(payload) {
+      if (currentGlobalCount + payload.length > MAX_QUOTA) {
+        showToast(`Mohon maaf, sisa kuota hanya ${Math.max(0, MAX_QUOTA - currentGlobalCount)} peserta!`, "error");
+        return;
+      }
+
       toggleLoader(true, "Mendaftarkan ke Supabase & Google Sheets...");
       try {
         const txId = "TX" + Date.now() + Math.floor(Math.random() * 100);
